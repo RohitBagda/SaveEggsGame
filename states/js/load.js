@@ -15,6 +15,7 @@ var loadState = {
         game.load.image('background', 'assets/background.png');
         game.load.image('gametitle', 'assets/logo.png');
         game.load.image('play', 'assets/play.png');
+        game.load.image('frenzy_basket', 'assets/frenzy_basket.png');
     },
 
     create : function(){

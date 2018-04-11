@@ -1,4 +1,5 @@
 var playState = {
+    isFrenzy: false,
 
     create: function(){
         this.canvasWidth = window.innerWidth;
@@ -20,8 +21,12 @@ var playState = {
         this.gameDuration = 90;
 
         this.isFrenzy = false;
-
         game.time.events.loop(800, this.dropEgg, this);
+            // this.frenzy = this.isFrenzy;
+        // while (!this.isFrenzy){
+        //     game.time.events.loop(800, this.dropEgg, this);
+        // }
+        // game.state.start('frenzy');
         game.time.events.loop(1000, function(){
            this.currentTime ++;
         }, this);
@@ -53,7 +58,7 @@ var playState = {
             var egg;
             var eggType;
 
-            if(this.currentTime < 10){
+            if(this.currentTime < 1){
                 eggType = "egg";
             } else {
                 eggType = this.getEggType();
@@ -72,11 +77,11 @@ var playState = {
     getEggType: function(){
         var eggType;
         var randomNumber = Math.random()*100;
-        if(randomNumber < 50){
+        if(randomNumber < 10){
             eggType = "egg";
-        } else if(randomNumber<70) {
+        } else if(randomNumber<20) {
             eggType = "bomb";
-        } else if(randomNumber<89) {
+        } else if(randomNumber<94) {
             eggType = "frenzy";
         } else if(randomNumber<96) {
             eggType = "scoreBoost";
@@ -124,7 +129,10 @@ var playState = {
         } else if(egg.key == "timeBoost") {
             this.currentTime -= 5;
         } else {
-            this.isFrenzy = true;
+            // this.game.state.stop();
+            game.time.events.stop();
+            this.game.state.states['gameData'].score = this.score;
+            this.game.state.start("frenzy");
         }
     },
 
