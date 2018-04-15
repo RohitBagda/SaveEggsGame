@@ -10,9 +10,6 @@ var frenzyState = {
         this.currentTime = 0;
         this.setUpBackGround();
         // this.setUpBasket();
-        this.canvasWidth = window.innerWidth;
-        this.canvasHeight = window.innerHeight;
-        this.scaleRatio = window.devicePixelRatio/1.2;
 
         this.scoreText = game.add.text(10,10, "Score: " + score, {fontSize: '24px'});
         this.frenzyEggsGroup = game.add.group();
@@ -59,7 +56,7 @@ var frenzyState = {
     createFrenzyEgg: function (eggX, eggY) {
         var eggType = "frenzy";
         var frenzyEgg = game.add.sprite(eggX, eggY, eggType);
-        frenzyEgg.scale.setTo(this.scaleRatio, this.scaleRatio);
+        frenzyEgg.scale.setTo(scaleRatio, scaleRatio);
 
         game.physics.arcade.enable(frenzyEgg, Phaser.Physics.ARCADE);
         // frenzyEgg.scale.setTo(scaleRatio, scaleRatio);
@@ -91,12 +88,12 @@ var frenzyState = {
 
     generateFrenzyEggXCoordinate: function() {
         // return Math.random()*450;
-        return Math.random() * this.canvasWidth;
+        return Math.random() * (canvasWidth-80);
     },
 
     generateFrenzyEggYCoordinate: function() {
         // return Math.random()*450;
-        return Math.random() * this.canvasHeight;
+        return Math.random() * (canvasHeight-100);
     },
 
     checkFrenzyEggOverlap: function(x, y) {
@@ -110,8 +107,8 @@ var frenzyState = {
     },
 
     setUpBasket: function(){
-        this.player = game.add.sprite(this.canvasWidth/2, this.canvasHeight/1.2, "basket");
-        this.player.scale.setTo(this.scaleRatio, this.scaleRatio);
+        this.player = game.add.sprite(canvasWidth/2, canvasHeight/1.2, "basket");
+        this.player.scale.setTo(scaleRatio, scaleRatio);
         game.physics.arcade.enable(this.player, Phaser.Physics.ARCADE);
         this.player.body.kinematic = true;
         this.player.inputEnabled = true;
@@ -126,7 +123,7 @@ var frenzyState = {
     },
 
     setUpBackGround: function(){
-        game.world.setBounds(0,0, this.canvasWidth, this.canvasHeight+100);
+        game.world.setBounds(0,0, canvasWidth, canvasHeight+100);
         game.add.sprite(0,0, "background");
         game.physics.startSystem(Phaser.Physics.ARCADE);
     },
