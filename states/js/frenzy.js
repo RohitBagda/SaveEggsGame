@@ -25,7 +25,6 @@ var frenzyState = {
             // Console.log(this.currentTime);
             if (this.currentTime >= 5){
                 // game.time.events.stop();
-                alert("This is fine");
                 this.game.state.start('play');
             } else{
                 this.currentTime ++;
