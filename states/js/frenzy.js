@@ -5,21 +5,27 @@ var frenzyState = {
     eggsOnScreenCoordinates: [],
 
     create: function(){
+
+        //Screen Setup
         this.currentTime = 0;
         this.setUpBackGround();
         // this.setUpBasket();
         this.canvasWidth = window.innerWidth;
         this.canvasHeight = window.innerHeight;
         this.scaleRatio = window.devicePixelRatio/1.2;
-        // console.log("This is so frustrating!!!!!!!!!!!!!!!");
-        // alert("welcome to frenzy");
-        this.scoreText = game.add.text(10,10, "Score: " + this.game.state.states['gameData'].score, {fontSize: '24px'});
+
+        this.scoreText = game.add.text(10,10, "Score: " + score, {fontSize: '24px'});
         this.frenzyEggsGroup = game.add.group();
+
+        //randomly generate 20 eggs
         this.generateFrenzyEggs(20);
+
+
         game.time.events.loop(1000, function(){
             // Console.log(this.currentTime);
             if (this.currentTime >= 5){
                 // game.time.events.stop();
+                alert("This is fine");
                 this.game.state.start('play');
             } else{
                 this.currentTime ++;
@@ -129,8 +135,9 @@ var frenzyState = {
     collectEgg: function(egg){
         // this.game.state.start('menu');
         egg.kill();
-        this.game.state.states['gameData'].updateScoreFromFrenzy();
-        this.scoreText.text = "Score: " + this.game.state.states['gameData'].score
+        //this.game.state.states['gameData'].updateScoreFromFrenzy();
+        score += 50;
+        this.scoreText.text = "Score: " + score;
     },
 
     // switchBackToPlay: function(time){

@@ -14,9 +14,8 @@ var playState = {
         this.playerSpeed = 400;
 
         // This will contain the score and the timer.
-        this.scoreText = game.add.text(10,10,'Score: 0', {fontSize: '24px'});
+        this.scoreText = game.add.text(10,10,'Score: ' + score, {fontSize: '24px'});
 
-        this.score = 0;
         this.currentTime = 0;
         this.gameDuration = 90;
 
@@ -64,7 +63,7 @@ var playState = {
                 eggType = this.getEggType();
             }
 
-            egg = game.add.sprite(eggX, eggY, eggType)
+            egg = game.add.sprite(eggX, eggY, eggType);
             egg.scale.setTo(this.scaleRatio, this.scaleRatio);
 
             game.physics.arcade.enable(egg);
@@ -107,6 +106,8 @@ var playState = {
         this.player.input.enableDrag(false, true, true);
         this.player.input.allowVerticalDrag = false;
         this.player.collideWorldBounds = true;
+        let bounds = new Phaser.Rectangle(0,0, this.canvasWidth, this.canvasHeight);
+        this.player.input.boundsRect = bounds;
         this.player.body.immovable = true;
         this.player.body.checkCollision.right = false;
         this.player.body.checkCollision.left = false;
@@ -123,7 +124,7 @@ var playState = {
         if(egg.key == "egg"){
             this.updateScore(5);
         } else if(egg.key == "bomb"){
-            game.state.stop();
+            this.game.state.start("gameOver");
         } else if(egg.key == "scoreBoost"){
             this.updateScore(30);
         } else if(egg.key == "timeBoost") {
@@ -131,14 +132,17 @@ var playState = {
         } else {
             // this.game.state.stop();
             // game.time.events.stop();
-            this.game.state.states['gameData'].score = this.score;
+            this.game.state.states['gameData'].score = score;
             this.game.state.start("frenzy");
         }
     },
 
     updateScore: function(points){
-        this.score += points;
-        this.scoreText.text = 'Score: ' + this.score;
+        score += points;
+        this.scoreText.text = 'Score: ' + score;
+        if (highestScore < score) {
+            highestScore = score;
+        }
     }
 
 };

@@ -7,9 +7,13 @@ game.state.add('menu', menuState);
 game.state.add('frenzy', frenzyState);
 game.state.add('play', playState);
 game.state.add('gameData', gameData);
+game.state.add('gameOver', gameOverState);
 
 // game.state.add('frenzy', frenzyState);
 // game.state.add('gameOver', gameOverState);
 
 // Start the game
 game.state.start('boot');
+
+var score=0;
+var highestScore=0;
