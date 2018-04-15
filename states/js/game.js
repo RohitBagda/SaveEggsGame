@@ -17,3 +17,6 @@ game.state.start('boot');
 
 var score=0;
 var highestScore=0;
+var canvasWidth = window.innerWidth;
+var canvasHeight = window.innerHeight;
+var scaleRatio = window.devicePixelRatio/1.2;

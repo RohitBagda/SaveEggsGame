@@ -1,10 +1,10 @@
 var menuState = {
 
     create : function(){
-        var nameLabel = game.add.sprite(window.innerWidth/2,window.innerHeight/5, "gametitle");
+        var nameLabel = game.add.sprite(canvasWidth/2,canvasHeight/5, "gametitle");
         nameLabel.anchor.setTo(0.5,0.5);
 
-        var playButton = game.add.button(window.innerWidth/2, window.innerHeight/2,"play",this.start, this);
+        var playButton = game.add.button(canvasWidth/2, canvasHeight/2,"play",this.start, this);
         playButton.anchor.setTo(0.5, 0.5);
         // var wkey = game.input.keyboard.addKey(Phaser.Keyboard.W);
         //

@@ -2,10 +2,6 @@ var playState = {
     isFrenzy: false,
 
     create: function(){
-        this.canvasWidth = window.innerWidth;
-        this.canvasHeight = window.innerHeight;
-        this.scaleRatio = window.devicePixelRatio/1.2;
-
         this.setupGame();
         this.setupPlayer();
 
@@ -36,7 +32,7 @@ var playState = {
             var egg = this.eggs.children[i];
             egg.body.velocity.y=20;
 
-            if(egg.position.y > this.canvasHeight+50){
+            if(egg.position.y > canvasHeight+50){
                 egg.destroy();
             }
             game.physics.arcade.collide(this.player, egg, this.collectEgg, null, this);
@@ -52,8 +48,8 @@ var playState = {
 
     createWave: function(numEggs){
         for (var i = 0; i < numEggs; i++){
-            var eggX = Math.random() * this.canvasWidth;
-            var eggY = -0.05 * this.canvasHeight;
+            var eggX = Math.random() * (canvasWidth-40);
+            var eggY = -0.05 * canvasHeight;
             var egg;
             var eggType;
 
@@ -64,7 +60,7 @@ var playState = {
             }
 
             egg = game.add.sprite(eggX, eggY, eggType);
-            egg.scale.setTo(this.scaleRatio, this.scaleRatio);
+            egg.scale.setTo(scaleRatio, scaleRatio);
 
             game.physics.arcade.enable(egg);
             this.eggGravity = this.calculateEggGravity(this.currentTime);
@@ -91,22 +87,22 @@ var playState = {
     },
 
     setupGame: function(){
-        game.world.setBounds(0,0, this.canvasWidth, this.canvasHeight+100);
+        game.world.setBounds(0,0, canvasWidth, canvasHeight+100);
         game.add.sprite(0,0, "background");
         game.physics.startSystem(Phaser.Physics.ARCADE);
     },
 
     setupPlayer: function(){
         //Create basket player sprite and enable physics
-        this.player = game.add.sprite(this.canvasWidth/2, this.canvasHeight/1.2, "basket");
-        this.player.scale.setTo(this.scaleRatio, this.scaleRatio);
+        this.player = game.add.sprite(canvasWidth/2, canvasHeight/1.2, "basket");
+        this.player.scale.setTo(scaleRatio, scaleRatio);
         game.physics.arcade.enable(this.player, Phaser.Physics.ARCADE);
         this.player.body.kinematic = true;
         this.player.inputEnabled = true;
         this.player.input.enableDrag(false, true, true);
         this.player.input.allowVerticalDrag = false;
         this.player.collideWorldBounds = true;
-        let bounds = new Phaser.Rectangle(0,0, this.canvasWidth, this.canvasHeight);
+        let bounds = new Phaser.Rectangle(0,0, canvasWidth, canvasHeight);
         this.player.input.boundsRect = bounds;
         this.player.body.immovable = true;
         this.player.body.checkCollision.right = false;
