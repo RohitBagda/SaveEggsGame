@@ -5,6 +5,7 @@ var gameData = {
         this.score += 50;
     },
 
+
     create: function(){
 
     }

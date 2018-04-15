@@ -130,7 +130,7 @@ var playState = {
             this.currentTime -= 5;
         } else {
             // this.game.state.stop();
-            game.time.events.stop();
+            // game.time.events.stop();
             this.game.state.states['gameData'].score = this.score;
             this.game.state.start("frenzy");
         }

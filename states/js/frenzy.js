@@ -1,11 +1,13 @@
 
 var frenzyState = {
 
-    eggsInState: [],
+    // eggsInState: {},
+    eggsOnScreenCoordinates: [],
 
     create: function(){
+        this.currentTime = 0;
         this.setUpBackGround();
-        this.setUpBasket();
+        // this.setUpBasket();
         this.canvasWidth = window.innerWidth;
         this.canvasHeight = window.innerHeight;
         this.scaleRatio = window.devicePixelRatio/1.2;
@@ -13,7 +15,17 @@ var frenzyState = {
         // alert("welcome to frenzy");
         this.scoreText = game.add.text(10,10, "Score: " + this.game.state.states['gameData'].score, {fontSize: '24px'});
         this.frenzyEggsGroup = game.add.group();
-        this.generateFrenzyEggs(1);
+        this.generateFrenzyEggs(20);
+        game.time.events.loop(1000, function(){
+            // Console.log(this.currentTime);
+            if (this.currentTime >= 5){
+                // game.time.events.stop();
+                this.game.state.start('play');
+            } else{
+                this.currentTime ++;
+            }
+        }, this);
+        // this.switchBackToPlay(this.currentTime);
 
     },
 
@@ -33,6 +45,8 @@ var frenzyState = {
                 eggY = newCoordinates[1];
                 overlapping = this.checkFrenzyEggOverlap(eggX, eggY)
             }
+            var coordinatesCreated = [eggX, eggY];
+            this.eggsOnScreenCoordinates.push(coordinatesCreated);
             this.createFrenzyEgg(eggX, eggY);
         }
     },
@@ -53,9 +67,10 @@ var frenzyState = {
         frenzyEgg.input.allowVerticalDrag = true;
         frenzyEgg.collideWorldBounds = true;
         frenzyEgg.body.immovable = true;
-        this.eggsInState.push(frenzyEgg);
+        // this.eggsInState.push(frenzyEgg);
         this.frenzyEggsGroup.add(frenzyEgg);
-        frenzyEgg.events.onInputDown.add(this.createNewEgg, this);
+        // frenzyEgg.enableDrag(true, true, true, true, true, true);
+        frenzyEgg.events.onInputDown.add(this.collectEgg, this);
 
 
         // this.frenzyEggsGroup.body.checkCollision.right = false;
@@ -80,6 +95,12 @@ var frenzyState = {
     },
 
     checkFrenzyEggOverlap: function(x, y) {
+
+        // for(var i=0; i<this.eggsOnScreenCoordinates.length; i++){
+        //
+        //     if (this.eggsOnScreenCoordinates[0][0] +
+        //
+        // };
         return false;
     },
 
@@ -105,11 +126,31 @@ var frenzyState = {
         game.physics.startSystem(Phaser.Physics.ARCADE);
     },
 
-    createNewEgg: function(){
+    collectEgg: function(egg){
+        // this.game.state.start('menu');
+        egg.kill();
         this.game.state.states['gameData'].updateScoreFromFrenzy();
-        this.scoreText.text = "Score: " + this.game.state.states['gameData'].score;
-        this.eggsInState.shift().destroy();
-        this.generateFrenzyEggs(1)
+        this.scoreText.text = "Score: " + this.game.state.states['gameData'].score
+    },
+
+    // switchBackToPlay: function(time){
+    //     if (time >= 5){
+    //         game.time.events.stop();
+    //         // this.game.state.states['gameData'].score = this.score;
+    //         this.game.state.start("play");
+    //     }
+    //
+    // },
+
+    // createNewEgg: function(){
+    //     this.game.state.states['gameData'].updateScoreFromFrenzy();
+    //     this.scoreText.text = "Score: " + this.game.state.states['gameData'].score;
+    //     // this.eggsInState.shift().destroy();
+    //     this.generateFrenzyEggs(1)
+    // },
+
+    generateTopLeftCoordinates: function (){
+
     }
 
 };
