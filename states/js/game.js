@@ -8,6 +8,7 @@ game.state.add('frenzy', frenzyState);
 game.state.add('play', playState);
 game.state.add('gameData', gameData);
 game.state.add('gameOver', gameOverState);
+game.state.add('attract', attractState);
 
 // game.state.add('frenzy', frenzyState);
 // game.state.add('gameOver', gameOverState);

@@ -76,9 +76,9 @@ var playState = {
             eggType = "egg";
         } else if(randomNumber<20) {
             eggType = "bomb";
-        } else if(randomNumber<94) {
+        } else if(randomNumber<31) {
             eggType = "frenzy";
-        } else if(randomNumber<96) {
+        } else if(randomNumber<32) {
             eggType = "scoreBoost";
         } else {
             eggType = "timeBoost";
@@ -124,11 +124,11 @@ var playState = {
         } else if(egg.key == "scoreBoost"){
             this.updateScore(30);
         } else if(egg.key == "timeBoost") {
-            this.currentTime -= 5;
+            this.game.state.start("attract");
         } else {
             // this.game.state.stop();
             // game.time.events.stop();
-            this.game.state.states['gameData'].score = score;
+            //this.game.state.states['gameData'].score = score;
             this.game.state.start("frenzy");
         }
     },

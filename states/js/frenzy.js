@@ -5,11 +5,10 @@ var frenzyState = {
     eggsOnScreenCoordinates: [],
 
     create: function(){
-
         //Screen Setup
         this.currentTime = 0;
-        this.setUpBackGround();
-        // this.setUpBasket();
+        game.add.sprite(0,0, "background");
+        //this.player = game.add.sprite(canvasWidth/2, canvasHeight/1.2, "basket");
 
         this.scoreText = game.add.text(10,10, "Score: " + score, {fontSize: '24px'});
         this.frenzyEggsGroup = game.add.group();
@@ -93,7 +92,7 @@ var frenzyState = {
 
     generateFrenzyEggYCoordinate: function() {
         // return Math.random()*450;
-        return Math.random() * (canvasHeight-100);
+        return Math.random() * (canvasHeight-400);
     },
 
     checkFrenzyEggOverlap: function(x, y) {
@@ -104,28 +103,6 @@ var frenzyState = {
         //
         // };
         return false;
-    },
-
-    setUpBasket: function(){
-        this.player = game.add.sprite(canvasWidth/2, canvasHeight/1.2, "basket");
-        this.player.scale.setTo(scaleRatio, scaleRatio);
-        game.physics.arcade.enable(this.player, Phaser.Physics.ARCADE);
-        this.player.body.kinematic = true;
-        this.player.inputEnabled = true;
-        this.player.input.enableDrag(false, true, true);
-        this.player.input.allowVerticalDrag = false;
-        this.player.collideWorldBounds = true;
-        this.player.body.immovable = true;
-        this.player.body.checkCollision.right = false;
-        this.player.body.checkCollision.left = false;
-        this.player.body.checkCollision.down = false;
-
-    },
-
-    setUpBackGround: function(){
-        game.world.setBounds(0,0, canvasWidth, canvasHeight+100);
-        game.add.sprite(0,0, "background");
-        game.physics.startSystem(Phaser.Physics.ARCADE);
     },
 
     collectEgg: function(egg){
