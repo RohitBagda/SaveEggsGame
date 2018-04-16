@@ -14,6 +14,12 @@ var gameOverState = {
     },
 
     restart: function(){
-        game.state.start('menu');
+        this.reset();
+        this.game.state.start('play');
+    },
+    
+    reset: function () {
+        currentTime=0;
+        lives = 3;
     }
-}
+};

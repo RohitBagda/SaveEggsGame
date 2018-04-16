@@ -2,6 +2,7 @@
 var frenzyState = {
 
     // eggsInState: {},
+    frenzyEggPoints: 2,
     eggsOnScreenCoordinates: [],
 
     create: function(){
@@ -107,10 +108,34 @@ var frenzyState = {
 
     collectEgg: function(egg){
         // this.game.state.start('menu');
+        let eggX = egg.x;
+        let eggY = egg.y;
+
         egg.kill();
+        this.createScoreAnimation(eggX, eggY, this.frenzyEggPoints);
+        // alert("this is fine");
         //this.game.state.states['gameData'].updateScoreFromFrenzy();
-        score += 50;
+        score += this.frenzyEggPoints;
         this.scoreText.text = "Score: " + score;
+
+    },
+
+    createScoreAnimation: function(xCoordinate, yCoordinate, numberOfPoints){
+        
+        let scoreText = "+" + numberOfPoints;
+        var scoreTextFormat = {font: "bold 40pt Arial", fill: "#0000ff"};
+        scoreTextFormat.stroke = "#000000";
+        scoreTextFormat.strokeThickness = 5;
+
+        this.scoreTextDisplay = this.game.add.text(xCoordinate, yCoordinate, scoreText, scoreTextFormat);
+
+        this.game.add.tween(this.scoreTextDisplay)
+            .to({alpha: 0}, 100, Phaser.Easing.Default, true, 1000)
+            .onComplete.add(function () {
+                console.log("This is called when the tween is done.");
+            }, this
+        );
+
     },
 
     // switchBackToPlay: function(time){

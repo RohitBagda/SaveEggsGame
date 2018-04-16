@@ -1,5 +1,6 @@
 var playState = {
-    isFrenzy: false,
+
+    bombDisplayTexts: ["Bruh", ":'(", "WTF", "-___-"],
 
     create: function(){
         this.setupGame();
@@ -12,18 +13,18 @@ var playState = {
         // This will contain the score and the timer.
         this.scoreText = game.add.text(10,10,'Score: ' + score, {fontSize: '24px'});
 
-        this.currentTime = 0;
-        this.gameDuration = 90;
+        // this.currentTime = currentTime;
+        this.gameDuration = -1;
 
-        this.isFrenzy = false;
-        game.time.events.loop(800, this.dropEgg, this);
+        // this.isFrenzy = false;
+        game.time.events.loop(500, this.dropEgg, this);
             // this.frenzy = this.isFrenzy;
         // while (!this.isFrenzy){
         //     game.time.events.loop(800, this.dropEgg, this);
         // }
         // game.state.start('frenzy');
         game.time.events.loop(1000, function(){
-           this.currentTime ++;
+           currentTime++;
         }, this);
     },
 
@@ -40,7 +41,7 @@ var playState = {
     },
 
     dropEgg: function() {
-        if (this.currentTime < this.gameDuration) {
+        if (2<3) {
             var numEggs = 1;
             this.createWave(numEggs);
         }
@@ -63,7 +64,7 @@ var playState = {
             egg.scale.setTo(scaleRatio, scaleRatio);
 
             game.physics.arcade.enable(egg);
-            this.eggGravity = this.calculateEggGravity(this.currentTime);
+            this.eggGravity = this.calculateEggGravity(currentTime);
             egg.body.gravity.y = this.eggGravity;
             this.eggs.add(egg);
         }
@@ -72,13 +73,13 @@ var playState = {
     getEggType: function(){
         var eggType;
         var randomNumber = Math.random()*100;
-        if(randomNumber < 10){
+        if(randomNumber < 50){
             eggType = "egg";
-        } else if(randomNumber<20) {
+        } else if(randomNumber < 85) {
             eggType = "bomb";
-        } else if(randomNumber<31) {
+        } else if(randomNumber<88) {
             eggType = "frenzy";
-        } else if(randomNumber<32) {
+        } else if(randomNumber<90) {
             eggType = "scoreBoost";
         } else {
             eggType = "timeBoost";
@@ -111,7 +112,7 @@ var playState = {
     },
 
     calculateEggGravity: function(time){
-        return 1.2*(40000/(1+Math.exp(-0.1*(time-30)))+40000);
+        return  1.4 * 1.2*(40000/(1+Math.exp(-0.1*(time-30)))+40000);
     },
 
     collectEgg: function(player, egg){
@@ -120,20 +121,56 @@ var playState = {
         if(egg.key == "egg"){
             this.updateScore(5);
         } else if(egg.key == "bomb"){
-            this.game.state.start("gameOver");
+            this.handleBomb();
         } else if(egg.key == "scoreBoost"){
             this.updateScore(30);
         } else if(egg.key == "timeBoost") {
             this.game.state.start("attract");
         } else {
+            // this.showFrenzyModeAnimation();
+
             // this.game.state.stop();
             // game.time.events.stop();
             //this.game.state.states['gameData'].score = score;
-            this.game.state.start("frenzy");
+            this.game.state.start("transitionToFrenzy");
         }
     },
 
+    handleBomb: function(){
+        lives--;
+        var index = Math.floor(Math.random() * 4);
+        var bomdDisplayText = this.bombDisplayTexts[index];
+        this.showScoreAnimation(bomdDisplayText);
+        if (lives==0){
+            this.game.state.start("gameOver");
+        }
+    },
+
+    showScoreAnimation: function(display){
+        var scoreTextFormat = {font: "bold 80pt Arial", fill: "#ff0000"};
+        scoreTextFormat.stroke = "#A4CED9";
+        scoreTextFormat.strokeThickness = 5;
+        if (typeof display != "number"){
+            var scoreText = display;
+        } else{
+            var scoreText = "+" + display;
+        }
+
+
+
+        this.frenzyTextDisplay = this.game.add.text(game.world.centerX - 100, game.world.centerY - 100, scoreText, scoreTextFormat);
+        this.game.add.tween(this.frenzyTextDisplay)
+            .to({alpha: 0}, 100, Phaser.Easing.Default, true, 300)
+            .onComplete.add(function () {
+                console.log("This is called when the tween is done.");
+            }, this
+        );
+
+    },
+
+
     updateScore: function(points){
+        this.showScoreAnimation(points);
         score += points;
         this.scoreText.text = 'Score: ' + score;
         if (highestScore < score) {
