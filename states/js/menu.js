@@ -1,6 +1,7 @@
 var menuState = {
 
     create : function(){
+        game.add.sprite(0,0, "background");
         var nameLabel = game.add.sprite(canvasWidth/2,canvasHeight/5, "gametitle");
         nameLabel.anchor.setTo(0.5,0.5);
 

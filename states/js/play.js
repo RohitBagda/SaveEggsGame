@@ -8,13 +8,13 @@ var playState = {
 
         this.eggs = game.add.group();
         this.eggGravity = 50000;
-        this.playerSpeed = 400;
+        // this.playerSpeed = 400;
 
         // This will contain the score and the timer.
         this.scoreText = game.add.text(10,10,'Score: ' + score, {fontSize: '24px'});
 
         // this.currentTime = currentTime;
-        this.gameDuration = -1;
+        // this.gameDuration = -1;
 
         // this.isFrenzy = false;
         game.time.events.loop(500, this.dropEgg, this);
