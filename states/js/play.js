@@ -42,7 +42,10 @@ var playState = {
 
     dropEgg: function() {
         if (2<3) {
+            
             var numEggs = 1;
+            // var numEggs = Math.floor(Math.random() * 4);
+
             this.createWave(numEggs);
         }
     },
@@ -79,7 +82,7 @@ var playState = {
             eggType = "bomb";
         } else if(randomNumber<88) {
             eggType = "frenzy";
-        } else if(randomNumber<90) {
+        } else if(randomNumber<99) {
             eggType = "scoreBoost";
         } else {
             eggType = "timeBoost";
