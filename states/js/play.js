@@ -18,13 +18,13 @@ var playState = {
 
         // this.isFrenzy = false;
         game.time.events.loop(500, this.dropEgg, this);
-            // this.frenzy = this.isFrenzy;
+        // this.frenzy = this.isFrenzy;
         // while (!this.isFrenzy){
         //     game.time.events.loop(800, this.dropEgg, this);
         // }
         // game.state.start('frenzy');
         game.time.events.loop(1000, function(){
-           currentTime++;
+            currentTime++;
         }, this);
     },
 
@@ -33,8 +33,17 @@ var playState = {
             var egg = this.eggs.children[i];
             egg.body.velocity.y=20;
 
-            if(egg.position.y > canvasHeight+50){
-                egg.destroy();
+            if(egg.position.y > canvasHeight-210){
+                if(egg.key == "egg"){
+                    egg.loadTexture("crackedEgg",0);
+                    egg.body.gravity.y = 0;
+                    this.game.add.tween(egg)
+                        .to({alpha: 0}, 1000, Phaser.Easing.Default, true, 300)
+                        .onComplete.add(function () {
+                            console.log("This is called when the tween is done.");
+                        }, this
+                    );
+                }
             }
             game.physics.arcade.collide(this.player, egg, this.collectEgg, null, this);
         }
@@ -42,7 +51,7 @@ var playState = {
 
     dropEgg: function() {
         if (2<3) {
-            
+
             var numEggs = 1;
             // var numEggs = Math.floor(Math.random() * 4);
 
@@ -78,11 +87,11 @@ var playState = {
         var randomNumber = Math.random()*100;
         if(randomNumber < 50){
             eggType = "egg";
-        } else if(randomNumber < 85) {
+        } else if(randomNumber < 80) {
             eggType = "bomb";
-        } else if(randomNumber<88) {
+        } else if(randomNumber<90) {
             eggType = "frenzy";
-        } else if(randomNumber<99) {
+        } else if(randomNumber<95) {
             eggType = "scoreBoost";
         } else {
             eggType = "timeBoost";
@@ -128,8 +137,8 @@ var playState = {
         } else if(egg.key == "scoreBoost"){
             this.updateScore(30);
         } else if(egg.key == "timeBoost") {
-            this.game.state.start("attract");
-        } else {
+            this.game.state.start("combo");
+        } else if(egg.key == "frenzy"){
             // this.showFrenzyModeAnimation();
 
             // this.game.state.stop();
@@ -158,8 +167,6 @@ var playState = {
         } else{
             var scoreText = "+" + display;
         }
-
-
 
         this.frenzyTextDisplay = this.game.add.text(game.world.centerX - 100, game.world.centerY - 100, scoreText, scoreTextFormat);
         this.game.add.tween(this.frenzyTextDisplay)
