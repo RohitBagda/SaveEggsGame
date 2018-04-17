@@ -16,6 +16,7 @@ var loadState = {
         game.load.image('gametitle', 'assets/logo.png');
         game.load.image('play', 'assets/play.png');
         game.load.image('frenzy_basket', 'assets/frenzy_basket.png');
+        game.load.image('crackedEgg', "assets/cracked_egg.png")
     },
 
     create : function(){
