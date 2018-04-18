@@ -15,7 +15,7 @@ var frenzyState = {
         this.frenzyEggsGroup = game.add.group();
 
         //randomly generate 20 eggs
-        this.generateFrenzyEggs(20);
+        this.generateFrenzyEggs(7, 8);
 
 
         game.time.events.loop(1000, function(){
@@ -35,28 +35,60 @@ var frenzyState = {
         // console.log("shoot me now wtf");
     },
 
-    generateFrenzyEggs: function(numberOfFrenzyEggs){
-        for (var i = 0; i < numberOfFrenzyEggs; i++){
-            var newCoordinates = this.generateFrenzyEggCoordinates();
-            var eggX = newCoordinates[0];
-            var eggY = newCoordinates[1];
-            var overlapping =  this.checkFrenzyEggOverlap(eggX, eggY);
-            while(overlapping){
-                newCoordinates = this.generateFrenzyEggCoordinates();
-                eggX = newCoordinates[0];
-                eggY = newCoordinates[1];
-                overlapping = this.checkFrenzyEggOverlap(eggX, eggY)
+    generateFrenzyEggs: function(numRows, numColumns){
+        var xOffSet = 70;
+        var yOffSet = 150;
+        var horizontalBlockPerEgg = (canvasWidth - xOffSet)/numColumns;
+        var verticalBlockPerEgg = (canvasHeight * 3/4)/numRows;
+        var eggRows = new Array(numRows);
+        for (var i = 0; i < eggRows.length; i++){
+            eggRows[i] = new Array(numColumns);
+            var startY = i * verticalBlockPerEgg + yOffSet;
+            for (var j = 0; j < eggRows[i].length; j++){
+                var extraYOffSet = 20;
+                var startX = j * horizontalBlockPerEgg + xOffSet;
+                var decideWhetherToAddEgg = Math.random();
+                var decideWhetherToShiftUp = Math.random();
+                if (decideWhetherToAddEgg > 0.65){
+                    if (decideWhetherToShiftUp < 0.3){
+                        var y = startY + extraYOffSet
+                        this.createFrenzyEgg(startX, y);
+                    } else if (decideWhetherToShiftUp < 0.7) {
+                        this.createFrenzyEgg(startX, startY);
+                    } else{
+                        var y = startY - extraYOffSet;
+                        this.createFrenzyEgg(startX, y);
+                    }
+                    // this.createFrenzyEgg(startX, startY);
+                }
+
+
+
             }
-            var coordinatesCreated = [eggX, eggY];
-            this.eggsOnScreenCoordinates.push(coordinatesCreated);
-            this.createFrenzyEgg(eggX, eggY);
         }
+
+
+        // for (var i = 0; i < numberOfFrenzyEggs; i++){
+        //     var newCoordinates = this.generateFrenzyEggCoordinates();
+        //     var eggX = newCoordinates[0];
+        //     var eggY = newCoordinates[1];
+        //     var overlapping =  this.checkFrenzyEggOverlap(eggX, eggY);
+        //     while(overlapping){
+        //         newCoordinates = this.generateFrenzyEggCoordinates();
+        //         eggX = newCoordinates[0];
+        //         eggY = newCoordinates[1];
+        //         overlapping = this.checkFrenzyEggOverlap(eggX, eggY)
+        //     }
+        //     var coordinatesCreated = [eggX, eggY];
+        //     this.eggsOnScreenCoordinates.push(coordinatesCreated);
+        //     this.createFrenzyEgg(eggX, eggY);
+        // }
     },
 
     createFrenzyEgg: function (eggX, eggY) {
         var eggType = "frenzy";
         var frenzyEgg = game.add.sprite(eggX, eggY, eggType);
-        frenzyEgg.scale.setTo(scaleRatio, scaleRatio);
+        frenzyEgg.scale.setTo(scaleRatio * 1.5, scaleRatio * 1.5);
 
         game.physics.arcade.enable(frenzyEgg, Phaser.Physics.ARCADE);
         // frenzyEgg.scale.setTo(scaleRatio, scaleRatio);
