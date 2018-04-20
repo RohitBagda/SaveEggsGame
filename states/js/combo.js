@@ -1,6 +1,8 @@
 var comboState = {
 
     comboTime: 0,
+    comboEggCaughtPerWaveCount: 0,
+    comboEggPoints: 100,
 
     create: function(){
         // this.setupGame();
@@ -13,7 +15,7 @@ var comboState = {
 
         this.scoreText = game.add.text(10,10,'Score: ' + score, {fontSize: '24px'});
 
-        game.time.events.loop(500, this.dropComboEggWave, this);
+        game.time.events.loop(1000, this.dropComboEggWave, this);
 
         game.time.events.loop(1000, function(){
             if(this.comboTime>=12){
@@ -35,12 +37,6 @@ var comboState = {
             game.physics.arcade.collide(this.player, comboEgg, this.collectComboEgg, null, this);
         }
     },
-
-    // setupGame: function(){
-    //     game.world.setBounds(0,0, canvasWidth, canvasHeight+100);
-    //     game.add.sprite(0,0, "background");
-    //     game.physics.startSystem(Phaser.Physics.ARCADE);
-    // },
 
     setupPlayer: function(){
         //Create basket player sprite and enable physics
@@ -70,11 +66,14 @@ var comboState = {
 
     createComboWave: function(numEggs){
         // var eggX = Math.random() * (canvasWidth-40);
+        var eggX = this.calculateInitialX();
+        var xOffset = this.calculateXOffset(eggX);
         var eggY = -0.05 * canvasHeight;
         var yoffSet = 100;
         for (var i = 0; i < numEggs; i++){
-            var eggX = Math.random() * (canvasWidth-40);
+            // var eggX = Math.random() * (canvasWidth-40);
             eggY -= yoffSet;
+            eggX += xOffset;
             var eggType = "timeBoost";
 
             var egg = game.add.sprite(eggX, eggY, eggType);
@@ -85,28 +84,27 @@ var comboState = {
             egg.body.gravity.y = this.eggGravity;
             this.comboEggs.add(egg);
         }
-        // var num = 0;
-        // game.time.events.loop(20, function(){
-        //     if (num <= numEggs){
-        //         var eggX = Math.random() * (canvasWidth-40);
-        //         var eggY = -0.05 * canvasHeight;
-        //         var eggType = "timeBoost";
-        //
-        //         var egg = game.add.sprite(eggX, eggY, eggType);
-        //         egg.scale.setTo(scaleRatio, scaleRatio);
-        //
-        //         game.physics.arcade.enable(egg);
-        //         this.eggGravity = this.calculateEggGravity(currentTime);
-        //         egg.body.gravity.y = this.eggGravity;
-        //         this.eggs.add(egg);
-        //         num++;
-        //     } else{
-        //         num--;
-        //         // game.time.events.remove(this);
-        //     }
 
+        this.updateScore(this.comboEggPoints*this.comboEggCaughtPerWaveCount);
+        this.comboEggCaughtPerWaveCount = 0;
+    },
 
-        // }, this);
+    calculateInitialX: function () {
+        let edgeGap = 40;
+        let xStart = edgeGap;
+        let xEnd = canvasWidth-edgeGap;
+        var initialXOptions = [xStart, xEnd];
+        var num = Math.floor(Math.random()*(initialXOptions.length));
+        return initialXOptions[num];
+    },
+
+    calculateXOffset: function (xPos) {
+        var xOffset = 200;
+        if(xPos>canvasWidth/2){
+            xOffset = -xOffset;
+        }
+
+        return xOffset;
     },
 
     calculateEggGravity: function(time){
@@ -115,8 +113,8 @@ var comboState = {
 
     collectComboEgg: function(player, egg) {
         egg.kill();
-        this.updateScore(100);
-
+        this.comboEggCaughtPerWaveCount++;
+        // this.updateScore(100);
     },
 
     showScoreAnimation: function(display){
