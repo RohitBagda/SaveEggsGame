@@ -43,6 +43,33 @@ var playState = {
                             console.log("This is called when the tween is done.");
                         }, this
                     );
+                } else if(egg.key == "frenzy"){
+                    egg.loadTexture("crackedFrenzy",0);
+                    egg.body.gravity.y = 0;
+                    this.game.add.tween(egg)
+                        .to({alpha: 0}, 1000, Phaser.Easing.Default, true, 300)
+                        .onComplete.add(function () {
+                            console.log("This is called when the tween is done.");
+                        }, this
+                    );
+                }  else if(egg.key == "scoreBoost") {
+                    egg.loadTexture("crackedScoreBoost", 0);
+                    egg.body.gravity.y = 0;
+                    this.game.add.tween(egg)
+                        .to({alpha: 0}, 1000, Phaser.Easing.Default, true, 300)
+                        .onComplete.add(function () {
+                            console.log("This is called when the tween is done.");
+                        }, this
+                    );
+                } else if(egg.key == "timeBoost") {
+                    egg.loadTexture("crackedOneUp", 0);
+                    egg.body.gravity.y = 0;
+                    this.game.add.tween(egg)
+                        .to({alpha: 0}, 1000, Phaser.Easing.Default, true, 300)
+                        .onComplete.add(function () {
+                            console.log("This is called when the tween is done.");
+                        }, this
+                    );
                 }
             }
             game.physics.arcade.collide(this.player, egg, this.collectEgg, null, this);
@@ -154,6 +181,18 @@ var playState = {
         var bomdDisplayText = this.bombDisplayTexts[index];
         this.showScoreAnimation(bomdDisplayText);
         if (lives==0){
+            // var mummy = game.add.sprite(300, 200, 'explode');
+            //
+            // var walk = mummy.animations.add('walk');
+            // mummy.animations.play('walk', 30, true);
+            //
+            // this.game.add.tween(this.player)
+            //     .to({alpha: 0}, 1000, Phaser.Easing.Default, true, 300)
+            //     .onComplete.add(function () {
+            //         console.log("This is called when the tween is done.");
+            //     }, this
+            // );
+
             this.game.state.start("gameOver");
         }
     },

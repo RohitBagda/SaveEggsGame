@@ -16,7 +16,13 @@ var loadState = {
         game.load.image('gametitle', 'assets/logo.png');
         game.load.image('play', 'assets/play.png');
         game.load.image('frenzy_basket', 'assets/frenzy_basket.png');
-        game.load.image('crackedEgg', "assets/cracked_egg.png")
+        game.load.image('crackedEgg', "assets/cracked_egg.png");
+        game.load.image('crackedFrenzy', "assets/cracked_frenzy.png");
+        game.load.image('crackedOneUp', "assets/cracked_oneUp.png");
+        game.load.image('crackedScoreBoost', "assets/cracked_scoreBoost.png");
+
+        //game.load.spritesheet('explode', "assets/explode.png", 100, 88);
+
     },
 
     create : function(){
