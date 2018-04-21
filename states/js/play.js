@@ -34,46 +34,33 @@ var playState = {
             egg.body.velocity.y=20;
 
             if(egg.position.y > canvasHeight-210){
-                if(egg.key == "egg"){
-                    egg.loadTexture("crackedEgg",0);
-                    egg.body.gravity.y = 0;
-                    this.game.add.tween(egg)
-                        .to({alpha: 0}, 1000, Phaser.Easing.Default, true, 300)
-                        .onComplete.add(function () {
-                            console.log("This is called when the tween is done.");
-                        }, this
-                    );
-                } else if(egg.key == "frenzy"){
-                    egg.loadTexture("crackedFrenzy",0);
-                    egg.body.gravity.y = 0;
-                    this.game.add.tween(egg)
-                        .to({alpha: 0}, 1000, Phaser.Easing.Default, true, 300)
-                        .onComplete.add(function () {
-                            console.log("This is called when the tween is done.");
-                        }, this
-                    );
-                }  else if(egg.key == "scoreBoost") {
-                    egg.loadTexture("crackedScoreBoost", 0);
-                    egg.body.gravity.y = 0;
-                    this.game.add.tween(egg)
-                        .to({alpha: 0}, 1000, Phaser.Easing.Default, true, 300)
-                        .onComplete.add(function () {
-                            console.log("This is called when the tween is done.");
-                        }, this
-                    );
-                } else if(egg.key == "timeBoost") {
-                    egg.loadTexture("crackedOneUp", 0);
-                    egg.body.gravity.y = 0;
-                    this.game.add.tween(egg)
-                        .to({alpha: 0}, 1000, Phaser.Easing.Default, true, 300)
-                        .onComplete.add(function () {
-                            console.log("This is called when the tween is done.");
-                        }, this
-                    );
-                }
+               this.crackEggs(egg);
             }
             game.physics.arcade.collide(this.player, egg, this.collectEgg, null, this);
         }
+    },
+
+    crackEggs: function(egg){
+        if(egg.key == "egg"){
+            this.tweenEggs("crackedEgg", egg);
+        } else if(egg.key == "frenzy"){
+            this.tweenEggs("crackedFrenzy", egg);
+        }  else if(egg.key == "scoreBoost") {
+            this.tweenEggs("crackedScoreBoost", egg);
+        } else if(egg.key == "timeBoost") {
+            this.tweenEggs("crackedOneUp", egg);
+        }
+    },
+
+    tweenEggs: function(cracked, egg){
+        egg.loadTexture(cracked,0);
+        egg.body.gravity.y = 0;
+        this.game.add.tween(egg)
+            .to({alpha: 0}, 1000, Phaser.Easing.Default, true, 300)
+            .onComplete.add(function () {
+                console.log("This is called when the tween is done.");
+            }, this
+        );
     },
 
     dropEgg: function() {
