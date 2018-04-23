@@ -109,13 +109,13 @@ var playState = {
     getEggType: function(){
         var eggType;
         var randomNumber = Math.random()*100;
-        if(randomNumber < 50){
+        if(randomNumber < 40){
             eggType = "egg";
-        } else if(randomNumber < 80) {
+        } else if(randomNumber < 70) {
             eggType = "bomb";
-        } else if(randomNumber<90) {
+        } else if(randomNumber<98) {
             eggType = "frenzy";
-        } else if(randomNumber<95) {
+        } else if(randomNumber<99) {
             eggType = "scoreBoost";
         } else {
             eggType = "timeBoost";
