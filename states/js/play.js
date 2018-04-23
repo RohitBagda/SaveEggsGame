@@ -138,8 +138,10 @@ var playState = {
 
     setupPlayer: function(){
         //Create basket player sprite and enable physics
-        this.player = game.add.sprite(canvasWidth/2, canvasHeight/1.2, "basket");
+        this.player = game.add.sprite(canvasWidth / 2, canvasHeight / 1.2, "explode");
+        this.player.animations.add('explodeBomb', [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], 45);
         this.player.scale.setTo(scaleRatio, scaleRatio);
+
         game.physics.arcade.enable(this.player, Phaser.Physics.ARCADE);
         this.player.body.kinematic = true;
         this.player.inputEnabled = true;
@@ -189,20 +191,15 @@ var playState = {
         var bomdDisplayText = this.bombDisplayTexts[index];
         this.showScoreAnimation(bomdDisplayText);
         if (lives==0){
-            // var mummy = game.add.sprite(300, 200, 'explode');
-            //
-            // var walk = mummy.animations.add('walk');
-            // mummy.animations.play('walk', 30, true);
-            //
-            // this.game.add.tween(this.player)
-            //     .to({alpha: 0}, 1000, Phaser.Easing.Default, true, 300)
-            //     .onComplete.add(function () {
-            //         console.log("This is called when the tween is done.");
-            //     }, this
-            // );
+            this.player.inputEnabled = false;
+            this.player.body.checkCollision.up = false;
+            this.player.animations.play('explodeBomb');
 
-            backgroundMusic.stop();
-            this.game.state.start("gameOver");
+            window.setTimeout(function(){
+                backgroundMusic.stop();
+                game.state.start("gameOver");
+            }, 888);
+
         }
     },
 
