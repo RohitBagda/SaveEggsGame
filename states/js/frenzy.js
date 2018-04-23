@@ -17,7 +17,8 @@ var frenzyState = {
         game.add.sprite(0,0, "background");
         //this.player = game.add.sprite(canvasWidth/2, canvasHeight/1.2, "basket");
 
-        this.timer = game.add.text(450, canvasHeight * 0.75 + 100, this.durationOfFrenzyState, {fontSize: "48px"});
+        this.timer = game.add.text(canvasWidth/2, canvasHeight/2, this.durationOfFrenzyState, {fontSize: "48px"});
+        this.timer.anchor.setTo(0.5, 0.8)
         this.timer.scale.setTo(scaleRatio, scaleRatio);
 
         this.scoreText = game.add.text(10,10, "Score: " + score, {fontSize: '24px'});

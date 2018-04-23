@@ -209,7 +209,8 @@ var playState = {
             var scoreText = "+" + display;
         }
 
-        this.frenzyTextDisplay = this.game.add.text(game.world.centerX - 100, game.world.centerY - 100, scoreText, scoreTextFormat);
+        this.frenzyTextDisplay = this.game.add.text(game.world.centerX, game.world.centerY, scoreText, scoreTextFormat);
+        this.frenzyTextDisplay.anchor.setTo(0.5, 0.5);
         this.game.add.tween(this.frenzyTextDisplay)
             .to({alpha: 0}, 100, Phaser.Easing.Default, true, 300)
             .onComplete.add(function () {
