@@ -4,10 +4,12 @@ var game = new Phaser.Game(window.innerWidth, window.innerHeight, Phaser.AUTO, '
 game.state.add('boot', bootState);
 game.state.add('load', loadState);
 game.state.add('menu', menuState);
+game.state.add('tutorial', tutorialState);
 game.state.add('frenzy', frenzyState);
 game.state.add('play', playState);
 game.state.add('combo', comboState);
 game.state.add('gameData', gameData);
+game.state.add('transitionToCombo', transitionToComboState);
 game.state.add('transitionToFrenzy', transitionToFrenzyState);
 game.state.add('gameOver', gameOverState);
 game.state.add('attract', attractState);

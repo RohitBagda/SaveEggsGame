@@ -20,6 +20,9 @@ var playState = {
         backgroundMusic.loop = true;
         backgroundMusic.play();
 
+        frenzyMusic.volume = 0.4;
+        frenzyCollect.volume = 0.6;
+
         // this.isFrenzy = false;
         game.time.events.loop(500, this.dropEgg, this);
         // this.frenzy = this.isFrenzy;
@@ -109,13 +112,13 @@ var playState = {
     getEggType: function(){
         var eggType;
         var randomNumber = Math.random()*100;
-        if(randomNumber < 50){
+        if(randomNumber < 40){
             eggType = "egg";
-        } else if(randomNumber < 80) {
+        } else if(randomNumber < 70) {
             eggType = "bomb";
-        } else if(randomNumber<90) {
+        } else if(randomNumber<98) {
             eggType = "frenzy";
-        } else if(randomNumber<95) {
+        } else if(randomNumber<99) {
             eggType = "scoreBoost";
         } else {
             eggType = "timeBoost";
@@ -129,12 +132,16 @@ var playState = {
         game.physics.startSystem(Phaser.Physics.ARCADE);
         eggCrack = game.add.audio('egg_crack');
         backgroundMusic = game.add.audio('background_music');
+        frenzyMusic = game.add.audio('frenzy_music');
+        frenzyCollect = game.add.audio('frenzy_collect');
     },
 
     setupPlayer: function(){
         //Create basket player sprite and enable physics
-        this.player = game.add.sprite(canvasWidth/2, canvasHeight/1.2, "basket");
+        this.player = game.add.sprite(canvasWidth / 2, canvasHeight / 1.2, "explode");
+        this.player.animations.add('explodeBomb', [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], 45);
         this.player.scale.setTo(scaleRatio, scaleRatio);
+
         game.physics.arcade.enable(this.player, Phaser.Physics.ARCADE);
         this.player.body.kinematic = true;
         this.player.inputEnabled = true;
@@ -164,13 +171,15 @@ var playState = {
             this.updateScore(30);
         } else if(egg.key == "timeBoost") {
             backgroundMusic.stop();
-            this.game.state.start("combo");
+            this.game.state.start("transitionToCombo");
         } else if(egg.key == "frenzy"){
             // this.showFrenzyModeAnimation();
 
             // this.game.state.stop();
             // game.time.events.stop();
             //this.game.state.states['gameData'].score = score;
+            frenzyCollect.play();
+            frenzyMusic.play();
             backgroundMusic.stop();
             this.game.state.start("transitionToFrenzy");
         }
@@ -182,20 +191,15 @@ var playState = {
         var bomdDisplayText = this.bombDisplayTexts[index];
         this.showScoreAnimation(bomdDisplayText);
         if (lives==0){
-            // var mummy = game.add.sprite(300, 200, 'explode');
-            //
-            // var walk = mummy.animations.add('walk');
-            // mummy.animations.play('walk', 30, true);
-            //
-            // this.game.add.tween(this.player)
-            //     .to({alpha: 0}, 1000, Phaser.Easing.Default, true, 300)
-            //     .onComplete.add(function () {
-            //         console.log("This is called when the tween is done.");
-            //     }, this
-            // );
+            this.player.inputEnabled = false;
+            this.player.body.checkCollision.up = false;
+            this.player.animations.play('explodeBomb');
 
-            backgroundMusic.stop();
-            this.game.state.start("gameOver");
+            window.setTimeout(function(){
+                backgroundMusic.stop();
+                game.state.start("gameOver");
+            }, 888);
+
         }
     },
 

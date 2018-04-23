@@ -19,6 +19,7 @@ var comboState = {
 
         game.time.events.loop(1000, function(){
             if(this.comboTime>=12){
+                backgroundMusic.stop();
                 this.game.state.start('play');
             } else {
                 this.comboTime++;

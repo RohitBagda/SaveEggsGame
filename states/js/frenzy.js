@@ -17,8 +17,10 @@ var frenzyState = {
         game.add.sprite(0,0, "background");
         //this.player = game.add.sprite(canvasWidth/2, canvasHeight/1.2, "basket");
 
-        this.timer = game.add.text(canvasWidth/2, canvasHeight/2, this.durationOfFrenzyState, {fontSize: "48px"});
-        this.timer.anchor.setTo(0.5, 0.8)
+        var frenzyTimerFormatting = {font: "bold 56git pt Corbel", fill: "#0000ff"};
+
+        this.timer = game.add.text(canvasWidth/2, 0.008 * canvasHeight, this.durationOfFrenzyState, frenzyTimerFormatting);
+        this.timer.anchor.setTo(0.5, 0.2)
         this.timer.scale.setTo(scaleRatio, scaleRatio);
 
         this.scoreText = game.add.text(10,10, "Score: " + score, {fontSize: '24px'});
@@ -34,20 +36,17 @@ var frenzyState = {
             if (this.currentTime >= this.durationOfFrenzyState){
                 // game.time.events.stop();
                 // this.frenzyEggsGroup.delete();
+                frenzyMusic.stop();
                 this.game.state.start('play');
             } else{
-                this.timer.text = this.frenzyStateTimerText(this.currentTime);
                 this.currentTime ++;
+                this.timer.text = this.durationOfFrenzyState - this.currentTime;
             }
         }, this);
         // this.switchBackToPlay(this.currentTime);
 
     },
 
-    frenzyStateTimerText: function(time){
-        console.log(this.durationOfFrenzyState - time);
-        return this.durationOfFrenzyState - time;
-    },
 
     update: function(){
 
@@ -67,7 +66,7 @@ var frenzyState = {
                 var startX = j * horizontalBlockPerEgg + xOffSet;
                 var decideWhetherToAddEgg = Math.random();
                 var decideWhetherToShiftUp = Math.random();
-                if (decideWhetherToAddEgg > 0.65){
+                if (decideWhetherToAddEgg > 0.72){
                     if (decideWhetherToShiftUp < 0.3){
                         var y = startY + extraYOffSet
                         this.createFrenzyEgg(startX, y);
@@ -151,7 +150,7 @@ var frenzyState = {
         game.time.events.loop(100, function(){
             this.changeXVelocityOfEgg();
             egg.body.velocity.x = this.xVelocityFrenzyEgg;
-            console.log(this.xVelocityFrenzyEgg);
+            // console.log(this.xVelocityFrenzyEgg);
         }, this)
     },
 
