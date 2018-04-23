@@ -21,7 +21,7 @@ var loadState = {
         game.load.image('crackedOneUp', "assets/cracked_oneUp.png");
         game.load.image('crackedScoreBoost', "assets/cracked_scoreBoost.png");
 
-        //game.load.spritesheet('explode', "assets/explode.png", 100, 88);
+        game.load.spritesheet('explode', "assets/explosion_spritesheet1.png", 85, 80);
 
         // Loading all audio
         game.load.audio('background_music', ['assets/audio/background_music.mp3', 'assets/audio/background_music.ogg']);
