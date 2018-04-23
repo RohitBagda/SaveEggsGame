@@ -4,7 +4,7 @@ var loadState = {
     preload: function(){
         var loadingLabel = game.add.text(80, 150,'loading...',
                                         {font: '30px Courier', fill: '#ffffff'});
-        //Loading all assets
+        // Loading all sprites
         game.load.image('egg', 'assets/egg.png');
         game.load.image('basket', 'assets/basket.png');
         game.load.image('win', 'assets/bomb.png');
@@ -22,6 +22,10 @@ var loadState = {
         game.load.image('crackedScoreBoost', "assets/cracked_scoreBoost.png");
 
         //game.load.spritesheet('explode', "assets/explode.png", 100, 88);
+
+        // Loading all audio
+        game.load.audio('background_music', ['assets/audio/background_music.mp3', 'assets/audio/background_music.ogg']);
+        game.load.audio('egg_crack', ['assets/audio/egg_crack.wav', 'assets/audio/egg_crack.ogg']);
 
     },
 

@@ -8,6 +8,7 @@ var menuState = {
         var playButton = game.add.button(canvasWidth/2, canvasHeight/2,"play",this.start, this);
         playButton.anchor.setTo(0.5, 0.5);
         playButton.inputEnabled = true;
+
         // var wkey = game.input.keyboard.addKey(Phaser.Keyboard.W);
         //
         // wkey.onDown.addOnce(this.start, this);

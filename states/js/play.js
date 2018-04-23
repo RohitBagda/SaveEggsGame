@@ -16,6 +16,10 @@ var playState = {
         // this.currentTime = currentTime;
         // this.gameDuration = -1;
 
+        backgroundMusic.volume = 0.4;
+        backgroundMusic.loop = true;
+        backgroundMusic.play();
+
         // this.isFrenzy = false;
         game.time.events.loop(500, this.dropEgg, this);
         // this.frenzy = this.isFrenzy;
@@ -34,21 +38,27 @@ var playState = {
             egg.body.velocity.y=20;
 
             if(egg.position.y > canvasHeight-210){
-               this.crackEggs(egg);
+                this.crackEggs(egg);
             }
+
             game.physics.arcade.collide(this.player, egg, this.collectEgg, null, this);
         }
     },
 
     crackEggs: function(egg){
+        eggCrack.volume = 0.8;
         if(egg.key == "egg"){
             this.tweenEggs("crackedEgg", egg);
+            eggCrack.play();
         } else if(egg.key == "frenzy"){
             this.tweenEggs("crackedFrenzy", egg);
+            eggCrack.play();
         }  else if(egg.key == "scoreBoost") {
             this.tweenEggs("crackedScoreBoost", egg);
+            eggCrack.play();
         } else if(egg.key == "timeBoost") {
             this.tweenEggs("crackedOneUp", egg);
+            eggCrack.play();
         }
     },
 
@@ -117,6 +127,8 @@ var playState = {
         game.world.setBounds(0,0, canvasWidth, canvasHeight+100);
         game.add.sprite(0,0, "background");
         game.physics.startSystem(Phaser.Physics.ARCADE);
+        eggCrack = game.add.audio('egg_crack');
+        backgroundMusic = game.add.audio('background_music');
     },
 
     setupPlayer: function(){
@@ -158,6 +170,7 @@ var playState = {
             // this.game.state.stop();
             // game.time.events.stop();
             //this.game.state.states['gameData'].score = score;
+            backgroundMusic.stop();
             this.game.state.start("transitionToFrenzy");
         }
     },
