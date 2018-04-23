@@ -9,6 +9,13 @@ var menuState = {
         playButton.anchor.setTo(0.5, 0.5);
         playButton.inputEnabled = true;
 
+        var verticalSpaceBetweenButtons = 140;
+
+        var aboutButton = game.add.button(canvasWidth/2, (canvasHeight/2 + verticalSpaceBetweenButtons), "Instructions", this.goToAboutPage, this);
+        aboutButton.anchor.setTo(0.5, 0.5);
+        aboutButton.inputEnabled = true;
+
+
         // var wkey = game.input.keyboard.addKey(Phaser.Keyboard.W);
         //
         // wkey.onDown.addOnce(this.start, this);
@@ -19,8 +26,13 @@ var menuState = {
           // playButton.anchor.setTo(0.5, 0.5);
     },
 
+    goToAboutPage: function(){
+        game.state.start('tutorial');
+    },
+
     //Start function calls the play state
     start : function(){
         game.state.start('play');
-    },
+    }
+
 };
