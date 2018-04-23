@@ -23,6 +23,8 @@ var playState = {
         frenzyMusic.volume = 0.4;
         frenzyCollect.volume = 0.6;
 
+        eggCollect.volume = 0.6;
+
         // this.isFrenzy = false;
         game.time.events.loop(500, this.dropEgg, this);
         // this.frenzy = this.isFrenzy;
@@ -134,6 +136,7 @@ var playState = {
         backgroundMusic = game.add.audio('background_music');
         frenzyMusic = game.add.audio('frenzy_music');
         frenzyCollect = game.add.audio('frenzy_collect');
+        eggCollect = game.add.audio('egg_collect');
     },
 
     setupPlayer: function(){
@@ -165,12 +168,14 @@ var playState = {
 
         if(egg.key == "egg"){
             this.updateScore(5);
+            eggCollect.play();
         } else if(egg.key == "bomb"){
             this.handleBomb();
         } else if(egg.key == "scoreBoost"){
             this.updateScore(30);
+            eggCollect.play();
         } else if(egg.key == "timeBoost") {
-            backgroundMusic.stop();
+            eggCollect.play();
             this.game.state.start("transitionToCombo");
         } else if(egg.key == "frenzy"){
             // this.showFrenzyModeAnimation();
