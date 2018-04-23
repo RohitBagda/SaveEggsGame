@@ -20,6 +20,9 @@ var playState = {
         backgroundMusic.loop = true;
         backgroundMusic.play();
 
+        frenzyMusic.volume = 0.4;
+        frenzyCollect.volume = 0.6;
+
         // this.isFrenzy = false;
         game.time.events.loop(500, this.dropEgg, this);
         // this.frenzy = this.isFrenzy;
@@ -129,6 +132,8 @@ var playState = {
         game.physics.startSystem(Phaser.Physics.ARCADE);
         eggCrack = game.add.audio('egg_crack');
         backgroundMusic = game.add.audio('background_music');
+        frenzyMusic = game.add.audio('frenzy_music');
+        frenzyCollect = game.add.audio('frenzy_collect');
     },
 
     setupPlayer: function(){
@@ -171,6 +176,8 @@ var playState = {
             // this.game.state.stop();
             // game.time.events.stop();
             //this.game.state.states['gameData'].score = score;
+            frenzyCollect.play();
+            frenzyMusic.play();
             backgroundMusic.stop();
             this.game.state.start("transitionToFrenzy");
         }
