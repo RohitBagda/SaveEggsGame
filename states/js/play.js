@@ -194,6 +194,7 @@ var playState = {
             //     }, this
             // );
 
+            backgroundMusic.stop();
             this.game.state.start("gameOver");
         }
     },
