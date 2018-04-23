@@ -118,12 +118,12 @@ var playState = {
             eggType = "egg";
         } else if(randomNumber < 70) {
             eggType = "bomb";
-        } else if(randomNumber<98) {
+        } else if(randomNumber<80) {
             eggType = "frenzy";
-        } else if(randomNumber<99) {
-            eggType = "scoreBoost";
-        } else {
+        } else if(randomNumber<90) {
             eggType = "timeBoost";
+        } else {
+            eggType = "scoreBoost";
         }
         return eggType;
     },
