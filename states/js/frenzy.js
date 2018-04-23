@@ -5,25 +5,37 @@ var frenzyState = {
     frenzyEggPoints: 2,
     eggsOnScreenCoordinates: [],
 
+    eggsOnScreen: [],
+
+    xVelocityFrenzyEgg: 100,
+
+    durationOfFrenzyState: 5,
+
     create: function(){
         //Screen Setup
         this.currentTime = 0;
         game.add.sprite(0,0, "background");
         //this.player = game.add.sprite(canvasWidth/2, canvasHeight/1.2, "basket");
 
+        this.timer = game.add.text(450, canvasHeight * 0.75 + 100, this.durationOfFrenzyState, {fontSize: "48px"});
+        this.timer.scale.setTo(scaleRatio, scaleRatio);
+
         this.scoreText = game.add.text(10,10, "Score: " + score, {fontSize: '24px'});
         this.frenzyEggsGroup = game.add.group();
 
-        //randomly generate 20 eggs
+
         this.generateFrenzyEggs(7, 8);
+        // this.jiggleFrenzyEggs();
 
 
         game.time.events.loop(1000, function(){
             // Console.log(this.currentTime);
-            if (this.currentTime >= 5){
+            if (this.currentTime >= this.durationOfFrenzyState){
                 // game.time.events.stop();
+                // this.frenzyEggsGroup.delete();
                 this.game.state.start('play');
             } else{
+                this.timer.text = this.frenzyStateTimerText(this.currentTime);
                 this.currentTime ++;
             }
         }, this);
@@ -31,13 +43,18 @@ var frenzyState = {
 
     },
 
+    frenzyStateTimerText: function(time){
+        console.log(this.durationOfFrenzyState - time);
+        return this.durationOfFrenzyState - time;
+    },
+
     update: function(){
-        // console.log("shoot me now wtf");
+
     },
 
     generateFrenzyEggs: function(numRows, numColumns){
         var xOffSet = 70;
-        var yOffSet = 150;
+        var yOffSet = 120;
         var horizontalBlockPerEgg = (canvasWidth - xOffSet)/numColumns;
         var verticalBlockPerEgg = (canvasHeight * 3/4)/numRows;
         var eggRows = new Array(numRows);
@@ -67,22 +84,6 @@ var frenzyState = {
             }
         }
 
-
-        // for (var i = 0; i < numberOfFrenzyEggs; i++){
-        //     var newCoordinates = this.generateFrenzyEggCoordinates();
-        //     var eggX = newCoordinates[0];
-        //     var eggY = newCoordinates[1];
-        //     var overlapping =  this.checkFrenzyEggOverlap(eggX, eggY);
-        //     while(overlapping){
-        //         newCoordinates = this.generateFrenzyEggCoordinates();
-        //         eggX = newCoordinates[0];
-        //         eggY = newCoordinates[1];
-        //         overlapping = this.checkFrenzyEggOverlap(eggX, eggY)
-        //     }
-        //     var coordinatesCreated = [eggX, eggY];
-        //     this.eggsOnScreenCoordinates.push(coordinatesCreated);
-        //     this.createFrenzyEgg(eggX, eggY);
-        // }
     },
 
     createFrenzyEgg: function (eggX, eggY) {
@@ -104,6 +105,8 @@ var frenzyState = {
         // this.eggsInState.push(frenzyEgg);
         this.frenzyEggsGroup.add(frenzyEgg);
         // frenzyEgg.enableDrag(true, true, true, true, true, true);
+        //this.eggsOnScreen.push(frenzyEgg);
+        this.jiggle(frenzyEgg);
         frenzyEgg.events.onInputDown.add(this.collectEgg, this);
 
 
@@ -112,31 +115,59 @@ var frenzyState = {
         // this.frenzyEggsGroup.body.checkCollision.down = false;
     },
 
-    generateFrenzyEggCoordinates: function() {
-        var eggX = this.generateFrenzyEggXCoordinate();
-        var eggY = this.generateFrenzyEggYCoordinate();
-        return [eggX, eggY];
+    // generateFrenzyEggCoordinates: function() {
+    //     var eggX = this.generateFrenzyEggXCoordinate();
+    //     var eggY = this.generateFrenzyEggYCoordinate();
+    //     return [eggX, eggY];
+    // },
+
+    // jiggleFrenzyEggs: function(){
+    //     console.log("check");
+    //     for (var i in this.frenzyEggsGroup.children){
+    //         // var egg = this.frenzyEggsGroup.children[i];
+    //         this.jiggle(this.frenzyEggsGroup.children[i]);
+    //     }
+    // },
+
+
+
+
+    jiggle: function(egg){
+
+
+
+        // var xOffSet = 50;
+        // var newXPositionRightShift = egg.position.x + xOffSet;
+        // var newXPositionLeftShift =  egg.position.x - xOffSet;
+        // egg.body.velocity.x = this.xVelocityFrenzyEgg;
+        // while (this.currentTime < this.durationOfFrenzyState){
+        //     if (egg.position.x == newXPositionRightShift || egg.position.x == newXPositionLeftShift){
+        //         this.changeXVelocityOfEgg();
+        //         egg.body.velocity.x = this.xVelocityFrenzyEgg;
+        //     }
+        // }
+
+        game.time.events.loop(100, function(){
+            this.changeXVelocityOfEgg();
+            egg.body.velocity.x = this.xVelocityFrenzyEgg;
+            console.log(this.xVelocityFrenzyEgg);
+        }, this)
     },
 
-    generateFrenzyEggXCoordinate: function() {
-        // return Math.random()*450;
-        return Math.random() * (canvasWidth-80);
+    changeXVelocityOfEgg: function(){
+        this.xVelocityFrenzyEgg = -1 * this.xVelocityFrenzyEgg;
+        // return -1*this.xVelocityGravityFrenzyEgg;
     },
 
-    generateFrenzyEggYCoordinate: function() {
-        // return Math.random()*450;
-        return Math.random() * (canvasHeight-400);
-    },
-
-    checkFrenzyEggOverlap: function(x, y) {
-
-        // for(var i=0; i<this.eggsOnScreenCoordinates.length; i++){
-        //
-        //     if (this.eggsOnScreenCoordinates[0][0] +
-        //
-        // };
-        return false;
-    },
+    // generateFrenzyEggXCoordinate: function() {
+    //     // return Math.random()*450;
+    //     return Math.random() * (canvasWidth-80);
+    // },
+    //
+    // generateFrenzyEggYCoordinate: function() {
+    //     // return Math.random()*450;
+    //     return Math.random() * (canvasHeight-400);
+    // },
 
     collectEgg: function(egg){
         // this.game.state.start('menu');
@@ -170,24 +201,5 @@ var frenzyState = {
 
     },
 
-    // switchBackToPlay: function(time){
-    //     if (time >= 5){
-    //         game.time.events.stop();
-    //         // this.game.state.states['gameData'].score = this.score;
-    //         this.game.state.start("play");
-    //     }
-    //
-    // },
-
-    // createNewEgg: function(){
-    //     this.game.state.states['gameData'].updateScoreFromFrenzy();
-    //     this.scoreText.text = "Score: " + this.game.state.states['gameData'].score;
-    //     // this.eggsInState.shift().destroy();
-    //     this.generateFrenzyEggs(1)
-    // },
-
-    generateTopLeftCoordinates: function (){
-
-    }
 
 };
