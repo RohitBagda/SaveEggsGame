@@ -151,7 +151,7 @@ var frenzyState = {
         game.time.events.loop(100, function(){
             this.changeXVelocityOfEgg();
             egg.body.velocity.x = this.xVelocityFrenzyEgg;
-            console.log(this.xVelocityFrenzyEgg);
+            // console.log(this.xVelocityFrenzyEgg);
         }, this)
     },
 
