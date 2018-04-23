@@ -17,7 +17,7 @@ var frenzyState = {
         game.add.sprite(0,0, "background");
         //this.player = game.add.sprite(canvasWidth/2, canvasHeight/1.2, "basket");
 
-        var frenzyTimerFormatting = {font: "bold 56git pt Corbel", fill: "#0000ff"};
+        var frenzyTimerFormatting = {font: "bold 56pt Corbel", fill: "#0000ff"};
 
         this.timer = game.add.text(canvasWidth/2, 0.008 * canvasHeight, this.durationOfFrenzyState, frenzyTimerFormatting);
         this.timer.anchor.setTo(0.5, 0.2)
@@ -66,7 +66,7 @@ var frenzyState = {
                 var startX = j * horizontalBlockPerEgg + xOffSet;
                 var decideWhetherToAddEgg = Math.random();
                 var decideWhetherToShiftUp = Math.random();
-                if (decideWhetherToAddEgg > 0.72){
+                if (decideWhetherToAddEgg > 0.3){
                     if (decideWhetherToShiftUp < 0.3){
                         var y = startY + extraYOffSet
                         this.createFrenzyEgg(startX, y);
