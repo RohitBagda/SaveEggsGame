@@ -164,7 +164,7 @@ var playState = {
             this.updateScore(30);
         } else if(egg.key == "timeBoost") {
             backgroundMusic.stop();
-            this.game.state.start("combo");
+            this.game.state.start("transitionToCombo");
         } else if(egg.key == "frenzy"){
             // this.showFrenzyModeAnimation();
 

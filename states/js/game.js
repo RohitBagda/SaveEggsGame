@@ -8,6 +8,7 @@ game.state.add('frenzy', frenzyState);
 game.state.add('play', playState);
 game.state.add('combo', comboState);
 game.state.add('gameData', gameData);
+game.state.add('transitionToCombo', transitionToComboState);
 game.state.add('transitionToFrenzy', transitionToFrenzyState);
 game.state.add('gameOver', gameOverState);
 game.state.add('attract', attractState);
