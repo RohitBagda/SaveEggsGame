@@ -34,7 +34,7 @@ var playState = {
             var egg = this.eggs.children[i];
             egg.body.velocity.y=20;
 
-            if(egg.position.y > canvasHeight-210){
+            if(egg.position.y > canvasHeight*8/9){
                 this.crackEggs(egg);
             }
 
@@ -157,9 +157,9 @@ var playState = {
 
     setupPlayer: function(){
         //Create basket player sprite and enable physics
-        this.player = game.add.sprite(canvasWidth / 2, canvasHeight / 1.2, "explode");
+        this.player = game.add.sprite(canvasWidth / 1.8, canvasHeight / 1.2, "explode");
         this.player.animations.add('explodeBomb', [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], 45);
-        this.player.scale.setTo(scaleRatio, scaleRatio);
+        this.player.scale.setTo(scaleRatio/1.5, scaleRatio/1.5);
 
         game.physics.arcade.enable(this.player, Phaser.Physics.ARCADE);
         this.player.body.kinematic = true;
@@ -167,8 +167,8 @@ var playState = {
         this.player.input.enableDrag(false, true, true);
         this.player.input.allowVerticalDrag = false;
         this.player.collideWorldBounds = true;
-        let bounds = new Phaser.Rectangle(0,0, canvasWidth, canvasHeight);
-        this.player.input.boundsRect = bounds;
+        // let bounds = new Phaser.Rectangle(0,0, canvasWidth, canvasHeight);
+        // this.player.input.boundsRect = bounds;
         this.player.body.immovable = true;
         this.player.body.checkCollision.right = false;
         this.player.body.checkCollision.left = false;
