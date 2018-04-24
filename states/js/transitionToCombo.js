@@ -4,7 +4,7 @@ var transitionToComboState = {
 
         game.add.sprite(0,0, "background");
 
-        this.showcomboModeAnimation();
+        this.showComboModeAnimation();
         // this.game.state.start('combo');
 
         game.time.events.loop(300, function(){
@@ -19,28 +19,13 @@ var transitionToComboState = {
 
     },
 
-
-    calculateOffSet: function(text){
-
-        return 100 * 1/2;
-
-    },
-
-    showcomboModeAnimation: function(){
+    showComboModeAnimation: function(){
 
         //var textSize = canvasWidth + "px";
         var comboTextFormat = {font: "bold 200px Times", fill: "#00FF00"};
         comboTextFormat.stroke = "#000000";
         comboTextFormat.strokeThickness = 5;
         var comboText = "COMBO";
-
-        var horizontalOffSet = this.calculateOffSet(comboText);
-        var verticalOffset = 70;
-        console.log("screenwidth: " + canvasWidth);
-        console.log("screen center: " + game.world.centerX);
-        console.log("horizontal offSet: " + horizontalOffSet);
-        console.log("text Position: " + (game.world.centerX - horizontalOffSet));
-
 
         this.comboTextDisplay = this.game.add.text(canvasWidth/2, canvasHeight/2, comboText, comboTextFormat);
         this.comboTextDisplay.anchor.setTo(0.5, 0.5);
