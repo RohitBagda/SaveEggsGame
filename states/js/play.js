@@ -44,16 +44,20 @@ var playState = {
 
     crackEggs: function(egg){
         eggCrack.volume = 0.8;
-        if(egg.key == "egg"){
+
+        if(egg.key === "egg"){
             this.tweenEggs("crackedEgg", egg);
             eggCrack.play();
-        } else if(egg.key == "frenzy"){
+        } else if(egg.key === "bomb") {
+            this.tweenEggs("bombCloud", egg);
+            eggCrack.play();
+        } else if(egg.key === "frenzy"){
             this.tweenEggs("crackedFrenzy", egg);
             eggCrack.play();
-        }  else if(egg.key == "scoreBoost") {
+        }  else if(egg.key === "scoreBoost") {
             this.tweenEggs("crackedScoreBoost", egg);
             eggCrack.play();
-        } else if(egg.key == "timeBoost") {
+        } else if(egg.key === "timeBoost") {
             this.tweenEggs("crackedOneUp", egg);
             eggCrack.play();
         }
@@ -71,13 +75,10 @@ var playState = {
     },
 
     dropEgg: function() {
-        if (2<3) {
+        var numEggs = 1;
+        // var numEggs = Math.floor(Math.random() * 4);
 
-            var numEggs = 1;
-            // var numEggs = Math.floor(Math.random() * 4);
-
-            this.createWave(numEggs);
-        }
+        this.createWave(numEggs);
     },
 
     createWave: function(numEggs){

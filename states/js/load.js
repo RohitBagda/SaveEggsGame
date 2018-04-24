@@ -20,6 +20,8 @@ var loadState = {
         game.load.image('crackedFrenzy', "assets/cracked_frenzy.png");
         game.load.image('crackedOneUp', "assets/cracked_oneUp.png");
         game.load.image('crackedScoreBoost', "assets/cracked_scoreBoost.png");
+        game.load.image('bombCloud', "assets/bomb_cloud.png");
+
 
         game.load.spritesheet('explode', "assets/explosion_spritesheet1.png", 155, 150);
 
