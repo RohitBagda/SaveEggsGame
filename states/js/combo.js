@@ -86,7 +86,10 @@ var comboState = {
             this.comboEggs.add(egg);
         }
 
-        this.updateScore(this.comboEggPoints*this.comboEggCaughtPerWaveCount);
+        window.setInterval(function(){
+            this.updateScore(this.comboEggPoints*this.comboEggCaughtPerWaveCount);
+        }, 1000);
+
         this.comboEggCaughtPerWaveCount = 0;
     },
 
