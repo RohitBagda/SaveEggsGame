@@ -43,14 +43,12 @@ var playState = {
     },
 
     crackEggs: function(egg){
-        eggCrack.volume = 0.8;
-
         if(egg.key === "egg"){
             this.tweenEggs("crackedEgg", egg);
             eggCrack.play();
         } else if(egg.key === "bomb") {
             this.tweenEggs("bombCloud", egg);
-            eggCrack.play();
+            bombWhoosh.play();
         } else if(egg.key === "frenzy"){
             this.tweenEggs("crackedFrenzy", egg);
             eggCrack.play();
@@ -129,6 +127,7 @@ var playState = {
 
     setupSounds: function() {
         eggCrack = game.add.audio('egg_crack');
+        eggCrack.volume = 0.6;
 
         backgroundMusic = game.add.audio('background_music');
         backgroundMusic.volume = 0.4;
@@ -145,6 +144,15 @@ var playState = {
 
         explosion = game.add.audio('explosion');
         explosion.volume = 0.8;
+
+        bombWhoosh = game.add.audio('bomb_whoosh');
+        bombWhoosh.volume = 0.6;
+
+        frenzyTouch = game.add.audio('frenzy_touch');
+        frenzyTouch.volume = 0.5;
+
+        bombCollect = game.add.audio('bomb_collect');
+        bombCollect.volume = 0.6;
     },
 
     setupPlayer: function(){
@@ -178,6 +186,7 @@ var playState = {
             this.updateScore(5);
             eggCollect.play();
         } else if(egg.key == "bomb"){
+            bombCollect.play();
             this.handleBomb();
         } else if(egg.key == "scoreBoost"){
             this.updateScore(30);
