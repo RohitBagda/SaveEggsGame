@@ -116,6 +116,7 @@ var comboState = {
     },
 
     collectComboEgg: function(player, egg) {
+        eggCollect.play();
         egg.kill();
         this.comboEggCaughtPerWaveCount++;
         // this.updateScore(100);

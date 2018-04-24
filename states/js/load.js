@@ -29,6 +29,7 @@ var loadState = {
         game.load.audio('frenzy_music', ['assets/audio/frenzy_music.mp3', 'assets/audio/frenzy_music.ogg']);
         game.load.audio('frenzy_collect', ['assets/audio/frenzy_collect.wav', 'assets/audio/frenzy_collect.ogg']);
         game.load.audio('egg_collect', ['assets/audio/collect.mp3', 'assets/audio/collect.ogg']);
+        game.load.audio('explosion', ['assets/audio/explosion.wav', 'assets/audio/explosion.ogg']);
 
     },
 

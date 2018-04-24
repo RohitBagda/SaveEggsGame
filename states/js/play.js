@@ -4,6 +4,7 @@ var playState = {
 
     create: function(){
         this.setupGame();
+        this.setupSounds();
         this.setupPlayer();
 
         this.eggs = game.add.group();
@@ -15,15 +16,6 @@ var playState = {
 
         // this.currentTime = currentTime;
         // this.gameDuration = -1;
-
-        backgroundMusic.volume = 0.4;
-        backgroundMusic.loop = true;
-        backgroundMusic.play();
-
-        frenzyMusic.volume = 0.4;
-        frenzyCollect.volume = 0.6;
-
-        eggCollect.volume = 0.6;
 
         // this.isFrenzy = false;
         game.time.events.loop(500, this.dropEgg, this);
@@ -132,11 +124,26 @@ var playState = {
         game.world.setBounds(0,0, canvasWidth, canvasHeight+100);
         game.add.sprite(0,0, "background");
         game.physics.startSystem(Phaser.Physics.ARCADE);
+    },
+
+    setupSounds: function() {
         eggCrack = game.add.audio('egg_crack');
+
         backgroundMusic = game.add.audio('background_music');
+        backgroundMusic.volume = 0.4;
+        backgroundMusic.loop = true;
+        backgroundMusic.play();
+
         frenzyMusic = game.add.audio('frenzy_music');
+        frenzyMusic.volume = 0.4;
         frenzyCollect = game.add.audio('frenzy_collect');
+        frenzyCollect.volume = 0.6;
+
         eggCollect = game.add.audio('egg_collect');
+        eggCollect.volume = 0.6;
+
+        explosion = game.add.audio('explosion');
+        explosion.volume = 0.8;
     },
 
     setupPlayer: function(){
@@ -198,6 +205,7 @@ var playState = {
         if (lives==0){
             this.player.inputEnabled = false;
             this.player.body.checkCollision.up = false;
+            explosion.play();
             this.player.animations.play('explodeBomb');
 
             window.setTimeout(function(){
