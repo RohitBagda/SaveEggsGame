@@ -25,9 +25,11 @@ var frenzyState = {
 
         this.scoreText = game.add.text(10,10, "Score: " + score, {fontSize: '24px'});
         this.frenzyEggsGroup = game.add.group();
+        this.points = this.generatePoints();
+        this.drawEggsAtPoints(this.points);
+        //
 
-
-        this.generateFrenzyEggs(7, 8);
+        // this.generateFrenzyEggs(7, 8);
         // this.jiggleFrenzyEggs();
 
 
@@ -50,6 +52,19 @@ var frenzyState = {
 
     update: function(){
 
+    },
+
+    generatePoints: function(){
+        var poissonDiskSampler = new PoissonDiskSampler();
+        poissonDiskSampler.createPoints();
+        return poissonDiskSampler.pointList;
+    },
+
+    drawEggsAtPoints: function(points){
+        for (var i = 0; i < points.length; i++){
+            var coordinate = points[i]
+            this.createFrenzyEgg(coordinate.x, coordinate.y);
+        }
     },
 
     generateFrenzyEggs: function(numRows, numColumns){
@@ -133,19 +148,6 @@ var frenzyState = {
 
 
     jiggle: function(egg){
-
-
-
-        // var xOffSet = 50;
-        // var newXPositionRightShift = egg.position.x + xOffSet;
-        // var newXPositionLeftShift =  egg.position.x - xOffSet;
-        // egg.body.velocity.x = this.xVelocityFrenzyEgg;
-        // while (this.currentTime < this.durationOfFrenzyState){
-        //     if (egg.position.x == newXPositionRightShift || egg.position.x == newXPositionLeftShift){
-        //         this.changeXVelocityOfEgg();
-        //         egg.body.velocity.x = this.xVelocityFrenzyEgg;
-        //     }
-        // }
 
         game.time.events.loop(100, function(){
             this.changeXVelocityOfEgg();
