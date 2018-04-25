@@ -3,6 +3,9 @@ var comboState = {
     comboTime: 0,
     comboEggCaughtPerWaveCount: 0,
     comboEggPoints: 100,
+    waveScore: 0,
+    comboDuration: 12,
+    comboEggsDropDuration: 10,
 
     create: function(){
         // this.setupGame();
@@ -18,8 +21,9 @@ var comboState = {
         game.time.events.loop(1000, this.dropComboEggWave, this);
 
         game.time.events.loop(1000, function(){
-            if(this.comboTime>=12){
+            if(this.comboTime>this.comboDuration){
                 backgroundMusic.stop();
+                this.waveScore = 0;
                 this.game.state.start('play');
             } else {
                 this.comboTime++;
@@ -58,7 +62,7 @@ var comboState = {
     },
 
     dropComboEggWave: function() {
-        if (this.comboTime<=11) {
+        if (this.comboTime<=this.comboEggsDropDuration) {
             // var numEggs = 1;
             var numEggs = Math.floor(Math.random() * 4);
             this.createComboWave(numEggs);
@@ -86,15 +90,15 @@ var comboState = {
             this.comboEggs.add(egg);
         }
 
-        window.setInterval(function(){
-            this.updateScore(this.comboEggPoints*this.comboEggCaughtPerWaveCount);
-        }, 1000);
-
         this.comboEggCaughtPerWaveCount = 0;
+        if(this.waveScore>0){
+            this.showScoreAnimation(this.waveScore);
+            this.waveScore=0;
+        }
     },
 
     calculateInitialX: function () {
-        let edgeGap = 40;
+        let edgeGap = 40 + Math.random()*10;
         let xStart = edgeGap;
         let xEnd = canvasWidth-edgeGap;
         var initialXOptions = [xStart, xEnd];
@@ -111,14 +115,15 @@ var comboState = {
         return xOffset;
     },
 
-    calculateEggGravity: function(time){
-        return  1.4 * 1.2*(40000/(1+Math.exp(-0.1*(time-30)))+40000);
+    calculateEggGravity: function(){
+        return  1.4 * 1.2*(40000/(1+Math.exp(-0.1*(currentTime-30)))+40000);
     },
 
     collectComboEgg: function(player, egg) {
         eggCollect.play();
         egg.kill();
         this.comboEggCaughtPerWaveCount++;
+        this.updateScore(this.comboEggPoints);
         // this.updateScore(100);
     },
 
@@ -129,6 +134,7 @@ var comboState = {
         var scoreText = "+" + display;
 
         this.comboTextDisplay = this.game.add.text(game.world.centerX - 100, game.world.centerY - 100, scoreText, scoreTextFormat);
+        this.comboTextDisplay.anchor.setTo(0.5, 0.5);
         this.game.add.tween(this.comboTextDisplay)
             .to({alpha: 0}, 100, Phaser.Easing.Default, true, 300)
             .onComplete.add(function () {
@@ -140,8 +146,9 @@ var comboState = {
 
 
     updateScore: function(points){
-        this.showScoreAnimation(points);
+        this.waveScore += points;
         score += points;
+
         this.scoreText.text = 'Score: ' + score;
         if (highestScore < score) {
             highestScore = score;
