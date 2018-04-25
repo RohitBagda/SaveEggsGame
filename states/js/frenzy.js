@@ -175,6 +175,7 @@ var frenzyState = {
         let eggY = egg.y;
 
         egg.kill();
+        frenzyTouch.play();
         this.createScoreAnimation(eggX, eggY, this.frenzyEggPoints);
         // alert("this is fine");
         //this.game.state.states['gameData'].updateScoreFromFrenzy();
