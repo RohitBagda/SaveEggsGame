@@ -34,11 +34,12 @@ var playState = {
             var egg = this.eggs.children[i];
             egg.body.velocity.y=20;
 
-            if(egg.position.y > canvasHeight*8/9){
+            if(egg.y <= this.player.y - egg.height/1.2){
+                game.physics.arcade.collide(this.player, egg, this.collectEgg, null, this);
+            } else if(egg.y > canvasHeight * 10/11){
                 this.crackEggs(egg);
             }
 
-            game.physics.arcade.collide(this.player, egg, this.collectEgg, null, this);
         }
     },
 
@@ -94,8 +95,8 @@ var playState = {
 
             egg = game.add.sprite(eggX, eggY, eggType);
             egg.scale.setTo(scaleRatio, scaleRatio);
+            game.physics.enable(egg, Phaser.Physics.ARCADE);
 
-            game.physics.arcade.enable(egg);
             this.eggGravity = this.calculateEggGravity(currentTime);
             egg.body.gravity.y = this.eggGravity;
             this.eggs.add(egg);
@@ -170,9 +171,7 @@ var playState = {
         let bounds = new Phaser.Rectangle(0,0, canvasWidth, canvasHeight);
         this.player.input.boundsRect = bounds;
         this.player.body.immovable = true;
-        this.player.body.checkCollision.right = false;
-        this.player.body.checkCollision.left = false;
-        this.player.body.checkCollision.down = false;
+        this.player.allowGravity = false;
     },
 
     calculateEggGravity: function(time){
@@ -180,21 +179,22 @@ var playState = {
     },
 
     collectEgg: function(player, egg){
+
         egg.kill();
 
-        if(egg.key == "egg"){
+        if (egg.key == "egg") {
             this.updateScore(5);
             eggCollect.play();
-        } else if(egg.key == "bomb"){
+        } else if (egg.key == "bomb") {
             bombCollect.play();
             this.handleBomb();
-        } else if(egg.key == "scoreBoost"){
+        } else if (egg.key == "scoreBoost") {
             this.updateScore(30);
             eggCollect.play();
-        } else if(egg.key == "timeBoost") {
+        } else if (egg.key == "timeBoost") {
             eggCollect.play();
             this.game.state.start("transitionToCombo");
-        } else if(egg.key == "frenzy"){
+        } else if (egg.key == "frenzy") {
             // this.showFrenzyModeAnimation();
 
             // this.game.state.stop();
