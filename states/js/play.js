@@ -167,8 +167,8 @@ var playState = {
         this.player.input.enableDrag(false, true, true);
         this.player.input.allowVerticalDrag = false;
         this.player.collideWorldBounds = true;
-        // let bounds = new Phaser.Rectangle(0,0, canvasWidth, canvasHeight);
-        // this.player.input.boundsRect = bounds;
+        let bounds = new Phaser.Rectangle(0,0, canvasWidth, canvasHeight);
+        this.player.input.boundsRect = bounds;
         this.player.body.immovable = true;
         this.player.body.checkCollision.right = false;
         this.player.body.checkCollision.left = false;
