@@ -5,8 +5,6 @@ var frenzyState = {
     frenzyEggPoints: 2,
     eggsOnScreenCoordinates: [],
 
-    eggsOnScreen: [],
-
     xVelocityFrenzyEgg: 100,
 
     durationOfFrenzyState: 5,
@@ -61,12 +59,18 @@ var frenzyState = {
     },
 
     drawEggsAtPoints: function(points){
+        var xOffSet = 0.1 * canvasWidth;
+        var topYOffSet = 0.015 * canvasHeight;
+        var bottomYOffSet = 0.2 * canvasHeight;
         for (var i = 0; i < points.length; i++){
-            var coordinate = points[i]
-            this.createFrenzyEgg(coordinate.x, coordinate.y);
+            let coordinate = points[i]
+            if ((coordinate.x > xOffSet) && (coordinate.x < (canvasWidth - xOffSet))
+                && (coordinate.y > topYOffSet) && (coordinate.y < (canvasHeight - bottomYOffSet))){
+                this.createFrenzyEgg(coordinate.x, coordinate.y);
+            }
+
         }
     },
-
     generateFrenzyEggs: function(numRows, numColumns){
         var xOffSet = 70;
         var yOffSet = 120;
