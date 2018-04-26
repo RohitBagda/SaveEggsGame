@@ -25,6 +25,7 @@ var frenzyState = {
         this.frenzyEggsGroup = game.add.group();
         this.points = this.generatePoints();
         this.drawEggsAtPoints(this.points);
+        this.elapsedTime = 0;
         //
 
         // this.generateFrenzyEggs(7, 8);
@@ -49,7 +50,14 @@ var frenzyState = {
 
 
     update: function(){
-
+        this.elapsedTime += game.time.physicsElapsedMS;
+        if (this.elapsedTime >= 100) {
+            this.changeXVelocityOfEgg();
+            this.frenzyEggsGroup.forEach(function (egg) {
+                egg.body.velocity.x = this.xVelocityFrenzyEgg;
+            }, this);
+            this.elapsedTime = 0;
+        }
     },
 
     generatePoints: function(){
@@ -60,7 +68,7 @@ var frenzyState = {
 
     drawEggsAtPoints: function(points){
         var xOffSet = 0.1 * canvasWidth;
-        var topYOffSet = 0.015 * canvasHeight;
+        var topYOffSet = 0.018 * canvasHeight;
         var bottomYOffSet = 0.2 * canvasHeight;
         for (var i = 0; i < points.length; i++){
             let coordinate = points[i]
@@ -125,7 +133,7 @@ var frenzyState = {
         this.frenzyEggsGroup.add(frenzyEgg);
         // frenzyEgg.enableDrag(true, true, true, true, true, true);
         //this.eggsOnScreen.push(frenzyEgg);
-        this.jiggle(frenzyEgg);
+        //this.jiggle(frenzyEgg);
         frenzyEgg.events.onInputDown.add(this.collectEgg, this);
 
 

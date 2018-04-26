@@ -20,10 +20,10 @@
 
 function PoissonDiskSampler() {
     this.pointList = [];
-    this.maxPoints = 50;
-    this.radiusMin = 60;
-    this.radiusMax = 65;
-    this.maxFails = 20;
+    this.maxPoints = 60;
+    this.radiusMin = 50;
+    this.radiusMax = 55;
+    this.maxFails = 60;
     this.pi2 = Math.PI * 2;
     this.w = canvasWidth;
     this.h = canvasHeight;
