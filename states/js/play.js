@@ -138,7 +138,7 @@ var playState = {
         frenzyMusic = game.add.audio('frenzy_music');
         frenzyMusic.volume = 0.4;
         frenzyCollect = game.add.audio('frenzy_collect');
-        frenzyCollect.volume = 0.6;
+        frenzyCollect.volume = 0.4;
 
         eggCollect = game.add.audio('egg_collect');
         eggCollect.volume = 0.6;

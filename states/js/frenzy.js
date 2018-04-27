@@ -51,7 +51,7 @@ var frenzyState = {
 
     update: function(){
         this.elapsedTime += game.time.physicsElapsedMS;
-        if (this.elapsedTime >= 100) {
+        if (this.elapsedTime >= 150) {
             this.changeXVelocityOfEgg();
             this.frenzyEggsGroup.forEach(function (egg) {
                 egg.body.velocity.x = this.xVelocityFrenzyEgg;
@@ -79,39 +79,7 @@ var frenzyState = {
 
         }
     },
-    generateFrenzyEggs: function(numRows, numColumns){
-        var xOffSet = 70;
-        var yOffSet = 120;
-        var horizontalBlockPerEgg = (canvasWidth - xOffSet)/numColumns;
-        var verticalBlockPerEgg = (canvasHeight * 3/4)/numRows;
-        var eggRows = new Array(numRows);
-        for (var i = 0; i < eggRows.length; i++){
-            eggRows[i] = new Array(numColumns);
-            var startY = i * verticalBlockPerEgg + yOffSet;
-            for (var j = 0; j < eggRows[i].length; j++){
-                var extraYOffSet = 20;
-                var startX = j * horizontalBlockPerEgg + xOffSet;
-                var decideWhetherToAddEgg = Math.random();
-                var decideWhetherToShiftUp = Math.random();
-                if (decideWhetherToAddEgg > 0.3){
-                    if (decideWhetherToShiftUp < 0.3){
-                        var y = startY + extraYOffSet
-                        this.createFrenzyEgg(startX, y);
-                    } else if (decideWhetherToShiftUp < 0.7) {
-                        this.createFrenzyEgg(startX, startY);
-                    } else{
-                        var y = startY - extraYOffSet;
-                        this.createFrenzyEgg(startX, y);
-                    }
-                    // this.createFrenzyEgg(startX, startY);
-                }
 
-
-
-            }
-        }
-
-    },
 
     createFrenzyEgg: function (eggX, eggY) {
         var eggType = "frenzy";
@@ -133,40 +101,9 @@ var frenzyState = {
         this.frenzyEggsGroup.add(frenzyEgg);
         // frenzyEgg.enableDrag(true, true, true, true, true, true);
         //this.eggsOnScreen.push(frenzyEgg);
-        //this.jiggle(frenzyEgg);
         frenzyEgg.events.onInputDown.add(this.collectEgg, this);
-
-
-        // this.frenzyEggsGroup.body.checkCollision.right = false;
-        // this.frenzyEggsGroup.body.checkCollision.left = false;
-        // this.frenzyEggsGroup.body.checkCollision.down = false;
     },
 
-    // generateFrenzyEggCoordinates: function() {
-    //     var eggX = this.generateFrenzyEggXCoordinate();
-    //     var eggY = this.generateFrenzyEggYCoordinate();
-    //     return [eggX, eggY];
-    // },
-
-    // jiggleFrenzyEggs: function(){
-    //     console.log("check");
-    //     for (var i in this.frenzyEggsGroup.children){
-    //         // var egg = this.frenzyEggsGroup.children[i];
-    //         this.jiggle(this.frenzyEggsGroup.children[i]);
-    //     }
-    // },
-
-
-
-
-    jiggle: function(egg){
-
-        game.time.events.loop(100, function(){
-            this.changeXVelocityOfEgg();
-            egg.body.velocity.x = this.xVelocityFrenzyEgg;
-            // console.log(this.xVelocityFrenzyEgg);
-        }, this)
-    },
 
     changeXVelocityOfEgg: function(){
         this.xVelocityFrenzyEgg = -1 * this.xVelocityFrenzyEgg;
