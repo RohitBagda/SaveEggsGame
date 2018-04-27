@@ -11,7 +11,7 @@ var loadState = {
         game.load.image('frenzy', 'assets/frenzy.png');
         game.load.image('bomb', 'assets/bomb.png');
         game.load.image('scoreBoost', 'assets/scoreBoost.png');
-        game.load.image('timeBoost', 'assets/timeBoost.png');
+        game.load.image('combo', 'assets/combo.png');
         game.load.image('background', 'assets/background.png');
         game.load.image('gametitle', 'assets/logo.png');
         game.load.image('play', 'assets/play.png');
@@ -20,6 +20,7 @@ var loadState = {
         game.load.image('crackedFrenzy', "assets/cracked_frenzy.png");
         game.load.image('crackedOneUp', "assets/cracked_oneUp.png");
         game.load.image('crackedScoreBoost', "assets/cracked_scoreBoost.png");
+        game.load.image('crackedCombo',"assets/cracked_combo.png");
         game.load.image('bombCloud', "assets/bomb_cloud.png");
 
 

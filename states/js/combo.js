@@ -70,16 +70,15 @@ var comboState = {
     },
 
     createComboWave: function(numEggs){
-        // var eggX = Math.random() * (canvasWidth-40);
         var eggX = this.calculateInitialX();
         var xOffset = this.calculateXOffset(eggX);
         var eggY = -0.05 * canvasHeight;
-        var yoffSet = 100;
+        var yOffSet = 100;
         for (var i = 0; i < numEggs; i++){
             // var eggX = Math.random() * (canvasWidth-40);
-            eggY -= yoffSet;
+            eggY -= yOffSet;
             eggX += xOffset;
-            var eggType = "timeBoost";
+            var eggType = "combo";
 
             var egg = game.add.sprite(eggX, eggY, eggType);
             egg.scale.setTo(scaleRatio, scaleRatio);

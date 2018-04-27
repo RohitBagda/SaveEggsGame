@@ -113,7 +113,7 @@ var playState = {
         } else if(randomNumber<80) {
             eggType = "frenzy";
         } else if(randomNumber<90) {
-            eggType = "timeBoost";
+            eggType = "combo";
         } else {
             eggType = "scoreBoost";
         }
@@ -191,7 +191,7 @@ var playState = {
         } else if (egg.key == "scoreBoost") {
             this.updateScore(30);
             eggCollect.play();
-        } else if (egg.key == "timeBoost") {
+        } else if (egg.key == "combo") {
             eggCollect.play();
             this.game.state.start("transitionToCombo");
         } else if (egg.key == "frenzy") {
