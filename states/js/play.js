@@ -87,7 +87,7 @@ var playState = {
             var egg;
             var eggType;
 
-            if(this.currentTime < 1){
+            if(this.currentTime < 15){
                 eggType = "egg";
             } else {
                 eggType = this.getEggType();
@@ -106,13 +106,13 @@ var playState = {
     getEggType: function(){
         var eggType;
         var randomNumber = Math.random()*100;
-        if(randomNumber < 40){
+        if(randomNumber < 50){
             eggType = "egg";
-        } else if(randomNumber < 70) {
+        } else if(randomNumber < 80) {
             eggType = "bomb";
-        } else if(randomNumber<80) {
+        } else if(randomNumber<85) {
             eggType = "frenzy";
-        } else if(randomNumber<90) {
+        } else if(randomNumber<88) {
             eggType = "combo";
         } else {
             eggType = "scoreBoost";

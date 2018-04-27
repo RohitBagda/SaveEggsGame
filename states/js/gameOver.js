@@ -4,7 +4,7 @@ var gameOverState = {
         var scoreLabel = this.game.add.text(canvasWidth/3.5, canvasHeight/3, "Your score is " + score,
             {fontSize: '50px', fill: "#ff0000"});
 
-        var highestScoreLabel = this.game.add.text(canvasWidth/3.5, canvasHeight/3 + 30, "Your Highest Score is " + highestScore,
+        var highestScoreLabel = this.game.add.text(canvasWidth/3.5, canvasHeight/3 + 100, "Your Highest Score is " + highestScore,
             {fontSize: '48px', fill: "#ff00ff"});
 
         var playButton = game.add.button(canvasWidth/2, canvasHeight/2,"play",this.restart, this);
