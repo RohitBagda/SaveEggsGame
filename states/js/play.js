@@ -14,16 +14,38 @@ var playState = {
         // This will contain the score and the timer.
         this.scoreText = game.add.text(10,10,'Score: ' + score, {fontSize: '24px'});
 
-        // this.currentTime = currentTime;
-        // this.gameDuration = -1;
+        //Create pause label button
+        this.pause_label = game.add.text(500, 20, 'Pause', {font:'24px Arial', fill:'#fff'});
+        this.pause_label.inputEnabled = true;
 
-        // this.isFrenzy = false;
+        this.pause_label.events.onInputUp.add(function(){
+            game.paused = true;
+
+            tutorialState.createEggDes();
+
+            this.backButton = this.game.add.text(canvasWidth / 2, 0.85 * canvasHeight, "Back to Game");
+            this.backButton.anchor.setTo(0.5, 0.5);
+            this.backButton.inputEnabled = true;
+            this.backButton.events.onInputDown.add(function(){
+                var eggPics = tutorialState.getEggPics();
+                var eggDes = tutorialState.getDes();
+
+                eggPics.forEach(function(pics){
+                    pics.destroy();
+                });
+
+                eggDes.forEach(function(pics){
+                    pics.destroy();
+                });
+
+                this.backButton.destroy();
+
+                game.paused = false;
+            });
+        });
+
         game.time.events.loop(500, this.dropEgg, this);
-        // this.frenzy = this.isFrenzy;
-        // while (!this.isFrenzy){
-        //     game.time.events.loop(800, this.dropEgg, this);
-        // }
-        // game.state.start('frenzy');
+
         game.time.events.loop(1000, function(){
             currentTime++;
         }, this);
