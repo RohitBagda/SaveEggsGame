@@ -11,6 +11,7 @@ var loadState = {
         game.load.image('frenzy', 'assets/frenzy.png');
         game.load.image('bomb', 'assets/bomb.png');
         game.load.image('scoreBoost', 'assets/scoreBoost.png');
+        game.load.image('oneUp', 'assets/oneUp.png');
         game.load.image('combo', 'assets/combo.png');
         game.load.image('background', 'assets/background.png');
         game.load.image('gametitle', 'assets/logo.png');
