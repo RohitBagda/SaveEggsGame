@@ -5,17 +5,21 @@ var menuState = {
         var nameLabel = game.add.sprite(canvasWidth/2,canvasHeight/5, "gametitle");
         nameLabel.anchor.setTo(0.5,0.5);
 
-        var playButton = game.add.button(canvasWidth/2, canvasHeight/2,"play",this.start, this);
+        var verticalSpaceBetweenButtons = 140;
+
+        var playButtonFormatting = {font: "bold 70pt Corbel", fill: "#003366"};
+        playButtonFormatting.stroke = "#000000";
+        playButtonFormatting.strokeThickness = 1;
+
+        var playButton = this.game.add.text(canvasWidth/2, canvasHeight/2 + verticalSpaceBetweenButtons, "Play", playButtonFormatting);
         playButton.anchor.setTo(0.5, 0.5);
         playButton.inputEnabled = true;
-
-        var verticalSpaceBetweenButtons = 140;
 
         var aboutButtonFormatting = {font: "bold 56pt Corbel", fill: "#003366"};
         aboutButtonFormatting.stroke = "#000000";
         aboutButtonFormatting.strokeThickness = 1;
 
-        var aboutButton = this.game.add.text(canvasWidth/2, canvasHeight/2 + verticalSpaceBetweenButtons, "How To Play", aboutButtonFormatting);
+        var aboutButton = this.game.add.text(canvasWidth/2, canvasHeight/1.5 + verticalSpaceBetweenButtons, "How To Play", aboutButtonFormatting);
         aboutButton.anchor.setTo(0.5, 0.5);
         aboutButton.inputEnabled = true;
         aboutButton.events.onInputDown.add(this.goToAboutPage, this);

@@ -44,9 +44,9 @@ var loadState = {
       //Calling the menu state
       game.state.start('menu');
 
-        backgroundMusic = game.add.audio('background_music');
-        backgroundMusic.volume = 0.4;
-        backgroundMusic.loop = true;
-        backgroundMusic.play();
+      backgroundMusic = game.add.audio('background_music');
+      backgroundMusic.volume = 0.4;
+      backgroundMusic.loop = true;
+      backgroundMusic.play();
     }
 };
