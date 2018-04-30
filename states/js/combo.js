@@ -22,7 +22,6 @@ var comboState = {
 
         game.time.events.loop(1000, function(){
             if(this.comboTime>this.comboDuration){
-                backgroundMusic.stop();
                 this.waveScore = 0;
                 this.game.state.start('play');
             } else {

@@ -152,11 +152,6 @@ var playState = {
         eggCrack = game.add.audio('egg_crack');
         eggCrack.volume = 0.6;
 
-        backgroundMusic = game.add.audio('background_music');
-        backgroundMusic.volume = 0.4;
-        backgroundMusic.loop = true;
-        backgroundMusic.play();
-
         frenzyMusic = game.add.audio('frenzy_music');
         frenzyMusic.volume = 0.4;
         frenzyCollect = game.add.audio('frenzy_collect');
