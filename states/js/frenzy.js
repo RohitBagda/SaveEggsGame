@@ -9,7 +9,7 @@ var frenzyState = {
 
     xVelocityFrenzyEgg: 100,
 
-    durationOfFrenzyState: 4,
+    durationOfFrenzyState: 3,
 
     create: function(){
         this.numberOfEggsAddedToScreen = 0;
