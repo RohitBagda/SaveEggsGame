@@ -63,8 +63,13 @@ var comboState = {
     dropComboEggWave: function() {
         if (this.comboTime<=this.comboEggsDropDuration) {
             // var numEggs = 1;
-            var numEggs = Math.floor(Math.random() * 4);
+            var numEggs = Math.floor(Math.random() * 4) + 1;
             this.createComboWave(numEggs);
+        }
+        this.comboEggCaughtPerWaveCount = 0;
+        if(this.waveScore>0){
+            this.showScoreAnimation(this.waveScore);
+            this.waveScore=0;
         }
     },
 
@@ -88,11 +93,7 @@ var comboState = {
             this.comboEggs.add(egg);
         }
 
-        this.comboEggCaughtPerWaveCount = 0;
-        if(this.waveScore>0){
-            this.showScoreAnimation(this.waveScore);
-            this.waveScore=0;
-        }
+
     },
 
     calculateInitialX: function () {
