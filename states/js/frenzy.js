@@ -2,14 +2,14 @@
 var frenzyState = {
 
     // eggsInState: {},
-    frenzyEggPoints: 5,
+    frenzyEggPoints: 20,
     // numberOfEggsAddedToScreen: 0,
     // numberOfEggsCollected: 0,
     bonusPointsFrenzy: 50,
 
     xVelocityFrenzyEgg: 100,
 
-    durationOfFrenzyState: 5,
+    durationOfFrenzyState: 4,
 
     create: function(){
         this.numberOfEggsAddedToScreen = 0;
@@ -27,6 +27,7 @@ var frenzyState = {
 
         this.scoreText = game.add.text(10,10, "Score: " + score, {fontSize: '24px'});
         this.frenzyEggsGroup = game.add.group();
+        this.minDistanceBetweenPoints = this.createFrenzyEgg(-500, -500);
         this.points = this.generatePoints();
         this.drawEggsAtPoints(this.points);
         this.numberOfEggsCollected = 0;
@@ -95,6 +96,8 @@ var frenzyState = {
 
     generatePoints: function(){
         var poissonDiskSampler = new PoissonDiskSampler();
+        poissonDiskSampler.radiusMin = this.minDistanceBetweenPoints/2;
+        poissonDiskSampler.radiusMax = this.minDistanceBetweenPoints;
         poissonDiskSampler.createPoints();
         return poissonDiskSampler.pointList;
     },
@@ -179,6 +182,12 @@ var frenzyState = {
         // frenzyEgg.enableDrag(true, true, true, true, true, true);
         //this.eggsOnScreen.push(frenzyEgg);
         frenzyEgg.events.onInputDown.add(this.collectEgg, this);
+        console.log("eggWidth: " + frenzyEgg.width + "eggHeight: " + frenzyEgg.height);
+
+        var distanceSquared = Math.pow(frenzyEgg.width, 2) + Math.pow(frenzyEgg.height, 2);
+        var distance = Math.pow(distanceSquared, 0.5);
+
+        return distance;
     },
 
 
