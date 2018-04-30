@@ -45,6 +45,7 @@ var frenzyState = {
                 // game.time.events.stop();
                 // this.frenzyEggsGroup.delete();
                 frenzyMusic.stop();
+                backgroundMusic.play();
                 this.game.state.start('play');
             } else{
                 this.currentTime ++;
