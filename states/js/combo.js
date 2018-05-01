@@ -42,7 +42,7 @@ var comboState = {
             }
 
         }
-        
+
     },
 
     crackComboEggs: function(egg){
