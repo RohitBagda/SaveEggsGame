@@ -111,8 +111,9 @@ var playState = {
     },
 
     createWave: function(numEggs){
+        let eggOffset = 50;
         for (var i = 0; i < numEggs; i++){
-            var eggX = Math.random() * (canvasWidth-40);
+            var eggX = Math.random() * (canvasWidth-eggOffset);
             var eggY = -0.05 * canvasHeight;
             var egg;
             var eggType;

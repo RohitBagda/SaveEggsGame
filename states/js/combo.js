@@ -146,14 +146,10 @@ var comboState = {
         scoreTextFormat.strokeThickness = 5;
         var scoreText = "+" + display;
 
-        this.comboTextDisplay = this.game.add.text(game.world.centerX - 100, game.world.centerY - 100, scoreText, scoreTextFormat);
+        this.comboTextDisplay = this.game.add.text(game.world.centerX, game.world.centerY, scoreText, scoreTextFormat);
         this.comboTextDisplay.anchor.setTo(0.5, 0.5);
         this.game.add.tween(this.comboTextDisplay)
-            .to({alpha: 0}, 100, Phaser.Easing.Default, true, 300)
-            .onComplete.add(function () {
-                console.log("This is called when the tween is done.");
-            }, this
-        );
+            .to({alpha: 0}, 100, Phaser.Easing.Default, true, 300);
 
     },
 

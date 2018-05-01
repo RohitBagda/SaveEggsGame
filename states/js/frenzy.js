@@ -1,14 +1,9 @@
 
 var frenzyState = {
 
-    // eggsInState: {},
     frenzyEggPoints: 20,
-    // numberOfEggsAddedToScreen: 0,
-    // numberOfEggsCollected: 0,
     bonusPointsFrenzy: 50,
-
     xVelocityFrenzyEgg: 100,
-
     durationOfFrenzyState: 3,
 
     create: function(){
@@ -17,12 +12,10 @@ var frenzyState = {
         //Screen Setup
         this.currentTime = 0;
         game.add.sprite(0,0, "background");
-        //this.player = game.add.sprite(canvasWidth/2, canvasHeight/1.2, "basket");
-
         var frenzyTimerFormatting = {font: "bold 56pt Corbel", fill: "#0000ff"};
 
         this.timer = game.add.text(canvasWidth/2, 0.008 * canvasHeight, this.durationOfFrenzyState, frenzyTimerFormatting);
-        this.timer.anchor.setTo(0.5, 0.2)
+        this.timer.anchor.setTo(0.5, 0.2);
         this.timer.scale.setTo(scaleRatio, scaleRatio);
 
         this.scoreText = game.add.text(10,10, "Score: " + score, {font: 'bold 48px Corbel', fill: '#003366'});
@@ -32,18 +25,13 @@ var frenzyState = {
         this.drawEggsAtPoints(this.points);
         this.numberOfEggsCollected = 0;
         this.elapsedTime = 0;
-
-        //
-
+        
         // this.generateFrenzyEggs(7, 8);
         // this.jiggleFrenzyEggs();
 
 
         game.time.events.loop(1000, function(){
-            // Console.log(this.currentTime);
             if (this.currentTime >= this.durationOfFrenzyState){
-                // game.time.events.stop();
-                // this.frenzyEggsGroup.delete();
                 frenzyMusic.stop();
                 backgroundMusic.play();
                 this.game.state.start('play');
@@ -88,11 +76,8 @@ var frenzyState = {
         this.bonusPointsDisplay = this.game.add.text(game.world.centerX, game.world.centerY, bonusText , bonusPointsFormat);
         this.bonusPointsDisplay.anchor.setTo(0.5, 0.5);
         this.game.add.tween(this.bonusPointsDisplay)
-            .to({alpha: 0}, 100, Phaser.Easing.Default, true, 700)
-            .onComplete.add(function () {
-                console.log("This is called when the tween is done.");
-            }, this
-        );
+            .to({alpha: 0}, 100, Phaser.Easing.Default, true, 700);
+
     },
 
     generatePoints: function(){
@@ -104,7 +89,8 @@ var frenzyState = {
     },
 
     drawEggsAtPoints: function(points){
-        var xOffSet = 0.1 * canvasWidth;
+        let eggOffset = 50;
+        var xOffSet = 0.1 * (canvasWidth-eggOffset);
         var topYOffSet = 0.018 * canvasHeight;
         var bottomYOffSet = 0.2 * canvasHeight;
         for (var i = 0; i < points.length; i++){
@@ -165,23 +151,16 @@ var frenzyState = {
     createFrenzyEgg: function (eggX, eggY) {
         var eggType = "frenzy";
         var frenzyEgg = game.add.sprite(eggX, eggY, eggType);
-        frenzyEgg.scale.setTo(scaleRatio * 1.5, scaleRatio * 1.5);
-
         game.physics.arcade.enable(frenzyEgg, Phaser.Physics.ARCADE);
-        // frenzyEgg.scale.setTo(scaleRatio, scaleRatio);
         game.physics.arcade.enable(frenzyEgg);
-
-        // frenzyEgg.enableDrag();
+        frenzyEgg.scale.setTo(scaleRatio * 1.5, scaleRatio * 1.5);
         frenzyEgg.body.kinematic = true;
         frenzyEgg.inputEnabled = true;
         frenzyEgg.input.enableDrag(false, true, true);
         frenzyEgg.input.allowVerticalDrag = true;
         frenzyEgg.collideWorldBounds = true;
         frenzyEgg.body.immovable = true;
-        // this.eggsInState.push(frenzyEgg);
         this.frenzyEggsGroup.add(frenzyEgg);
-        // frenzyEgg.enableDrag(true, true, true, true, true, true);
-        //this.eggsOnScreen.push(frenzyEgg);
         frenzyEgg.events.onInputDown.add(this.collectEgg, this);
         console.log("eggWidth: " + frenzyEgg.width + "eggHeight: " + frenzyEgg.height);
 
@@ -197,16 +176,6 @@ var frenzyState = {
         // return -1*this.xVelocityGravityFrenzyEgg;
     },
 
-    // generateFrenzyEggXCoordinate: function() {
-    //     // return Math.random()*450;
-    //     return Math.random() * (canvasWidth-80);
-    // },
-    //
-    // generateFrenzyEggYCoordinate: function() {
-    //     // return Math.random()*450;
-    //     return Math.random() * (canvasHeight-400);
-    // },
-
     collectEgg: function(egg){
         // this.game.state.start('menu');
         let eggX = egg.x;
@@ -216,8 +185,6 @@ var frenzyState = {
         frenzyTouch.play();
         this.numberOfEggsCollected++
         this.createScoreAnimation(eggX, eggY, this.frenzyEggPoints);
-        // alert("this is fine");
-        //this.game.state.states['gameData'].updateScoreFromFrenzy();
         score += this.frenzyEggPoints;
         this.scoreText.text = "Score: " + score;
 
@@ -233,13 +200,7 @@ var frenzyState = {
         this.scoreTextDisplay = this.game.add.text(xCoordinate, yCoordinate, scoreText, scoreTextFormat);
 
         this.game.add.tween(this.scoreTextDisplay)
-            .to({alpha: 0}, 100, Phaser.Easing.Default, true, 1000)
-            .onComplete.add(function () {
-                console.log("This is called when the tween is done.");
-            }, this
-        );
-
+            .to({alpha: 0}, 100, Phaser.Easing.Default, true, 1000);
     },
-
 
 };
