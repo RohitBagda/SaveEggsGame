@@ -25,7 +25,7 @@ var frenzyState = {
         this.timer.anchor.setTo(0.5, 0.2)
         this.timer.scale.setTo(scaleRatio, scaleRatio);
 
-        this.scoreText = game.add.text(10,10, "Score: " + score, {fontSize: '24px'});
+        this.scoreText = game.add.text(10,10, "Score: " + score, {font: 'bold 48px Corbel', fill: '#003366'});
         this.frenzyEggsGroup = game.add.group();
         this.minDistanceBetweenPoints = this.createFrenzyEgg(-500, -500);
         this.points = this.generatePoints();
@@ -80,7 +80,7 @@ var frenzyState = {
     },
 
     playBonusReceivedAnimation: function(){
-        var bonusPointsFormat = {font: "bold 100pt Arial", fill: "#FF00FF"};
+        var bonusPointsFormat = {font: "bold 100pt Corbel", fill: "#FF00FF"};
         bonusPointsFormat.stroke = "#A4CED9";
         bonusPointsFormat.strokeThickness = 5;
         var bonusText = "BONUS: +" + this.bonusPointsFrenzy;
@@ -226,7 +226,7 @@ var frenzyState = {
     createScoreAnimation: function(xCoordinate, yCoordinate, numberOfPoints){
         
         let scoreText = "+" + numberOfPoints;
-        var scoreTextFormat = {font: "bold 40pt Arial", fill: "#0000ff"};
+        var scoreTextFormat = {font: "bold 40pt Corbel", fill: "#003366"};
         scoreTextFormat.stroke = "#000000";
         scoreTextFormat.strokeThickness = 5;
 

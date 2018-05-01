@@ -12,10 +12,10 @@ var playState = {
         // this.playerSpeed = 400;
 
         // This will contain the score and the timer.
-        this.scoreText = game.add.text(10,10,'Score: ' + score, {fontSize: '24px'});
+        this.scoreText = game.add.text(10,10,'Score: ' + score, {font: 'bold 48px Corbel', fill: '#003366'});
 
         //Create pause label button
-        this.pause_label = game.add.text(500, 20, 'Pause', {font:'24px Arial', fill:'#fff'});
+        this.pause_label = game.add.text(0.95*canvasWidth, 0.01*canvasHeight, 'II', {font:'bold 48px Corbel', fill:'#003366'});
         this.pause_label.inputEnabled = true;
 
         this.pause_label.events.onInputUp.add(function(){
@@ -23,7 +23,7 @@ var playState = {
 
             tutorialState.createEggDes();
 
-            this.backButton = this.game.add.text(canvasWidth / 2, 0.85 * canvasHeight, "Back to Game");
+            this.backButton = this.game.add.text(canvasWidth/2, 0.2*canvasHeight, "Back to Game", {font: 'bold 48px Corbel', fill: '#003366'});
             this.backButton.anchor.setTo(0.5, 0.5);
             this.backButton.inputEnabled = true;
             this.backButton.events.onInputDown.add(function(){

@@ -16,7 +16,7 @@ var comboState = {
         this.comboEggs = game.add.group();
         this.eggGravity = 50000;
 
-        this.scoreText = game.add.text(10,10,'Score: ' + score, {fontSize: '24px'});
+        this.scoreText = game.add.text(10,10,'Score: ' + score, {font: 'bold 48px Corbel', fill: '#003366'});
 
         game.time.events.loop(1000, this.dropComboEggWave, this);
 
@@ -141,7 +141,7 @@ var comboState = {
     },
 
     showScoreAnimation: function(display){
-        var scoreTextFormat = {font: "bold 80pt Arial", fill: "#ff0000"};
+        var scoreTextFormat = {font: "bold 80pt Corbel", fill: "#003366"};
         scoreTextFormat.stroke = "#A4CED9";
         scoreTextFormat.strokeThickness = 5;
         var scoreText = "+" + display;
