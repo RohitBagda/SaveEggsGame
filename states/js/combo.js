@@ -35,11 +35,25 @@ var comboState = {
             var comboEgg = this.comboEggs.children[i];
             comboEgg.body.velocity.y=20;
 
-            if(comboEgg.position.y > canvasHeight+50){
-                comboEgg.destroy();
+            if(comboEgg.y <= this.player.y - comboEgg.height/1.2){
+                game.physics.arcade.collide(this.player, comboEgg, this.collectComboEgg, null, this);
+            } else if(comboEgg.y > canvasHeight * 10/11){
+                this.crackComboEggs(comboEgg);
             }
-            game.physics.arcade.collide(this.player, comboEgg, this.collectComboEgg, null, this);
+
         }
+        
+    },
+
+    crackComboEggs: function(egg){
+        this.tweenComboEggs("crackedCombo", egg);
+    },
+
+    tweenComboEggs: function(cracked, egg){
+        egg.loadTexture(cracked,0);
+        egg.body.gravity.y = 0;
+        this.game.add.tween(egg)
+            .to({alpha: 0}, 1000, Phaser.Easing.Default, true, 300);
     },
 
     setupPlayer: function(){
