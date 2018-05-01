@@ -16,7 +16,6 @@ var tutorialState = {
         let rules = this.game.add.text(canvasWidth / 15, canvasHeight / 20, "The objective of the game is to save as many eggs as you can by catching them " +
             "in your basket. Touch and drag the basket from side to side to move it across the screen and catch the falling eggs. Avoid bombs! You have " +
             "3 lives to spare before the game ends.", overviewFormatting);
-        rules.anchor.setTo(0.5, 0.5);
     },
 
     createEggDes: function(){

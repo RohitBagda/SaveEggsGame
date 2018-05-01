@@ -13,14 +13,14 @@ var playState = {
         // this.playerSpeed = 400;
 
         // This will contain the score and the timer.
-        this.scoreText = game.add.text(10,10,'Score: ' + score, {font: 'bold 48px Corbel', fill: '#003366'});
+        this.scoreText = game.add.text(10,10,'Score: ' + score, {font: 'bold 60px Corbel', fill: '#003366'});
 
         game.add.sprite(.7*canvasWidth, 0.01*canvasHeight, "heart");
         game.add.text(.75*canvasWidth, 0.01*canvasHeight, '×');
         this.livesNum = game.add.text(.78*canvasWidth, 0.01*canvasHeight, lives);
 
         //Create pause label button
-        this.pause_label = game.add.text(0.95*canvasWidth, 0.01*canvasHeight, 'II', {font:'bold 48px Corbel', fill:'#003366'});
+        this.pause_label = game.add.text(0.95*canvasWidth, 0.01*canvasHeight, 'II', {font:'bold 60px Corbel', fill:'#003366'});
         this.pause_label.inputEnabled = true;
 
         this.pause_label.events.onInputUp.add(function(){

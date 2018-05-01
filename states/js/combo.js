@@ -16,7 +16,7 @@ var comboState = {
         this.comboEggs = game.add.group();
         this.eggGravity = 50000;
 
-        this.scoreText = game.add.text(10,10,'Score: ' + score, {font: 'bold 48px Corbel', fill: '#003366'});
+        this.scoreText = game.add.text(10,10,'Score: ' + score, {font: 'bold 60px Corbel', fill: '#003366'});
 
         game.time.events.loop(1000, this.dropComboEggWave, this);
 

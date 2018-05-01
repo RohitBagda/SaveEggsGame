@@ -18,7 +18,7 @@ var frenzyState = {
         this.timer.anchor.setTo(0.5, 0.2);
         this.timer.scale.setTo(scaleRatio, scaleRatio);
 
-        this.scoreText = game.add.text(10,10, "Score: " + score, {font: 'bold 48px Corbel', fill: '#003366'});
+        this.scoreText = game.add.text(10,10, "Score: " + score, {font: 'bold 60px Corbel', fill: '#003366'});
         this.frenzyEggsGroup = game.add.group();
         this.minDistanceBetweenPoints = this.createFrenzyEgg(-500, -500);
         this.points = this.generatePoints();
