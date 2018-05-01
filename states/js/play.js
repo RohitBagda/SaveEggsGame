@@ -78,7 +78,10 @@ var playState = {
         }  else if(egg.key === "scoreBoost") {
             this.tweenEggs("crackedScoreBoost", egg);
             eggCrack.play();
-        } else if(egg.key === "timeBoost") {
+        } else if(egg.key === "combo") {
+            this.tweenEggs("crackedCombo", egg);
+            eggCrack.play();
+        } else if(egg.key === "oneUp" ) {
             this.tweenEggs("crackedOneUp", egg);
             eggCrack.play();
         }
@@ -136,8 +139,10 @@ var playState = {
             eggType = "frenzy";
         } else if(randomNumber<88) {
             eggType = "combo";
-        } else {
+        } else if(randomNumber<93) {
             eggType = "scoreBoost";
+        }  else {
+            eggType = "oneUp"
         }
         return eggType;
     },
@@ -167,7 +172,7 @@ var playState = {
         bombWhoosh.volume = 0.6;
 
         frenzyTouch = game.add.audio('frenzy_touch');
-        frenzyTouch.volume = 0.5;
+        frenzyTouch.volume = 0.3;
 
         bombCollect = game.add.audio('bomb_collect');
         bombCollect.volume = 0.6;
@@ -212,15 +217,12 @@ var playState = {
             eggCollect.play();
             this.game.state.start("transitionToCombo");
         } else if (egg.key == "frenzy") {
-            // this.showFrenzyModeAnimation();
-
-            // this.game.state.stop();
-            // game.time.events.stop();
-            //this.game.state.states['gameData'].score = score;
             frenzyCollect.play();
             frenzyMusic.play();
             backgroundMusic.stop();
             this.game.state.start("transitionToFrenzy");
+        } else if (egg.key == "oneUp"){
+            lives++;
         }
     },
 
