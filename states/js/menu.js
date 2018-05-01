@@ -14,7 +14,7 @@ var menuState = {
         var playButton = this.game.add.text(canvasWidth/2, canvasHeight/2 + verticalSpaceBetweenButtons, "Play", playButtonFormatting);
         playButton.anchor.setTo(0.5, 0.5);
         playButton.inputEnabled = true;
-        playButton.events.onInputDown(this.start, this);
+        playButton.events.onInputDown.add(this.start, this);
 
         var aboutButtonFormatting = {font: "bold 56pt Corbel", fill: "#003366"};
         aboutButtonFormatting.stroke = "#000000";
