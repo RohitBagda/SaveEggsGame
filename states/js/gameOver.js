@@ -18,6 +18,12 @@ var gameOverState = {
         playAgainButton.inputEnabled = true;
         playAgainButton.events.onInputDown.add(this.restart, this);
 
+        regularEggProb = 1;
+        bombProb = 0;
+        scoreBoostProb = 0;
+        frenzyProb = 0;
+        comboProb = 0;
+        oneUpProb = 0;
         score = 0;
         //this.game.input.onDown.addOnce(this.restart, this);
     },

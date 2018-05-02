@@ -1,6 +1,7 @@
 var playState = {
 
     bombDisplayTexts: ["Bruh", ":'(", "WTF", "-___-"],
+    timeStages: [5,15,30,60,90],
     heartList: [],
 
     create: function(){
@@ -54,7 +55,34 @@ var playState = {
 
         game.time.events.loop(1000, function(){
             currentTime++;
+            let changeTime = currentTime;
+            if(this.timeStages.includes(changeTime))
+            this.calculateEggProbability(changeTime);
         }, this);
+    },
+
+    calculateEggProbability: function(time){
+        if(time<this.timeStages[0]){
+            regularEggProb = 1;
+        } else if(currentTime <this.timeStages[1]){
+            regularEggProb = 0.8;
+            bombProb = 1;
+        } else if(time < this.timeStages[2]){
+            regularEggProb = 0.6;
+            bombProb = 0.9;
+            scoreBoostProb = 1;
+        } else if(time<this.timeStages[3]){
+            regularEggProb = 0.5;
+            bombProb = 0.9;
+            scoreBoostProb =0.95;
+            frenzyProb = 0.98;
+        } else if(time <this.timeStages[4]){
+            regularEggProb = 0.45;
+            bombProb = 0.9;
+            scoreBoostProb = 0.95;
+            frenzyProb = 0.98;
+            comboProb = 1;
+        } 
     },
 
     update: function(){
@@ -137,19 +165,19 @@ var playState = {
 
     getEggType: function(){
         var eggType;
-        var randomNumber = Math.random()*100;
-        if(randomNumber < 50){
+        var randomNumber = Math.random();
+        if(randomNumber <= regularEggProb){
             eggType = "egg";
-        } else if(randomNumber < 80) {
+        } else if(randomNumber<=bombProb) {
             eggType = "bomb";
-        } else if(randomNumber<85) {
+        } else if(randomNumber<=frenzyProb) {
             eggType = "frenzy";
-        } else if(randomNumber<88) {
+        } else if(randomNumber<=comboProb) {
             eggType = "combo";
-        } else if(randomNumber<93) {
+        } else if(randomNumber<=scoreBoostProb) {
             eggType = "scoreBoost";
-        }  else {
-            eggType = "oneUp"
+        }  else if(randomNumber<=oneUpProb){
+            eggType = "oneUp";
         }
         return eggType;
     },
