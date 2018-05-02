@@ -22,20 +22,14 @@ var transitionToFrenzyState = {
     showFrenzyModeAnimation: function(){
 
         //var textSize = canvasWidth + "px";
-        var frenzyTextFormat = {font: "bold 200px Times", fill: "#000000"};
-        frenzyTextFormat.stroke = "#FF5500";
-        frenzyTextFormat.strokeThickness = 5;
+        var frenzyTextFormat = {font: "bold 200px Times", fill: "#FF5500"};
         var frenzyText = "Frenzy";
 
         this.frenzyTextDisplay = this.game.add.text(canvasWidth/2, canvasHeight/2, frenzyText, frenzyTextFormat);
         this.frenzyTextDisplay.anchor.setTo(0.5, 0.5);
         this.frenzyTextDisplay.align = 'center';
         this.game.add.tween(this.frenzyTextDisplay)
-            .to({alpha: 0}, 100, Phaser.Easing.Default, true, 500)
-            .onComplete.add(function () {
-                console.log("This is called when the tween is done.");
-            }, this
-        );
-
+            .to({alpha: 0}, 100, Phaser.Easing.Default, true, 500);
     }
+
 };
