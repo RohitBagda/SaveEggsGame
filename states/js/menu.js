@@ -2,7 +2,8 @@ var menuState = {
 
     create : function(){
         game.add.sprite(0,0, "background");
-        var nameLabel = game.add.sprite(canvasWidth/2,canvasHeight/5, "gametitle");
+        var nameLabel = game.add.sprite(canvasWidth/2, 0.3*canvasHeight, "gametitle");
+        nameLabel.scale.setTo(0.2*scaleRatio, 0.2*scaleRatio);
         nameLabel.anchor.setTo(0.5,0.5);
 
         var verticalSpaceBetweenButtons = 140;
