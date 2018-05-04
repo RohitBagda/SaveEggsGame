@@ -52,6 +52,7 @@ var gameOverState = {
     goToHome: function(){
         this.reset();
         this.game.state.start('menu');
+        backgroundMusic.play();
     },
 
     shutGame: function(){

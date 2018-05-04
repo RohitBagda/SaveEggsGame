@@ -1,6 +1,6 @@
 var playState = {
 
-    bombDisplayTexts: ["Bruh", ":'(", "WTF", "-___-"],
+    bombDisplayTexts: ["bruh", ":'(", "smh", "-___-"],
     timeStages: [5,10,20,30,40],
     heartList: [],
 
