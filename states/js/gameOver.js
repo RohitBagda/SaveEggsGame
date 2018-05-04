@@ -23,7 +23,7 @@ var gameOverState = {
         homeButton.inputEnabled = true;
         homeButton.events.onInputDown.add(this.goToHome, this);
 
-        var exitButton = this.game.add.text(canvasWidth/2, 0.85*canvasHeight, "Exit", playAgainButtonFormatting);
+        var exitButton = this.game.add.text(canvasWidth/2, 0.85*canvasHeight, "Quit", playAgainButtonFormatting);
         exitButton.anchor.setTo(0.5, 0.5);
         exitButton.inputEnabled = true;
         exitButton.events.onInputDown.add(this.shutGame, this);

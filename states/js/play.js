@@ -1,7 +1,7 @@
 var playState = {
 
     bombDisplayTexts: ["Bruh", ":'(", "WTF", "-___-"],
-    timeStages: [5,15,30,60,90],
+    timeStages: [5,10,20,30,40],
     heartList: [],
 
     create: function(){
@@ -104,6 +104,13 @@ var playState = {
             var egg = this.eggs.children[i];
             egg.body.velocity.y=20;
 
+            if(score < 0){
+                window.setTimeout(function(){
+                    backgroundMusic.stop();
+                    game.state.start("gameOver");
+                }, 100);
+            }
+
             if(egg.y <= this.player.y - egg.height/1.2){
                 game.physics.arcade.collide(this.player, egg, this.collectEgg, null, this);
             } else if(egg.y > canvasHeight * 10/11){
@@ -117,22 +124,27 @@ var playState = {
         if(egg.key === "egg"){
             this.tweenEggs("crackedEgg", egg);
             eggCrack.play();
+            this.updateScore(-5);
         } else if(egg.key === "bomb") {
             this.tweenEggs("bombCloud", egg);
             bombWhoosh.play();
         } else if(egg.key === "frenzy"){
             this.tweenEggs("crackedFrenzy", egg);
             eggCrack.play();
+            this.updateScore(-20);
         }  else if(egg.key === "scoreBoost") {
             this.tweenEggs("crackedScoreBoost", egg);
             eggCrack.play();
+            this.updateScore(-30);
         } else if(egg.key === "combo") {
             this.tweenEggs("crackedCombo", egg);
             eggCrack.play();
+            this.updateScore(-100);
         } else if(egg.key === "oneUp" ) {
             this.tweenEggs("crackedOneUp", egg);
             eggCrack.play();
         }
+
     },
 
     tweenEggs: function(cracked, egg){
@@ -308,8 +320,10 @@ var playState = {
         scoreTextFormat.strokeThickness = 5;
         if (typeof display != "number"){
             var scoreText = display;
-        } else{
+        } else if(display>0){
             var scoreText = "+" + display;
+        } else{
+            var scoreText = display;
         }
 
         this.frenzyTextDisplay = this.game.add.text(game.world.centerX, game.world.centerY, scoreText, scoreTextFormat);
