@@ -16,10 +16,7 @@ var playState = {
         // This will contain the score and the timer.
         this.scoreText = game.add.text(10,10,'Score: ' + score, {font: 'bold 60px Corbel', fill: '#003366'});
 
-        let heart = game.add.sprite(.74*canvasWidth, 0.01*canvasHeight, "heart");
-        heart.scale.setTo(0.65*scaleRatio, 0.65*scaleRatio);
-        game.add.text(.81*canvasWidth, 0.01*canvasHeight, '×', {font: 'bold 60px Corbel', fill: '#003366'});
-        this.livesNum = game.add.text(.85*canvasWidth, 0.01*canvasHeight, lives, {font: 'bold 60px Corbel', fill: '#003366'});
+        life.createHeart();
 
         //Create pause label button
         this.pause_label = game.add.text(0.95*canvasWidth, 0.01*canvasHeight, 'II', {font:'bold 60px Corbel', fill:'#003366'});
@@ -262,9 +259,7 @@ var playState = {
         } else if (egg.key == "bomb") {
             bombCollect.play();
             this.handleBomb();
-            if(lives>=0) {
-                this.livesNum.setText(lives);
-            }
+            life.loseLife();
         } else if (egg.key == "scoreBoost") {
             this.updateScore(30);
             eggCollect.play();
