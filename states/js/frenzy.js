@@ -25,6 +25,38 @@ var frenzyState = {
         this.drawEggsAtPoints(this.points);
         this.numberOfEggsCollected = 0;
         this.elapsedTime = 0;
+
+        life.createHeart();
+
+        //Create pause label button
+        this.pause_label = this.game.add.text(0.92*canvasWidth, 0.02*canvasHeight, 'II', {font:'bold 60px Corbel', fill:'#003366'});
+        this.pause_label.inputEnabled = true;
+
+        this.pause_label.events.onInputUp.add(function(){
+            this.pause_label.setText("►");
+
+            game.paused = true;
+
+            tutorialState.createEggDes();
+        }, this);
+
+        game.input.onDown.add(function(){
+            if(game.paused) {
+                var eggPics = tutorialState.getEggPics();
+                var eggDes = tutorialState.getDes();
+
+                eggPics.forEach(function(pics){
+                    pics.destroy();
+                });
+
+                eggDes.forEach(function(pics){
+                    pics.destroy();
+                });
+
+                game.paused = false;
+                this.pause_label.setText("II");
+            }
+        }, this);
         
         // this.generateFrenzyEggs(7, 8);
         // this.jiggleFrenzyEggs();
@@ -136,6 +168,7 @@ var frenzyState = {
 
     collectBomb: function(egg){
         lives--;
+        life.loseLife();
         egg.kill();
         if (lives == 0){
            explosion.play();
