@@ -18,6 +18,16 @@ var gameOverState = {
         playAgainButton.inputEnabled = true;
         playAgainButton.events.onInputDown.add(this.restart, this);
 
+        var homeButton = this.game.add.text(canvasWidth/2, 0.75*canvasHeight, "Home", playAgainButtonFormatting);
+        homeButton.anchor.setTo(0.5, 0.5);
+        homeButton.inputEnabled = true;
+        homeButton.events.onInputDown.add(this.goToHome, this);
+
+        var exitButton = this.game.add.text(canvasWidth/2, 0.85*canvasHeight, "Exit", playAgainButtonFormatting);
+        exitButton.anchor.setTo(0.5, 0.5);
+        exitButton.inputEnabled = true;
+        exitButton.events.onInputDown.add(this.shutGame, this);
+
         //this.game.input.onDown.addOnce(this.restart, this);
     },
 
@@ -37,5 +47,17 @@ var gameOverState = {
         comboProb = 0;
         oneUpProb = 0;
         score = 0;
+    },
+
+    goToHome: function(){
+        this.reset();
+        this.game.state.start('menu');
+    },
+
+    shutGame: function(){
+        this.reset();
+        this.game.destroy();
+
     }
+
 };
