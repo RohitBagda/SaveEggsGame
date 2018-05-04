@@ -21,12 +21,12 @@ var menuState = {
         aboutButtonFormatting.stroke = "#000000";
         aboutButtonFormatting.strokeThickness = 1;
 
-        var aboutButton = this.game.add.text(canvasWidth/2, canvasHeight/1.8 + verticalSpaceBetweenButtons, "How To Play", aboutButtonFormatting);
+        var aboutButton = this.game.add.text(canvasWidth/2, canvasHeight/1.6 + verticalSpaceBetweenButtons, "How To Play", aboutButtonFormatting);
         aboutButton.anchor.setTo(0.5, 0.5);
         aboutButton.inputEnabled = true;
         aboutButton.events.onInputDown.add(this.goToAboutPage, this);
 
-        var exitButton = this.game.add.text(canvasWidth/2, canvasHeight/1.6 + verticalSpaceBetweenButtons, "Quit", aboutButtonFormatting);
+        var exitButton = this.game.add.text(canvasWidth/2, canvasHeight/1.35 + verticalSpaceBetweenButtons, "Quit", aboutButtonFormatting);
         exitButton.anchor.setTo(0.5, 0.5);
         exitButton.inputEnabled = true;
         exitButton.events.onInputDown.add(this.shutGame, this);

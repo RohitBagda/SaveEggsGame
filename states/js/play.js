@@ -14,23 +14,24 @@ var playState = {
         // this.playerSpeed = 400;
 
         // This will contain the score and the timer.
-        this.scoreText = game.add.text(10,10,'Score: ' + score, {font: 'bold 60px Corbel', fill: '#003366'});
+        this.scoreText = game.add.text(0.05*canvasWidth,0.02*canvasWidth,'Score: ' + score, {font: 'bold 60px Corbel', fill: '#003366'});
 
         life.createHeart();
 
         //Create pause label button
-        this.pause_label = game.add.text(0.95*canvasWidth, 0.01*canvasHeight, 'II', {font:'bold 60px Corbel', fill:'#003366'});
+        this.pause_label = this.game.add.text(0.92*canvasWidth, 0.02*canvasHeight, 'II', {font:'bold 60px Corbel', fill:'#003366'});
         this.pause_label.inputEnabled = true;
 
         this.pause_label.events.onInputUp.add(function(){
+            this.pause_label.setText("►");
+
             game.paused = true;
 
             tutorialState.createEggDes();
+        }, this);
 
-            this.backButton = this.game.add.text(canvasWidth/2, 0.2*canvasHeight, "Back to Game", {font: 'bold 48px Corbel', fill: '#003366'});
-            this.backButton.anchor.setTo(0.5, 0.5);
-            this.backButton.inputEnabled = true;
-            this.backButton.events.onInputDown.add(function(){
+        game.input.onDown.add(function(){
+            if(game.paused) {
                 var eggPics = tutorialState.getEggPics();
                 var eggDes = tutorialState.getDes();
 
@@ -42,11 +43,10 @@ var playState = {
                     pics.destroy();
                 });
 
-                this.backButton.destroy();
-
                 game.paused = false;
-            });
-        });
+                this.pause_label.setText("II");
+            }
+        }, this);
 
         game.time.events.loop(500, this.dropEgg, this);
 
@@ -112,6 +112,11 @@ var playState = {
             egg.body.velocity.y=20;
 
             if(score < 0){
+                if (highestScore < score) {
+                    highestScore = score;
+                }
+                score = 0;
+
                 window.setTimeout(function(){
                     backgroundMusic.stop();
                     game.state.start("gameOver");
@@ -315,6 +320,10 @@ var playState = {
             explosion.play();
             this.player.animations.play('explodeBomb');
 
+            if (highestScore < score) {
+                highestScore = score;
+            }
+
             window.setTimeout(function(){
                 backgroundMusic.stop();
                 game.state.start("gameOver");
@@ -351,9 +360,6 @@ var playState = {
         this.showScoreAnimation(points);
         score += points;
         this.scoreText.text = 'Score: ' + score;
-        if (highestScore < score) {
-            highestScore = score;
-        }
     }
 
 };
