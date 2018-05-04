@@ -94,7 +94,7 @@ var frenzyState = {
         var topYOffSet = 0.018 * canvasHeight;
         var bottomYOffSet = 0.2 * canvasHeight;
         for (var i = 0; i < points.length; i++){
-            let coordinate = points[i]
+            let coordinate = points[i];
             if ((coordinate.x > xOffSet) && (coordinate.x < (canvasWidth - xOffSet))
                 && (coordinate.y > topYOffSet) && (coordinate.y < (canvasHeight - bottomYOffSet))){
                 var prob = Math.random();
@@ -117,10 +117,7 @@ var frenzyState = {
         frenzyEgg.scale.setTo(scaleRatio * 1.5, scaleRatio * 1.5);
 
         game.physics.arcade.enable(frenzyEgg, Phaser.Physics.ARCADE);
-        // frenzyEgg.scale.setTo(scaleRatio, scaleRatio);
         game.physics.arcade.enable(frenzyEgg);
-
-        // frenzyEgg.enableDrag();
         frenzyEgg.body.kinematic = true;
         frenzyEgg.inputEnabled = true;
         frenzyEgg.input.enableDrag(false, true, true);
@@ -134,18 +131,8 @@ var frenzyState = {
         frenzyEgg.events.onInputDown.add(this.collectBomb, this);
     },
 
-    collectBomb: function(egg){
-        lives--;
-        egg.kill();
-        if (lives == 0){
-           explosion.play();
-            frenzyMusic.stop();
-            this.game.state.start('gameOver');
-        } else{
-
-        }
-        bombCollect.play();
-
+    collectBomb: function(){
+        playState.handleBomb();
     },
 
     createFrenzyEgg: function (eggX, eggY) {
@@ -173,11 +160,9 @@ var frenzyState = {
 
     changeXVelocityOfEgg: function(){
         this.xVelocityFrenzyEgg = -1 * this.xVelocityFrenzyEgg;
-        // return -1*this.xVelocityGravityFrenzyEgg;
     },
 
     collectEgg: function(egg){
-        // this.game.state.start('menu');
         let eggX = egg.x;
         let eggY = egg.y;
 
