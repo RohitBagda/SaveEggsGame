@@ -105,6 +105,11 @@ var playState = {
             egg.body.velocity.y=20;
 
             if(score < 0){
+                if (highestScore < score) {
+                    highestScore = score;
+                }
+                score = 0;
+
                 window.setTimeout(function(){
                     backgroundMusic.stop();
                     game.state.start("gameOver");
@@ -306,6 +311,10 @@ var playState = {
             explosion.play();
             this.player.animations.play('explodeBomb');
 
+            if (highestScore < score) {
+                highestScore = score;
+            }
+
             window.setTimeout(function(){
                 backgroundMusic.stop();
                 game.state.start("gameOver");
@@ -342,9 +351,6 @@ var playState = {
         this.showScoreAnimation(points);
         score += points;
         this.scoreText.text = 'Score: ' + score;
-        if (highestScore < score) {
-            highestScore = score;
-        }
     }
 
 };
