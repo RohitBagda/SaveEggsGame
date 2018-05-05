@@ -18,7 +18,7 @@ var tutorialState = {
         this.game.add.text(RULE_FIRST_COLUMN_X, RULE_FIRST_ROW_Y, "1. Drag the Basket.", overviewFormatting);
         this.game.add.text(RULE_SECOND_COLUMN_X, RULE_FIRST_ROW_Y, "2. You have up to 3 lives.", overviewFormatting);
         this.game.add.text(RULE_FIRST_COLUMN_X, RULE_SECOND_ROW_Y, "3. Avoid Bombs!", overviewFormatting);
-        this.game.add.text(RULE_SECOND_COLUMN_X, RULE_SECOND_ROW_Y, "4. Missing eggs will cost points.", overviewFormatting);
+        this.game.add.text(RULE_SECOND_COLUMN_X, RULE_SECOND_ROW_Y, "4. Missed eggs cost points.", overviewFormatting);
     },
     createLogo: function(){
         const LOGO_X = canvasWidth/2;
@@ -29,6 +29,7 @@ var tutorialState = {
         nameLabel.scale.setTo(LOGO_SCALE, LOGO_SCALE);
         nameLabel.anchor.setTo(LOGO_ANCHOR, LOGO_ANCHOR);
     },
+
     createEggDescriptions: function() {
         const EGG_PICTURE_X = canvasWidth/12;
         const EGG_PICTURE_Y = canvasHeight/12;
@@ -62,11 +63,13 @@ var tutorialState = {
         let bombDes = this.game.add.text(DESCRITION_X, EGG_PICTURE_Y * 9 + EGG_AND_DESCRIPTION, "Bomb - avoid! Catching 3 of these ends the game.", descriptionFormatting);
         this.descriptions = [eggDes, scoreDes, frenzyDes, OneupDes, comboDes, bombDes];
     },
+
     createScale: function(sourceArray){
         sourceArray.forEach(function(element){
             element.scale.setTo(scaleRatio, scaleRatio);
         });
     },
+
     createHome: function(){
         var homeButtonFormatting = {font: "bold 48pt Corbel", fill: "#003366"};
         homeButtonFormatting.stroke = "#000000";
@@ -76,6 +79,7 @@ var tutorialState = {
         aboutButton.inputEnabled = true;
         aboutButton.events.onInputDown.add(this.goToHome, this);
     },
+
     getEggImages: function(){
         return this.eggPics;
     },
@@ -83,6 +87,7 @@ var tutorialState = {
     getEggDescriptions: function(){
         return this.descriptions;
     },
+
     goToHome: function(){
         this.game.state.start('menu');
     }

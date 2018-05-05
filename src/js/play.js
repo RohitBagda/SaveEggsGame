@@ -231,8 +231,9 @@ var playState = {
     },
 
     showTweenAnimation: function(display){
+        var tweenSpeed = 100;
         var tweenTextFormat = gameController.createFormatting("bold 80pt Corbel", "#ff0000");
-        gameController.createTweenAnimation(game.world.centerX, game.world.centerY, display, tweenTextFormat, 300);
+        gameController.createTweenAnimation(game.world.centerX, game.world.centerY, display, tweenTextFormat, 300, tweenSpeed);
     },
 
 

@@ -78,11 +78,11 @@ var gameController = {
         this.scoreText.text = 'Score: ' + this.score;
     },
 
-    createTweenText: function(x, y, text, format, duration){
+    createTweenText: function(x, y, text, format, duration, speed){
         var tweenDisplay = game.add.text(x, y, text, format);
         tweenDisplay.anchor.setTo(gameController.horizontalAnchor, gameController.verticalAnchor);
         game.add.tween(tweenDisplay)
-            .to({alpha: 0}, 100, Phaser.Easing.Default, true, duration);
+            .to({alpha: 0}, speed, Phaser.Easing.Default, true, duration);
     },
 
     tweenEgg: function(crackedEggImage, egg){
@@ -186,13 +186,13 @@ var gameController = {
         this.hasReachedCombo = false;
     },
 
-    createTweenAnimation: function(x, y, text, textFormat, duration){
+    createTweenAnimation: function(x, y, text, textFormat, duration, speed){
         if(text>0){
             var tweenText = "+" + text;
         } else{
             var tweenText = text;
         }
-        this.createTweenText(x, y, tweenText, textFormat, duration);
+        this.createTweenText(x, y, tweenText, textFormat, duration, speed);
     },
 
 };
