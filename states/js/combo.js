@@ -8,27 +8,19 @@ var comboState = {
     comboEggsDropDuration: 10,
 
     create: function(){
-        // this.setupGame();
 
         this.comboTime=0;
-        game.add.sprite(0,0,"background");
+        gameData.addBackground();
         this.setupPlayer();
         this.comboEggs = game.add.group();
-        this.eggGravity = 50000;
-
-        //this.scoreText = game.add.text(10,10,'Score: ' + score, {font: 'bold 60px Corbel', fill: '#003366'});
         gameData.createScoreText();
         gameData.createHeart();
-
         //Create pause label button
-        this.pauseLabel = this.game.add.text(0.92*canvasWidth, 0.02*canvasHeight, 'II', {font:'bold 60px Corbel', fill:'#003366'});
-        this.pauseLabel.inputEnabled = true;
+        gameData.createPauseLabel();
 
-        this.pauseLabel.events.onInputUp.add(function(){
-            this.pauseLabel.setText("►");
-
+        gameData.pauseLabel.events.onInputUp.add(function(){
+            gameData.pauseLabel.setText("►");
             game.paused = true;
-
             tutorialState.createEggDes();
         }, this);
 
@@ -46,7 +38,7 @@ var comboState = {
                 });
 
                 game.paused = false;
-                this.pauseLabel.setText("II");
+                gameData.pauseLabel.setText("II");
             }
         }, this);
 
@@ -70,30 +62,29 @@ var comboState = {
             var comboEgg = this.comboEggs.children[i];
             comboEgg.body.velocity.y=20;
 
-            if(comboEgg.y <= gameData.player.y - comboEgg.height/1.2){
+            if(comboEgg.y <= gameData.player.y - comboEgg.height){
                 game.physics.arcade.collide(gameData.player, comboEgg, this.collectComboEgg, null, this);
-            } else if(comboEgg.y > canvasHeight * 10/11){
+            } else if(comboEgg.y > gameData.player.y+gameData.player.height-comboEgg.height){
                 this.crackComboEggs(comboEgg);
             }
-
         }
 
     },
 
     crackComboEggs: function(egg){
         if(egg.key==="combo") {
-            this.tweenComboEggs("crackedCombo", egg);
+            gameData.tweenEgg("crackedCombo", egg);
             gameData.eggCrack.play();
         }
 
     },
 
-    tweenComboEggs: function(cracked, egg){
-        egg.loadTexture(cracked,0);
-        egg.body.gravity.y = 0;
-        this.game.add.tween(egg)
-            .to({alpha: 0}, 1000, Phaser.Easing.Default, true, 300);
-    },
+    // tweenComboEggs: function(cracked, egg){
+    //     egg.loadTexture(cracked,0);
+    //     egg.body.gravity.y = 0;
+    //     this.game.add.tween(egg)
+    //         .to({alpha: 0}, 1000, Phaser.Easing.Default, true, 300);
+    // },
 
     setupPlayer: function(){
         //Create basket player sprite and enable physics
