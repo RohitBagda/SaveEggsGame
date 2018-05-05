@@ -1,6 +1,14 @@
 var gameData = {
     score : 0,
     highestScore: 0,
+    lives: 3,
+    regularEggProb: 1,
+    bombProb: 0,
+    scoreBoostProb: 0,
+    frenzyProb: 0,
+    comboPro: 0,
+    oneUpProb: 0,
+    currentTime: 0,
 
     addBackground: function(){
         game.add.sprite(0,0, "background");
@@ -23,11 +31,18 @@ var gameData = {
         this.scoreText.text = 'Score: ' + this.score;
     },
 
-    createTween: function(x, y, text, format){
+    createTweenText: function(x, y, text, format){
         var tweenDisplay = game.add.text(x, y, text, format);
         tweenDisplay.anchor.setTo(0.5, 0.5);
         game.add.tween(tweenDisplay)
             .to({alpha: 0}, 100, Phaser.Easing.Default, true, 300);
+    },
+
+    tweenEgg: function(crackedEggImage, egg){
+        egg.loadTexture(crackedEggImage,0);
+        egg.body.gravity.y = 0;
+        game.add.tween(egg)
+            .to({alpha: 0}, 1000, Phaser.Easing.Default, true, 300);
     },
 
     setupSounds: function(){
@@ -54,6 +69,35 @@ var gameData = {
 
         this.bombCollect = game.add.audio('bomb_collect');
         this.bombCollect.volume = 0.6;
+    },
+
+    decrementLives: function(){
+        this.lives--;
+    },
+
+    incrementLives: function(){
+        this.lives++;
+    },
+
+    resetScore: function(){
+        this.score = 0;
+    },
+
+    setEggProbabilities: function(regularEggPr, bombPr, scoreBoostPr, frenzyPr, comboPr, oneUpPr){
+        this.regularEggProb = regularEggPr;
+        this.bombProb = bombPr;
+        this.scoreBoostProb = scoreBoostPr;
+        this.frenzyProb = frenzyPr;
+        this.comboProb = comboPr;
+        this.oneUpProb = oneUpPr;
+    },
+
+    resetGameComponents: function(){
+        this.currentTime=0;
+        this.lives = 3;
+        this.setEggProbabilities(1,0,0,0,0,0);
+        this.score = 0;
     }
+
 };
 

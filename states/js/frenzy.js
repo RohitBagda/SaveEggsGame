@@ -167,7 +167,7 @@ var frenzyState = {
     },
 
     collectBomb: function(egg){
-        lives--;
+        gameData.lives--;
         life.changeLife();
         playState.calculateEggProbability(currentTime);
         egg.kill();

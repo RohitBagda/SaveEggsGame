@@ -32,21 +32,9 @@ var gameOverState = {
     },
 
     restart: function(){
-        this.reset();
+        gameData.resetGameComponents();
         this.game.state.start('play');
         backgroundMusic.play();
-    },
-    
-    reset: function () {
-        currentTime=0;
-        lives = 3;
-        regularEggProb = 1;
-        bombProb = 0;
-        scoreBoostProb = 0;
-        frenzyProb = 0;
-        comboProb = 0;
-        oneUpProb = 0;
-        score = 0;
     },
 
     goToHome: function(){
