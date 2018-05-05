@@ -1,4 +1,4 @@
-# SaveEggsGame
+# SavetheEggs
 Software Design and Development (COMP 225) class project; Create a JavaScript game with PHASER framework.
 
 INTRODUCTION
@@ -18,7 +18,7 @@ SavetheEggs is currently compatible with mobile devices. The game is currently d
 as Android app (apk) and browsers on iOS iPhone. (Note that this game is not compatible with Desktop or tablet.
 
 
-INSTALL
+INSTALLATION, BUILDING, and DEPLOYMENT
 -------
 
 To install the game on a Android device, we need:
@@ -48,8 +48,10 @@ To install the game on a Android device, we need:
        (2) http-server
        (3) Open up your browser and enter the localhost url indicated in the Node.js
 
-Citation
+CITATION
 --------
-https://stackoverflow.com/
-https://phaser.io/tutorials/making-your-first-phaser-game
+1) https://stackoverflow.com/
 
+2) https://phaser.io/tutorials/making-your-first-phaser-game
+
+3) https://github.com/kimchristiansen/poisson-disk-sampler-js/
