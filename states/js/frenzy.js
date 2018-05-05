@@ -168,7 +168,8 @@ var frenzyState = {
 
     collectBomb: function(egg){
         lives--;
-        life.loseLife();
+        life.changeLife();
+        playState.calculateEggProbability(currentTime);
         egg.kill();
         if (lives == 0){
            explosion.play();

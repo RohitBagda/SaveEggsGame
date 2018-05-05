@@ -83,11 +83,17 @@ var playState = {
     },
 
     calculateEggProbWithOneUP: function(){
+        // regularEggProb = 0.45;
+        // bombProb = 0.9;
+        // scoreBoostProb = 0.97;
+        // frenzyProb = 0.98;
+        // comboProb = 0.99;
+        // oneUpProb = 1;
         regularEggProb = 0.45;
-        bombProb = 0.9;
-        scoreBoostProb = 0.97;
-        frenzyProb = 0.98;
-        comboProb = 0.99;
+        bombProb = 0.5;
+        scoreBoostProb = 0.6;
+        frenzyProb = 0.61;
+        comboProb = 0.62;
         oneUpProb = 1;
     },
 
@@ -97,6 +103,7 @@ var playState = {
         scoreBoostProb = 0.98;
         frenzyProb = 0.99;
         comboProb = 1;
+        oneUpProb = 0;
     },
 
     update: function(){
@@ -276,7 +283,6 @@ var playState = {
         } else if (egg.key == "bomb") {
             bombCollect.play();
             this.handleBomb();
-            life.loseLife();
         } else if (egg.key == "scoreBoost") {
             this.updateScore(30);
             eggCollect.play();
@@ -289,8 +295,9 @@ var playState = {
             backgroundMusic.stop();
             this.game.state.start("transitionToFrenzy");
         } else if (egg.key == "oneUp"){
+            eggCollect.play();
             lives++;
-            this.livesNum.setText(""+lives);
+            life.changeLife();
             if(lives>=3){
                 this.calculateEggProbability(currentTime);
             }
@@ -299,6 +306,8 @@ var playState = {
 
     handleBomb: function(){
         lives--;
+        life.changeLife();
+
         if(lives<3){
             this.calculateEggProbability(currentTime);
         }

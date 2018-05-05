@@ -8,7 +8,7 @@ var life = {
         this.livesNum = game.add.text(.85*canvasWidth, 0.02*canvasHeight, lives, {font: 'bold 60px Corbel', fill: '#003366'});
     },
 
-    loseLife: function(){
+    changeLife: function(){
         if(lives >= 0 && lives <= 3) {
             this.livesNum.setText(lives);
         }
