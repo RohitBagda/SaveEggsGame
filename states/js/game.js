@@ -22,10 +22,8 @@ game.state.add('attract', attractState);
 // Start the game
 game.state.start('boot');
 
-var score=0;
-var highestScore=0;
+
 var canvasWidth = window.innerWidth;
 var canvasHeight = window.innerHeight;
 var scaleRatio = window.devicePixelRatio/1.2;
-var currentTime = 0;
-var lives = 3;
+

@@ -9,6 +9,7 @@ var gameData = {
     comboPro: 0,
     oneUpProb: 0,
     currentTime: 0,
+    maxLives: 3,
 
     addBackground: function(){
         game.add.sprite(0,0, "background");
@@ -23,7 +24,7 @@ var gameData = {
 
     createScoreText: function() {
         var scoreFormat = this.createFormatting("bold 60px Corbel", "#003366");
-        this.scoreText = game.add.text(0.05*canvasWidth,0.02*canvasWidth,'Score: ' + score, scoreFormat);
+        this.scoreText = game.add.text(0.05*canvasWidth,0.02*canvasWidth,'Score: ' + this.score, scoreFormat);
     },
 
     updateScore: function(points){
@@ -43,6 +44,26 @@ var gameData = {
         egg.body.gravity.y = 0;
         game.add.tween(egg)
             .to({alpha: 0}, 1000, Phaser.Easing.Default, true, 300);
+    },
+
+    createBasket: function(){
+        //Create basket player sprite and enable physics
+        this.basketX = canvasWidth/2;
+        this.basketY = canvasHeight/1.2;
+        this.player = game.add.sprite(this.basketX, this.basketY, "explode");
+        this.player.animations.add('explodeBomb', [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], 45);
+        this.player.scale.setTo(scaleRatio/1.5, scaleRatio/1.5);
+        this.player.anchor.setTo(0.5,0);
+        game.physics.arcade.enable(this.player, Phaser.Physics.ARCADE);
+        this.player.body.kinematic = true;
+        this.player.inputEnabled = true;
+        this.player.input.enableDrag(false, true, true);
+        this.player.input.allowVerticalDrag = false;
+        this.player.collideWorldBounds = true;
+        let bounds = new Phaser.Rectangle(0,0, canvasWidth, canvasHeight);
+        this.player.input.boundsRect = bounds;
+        this.player.body.immovable = true;
+        this.player.allowGravity = false;
     },
 
     setupSounds: function(){

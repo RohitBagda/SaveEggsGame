@@ -56,6 +56,8 @@ var comboState = {
         game.time.events.loop(1000, function(){
             if(this.comboTime>this.comboDuration){
                 this.waveScore = 0;
+                gameData.basketX = gameData.player.x;
+                gameData.basketY = gameData.player.y;
                 this.game.state.start('play');
             } else {
                 this.comboTime++;
@@ -68,8 +70,8 @@ var comboState = {
             var comboEgg = this.comboEggs.children[i];
             comboEgg.body.velocity.y=20;
 
-            if(comboEgg.y <= this.player.y - comboEgg.height/1.2){
-                game.physics.arcade.collide(this.player, comboEgg, this.collectComboEgg, null, this);
+            if(comboEgg.y <= gameData.player.y - comboEgg.height/1.2){
+                game.physics.arcade.collide(gameData.player, comboEgg, this.collectComboEgg, null, this);
             } else if(comboEgg.y > canvasHeight * 10/11){
                 this.crackComboEggs(comboEgg);
             }
@@ -95,20 +97,7 @@ var comboState = {
 
     setupPlayer: function(){
         //Create basket player sprite and enable physics
-        this.player = game.add.sprite(canvasWidth/2, canvasHeight/1.2, "basket");
-        this.player.scale.setTo(scaleRatio, scaleRatio);
-        game.physics.arcade.enable(this.player, Phaser.Physics.ARCADE);
-        this.player.body.kinematic = true;
-        this.player.inputEnabled = true;
-        this.player.input.enableDrag(false, true, true);
-        this.player.input.allowVerticalDrag = false;
-        this.player.collideWorldBounds = true;
-        let bounds = new Phaser.Rectangle(0,0, canvasWidth, canvasHeight);
-        this.player.input.boundsRect = bounds;
-        this.player.body.immovable = true;
-        this.player.body.checkCollision.right = false;
-        this.player.body.checkCollision.left = false;
-        this.player.body.checkCollision.down = false;
+        gameData.createBasket(gameData.basketX, gameData.basketY);
     },
 
     dropComboEggWave: function() {
@@ -139,7 +128,7 @@ var comboState = {
             egg.scale.setTo(scaleRatio, scaleRatio);
 
             game.physics.arcade.enable(egg);
-            this.eggGravity = this.calculateEggGravity(currentTime);
+            this.eggGravity = this.calculateEggGravity(gameData.currentTime);
             egg.body.gravity.y = this.eggGravity;
             this.comboEggs.add(egg);
         }
@@ -166,7 +155,7 @@ var comboState = {
     },
 
     calculateEggGravity: function(){
-        return  1.4 * 1.2*(40000/(1+Math.exp(-0.1*(currentTime-30)))+40000);
+        return  1.4 * 1.2*(40000/(1+Math.exp(-0.1*(gameData.currentTime-30)))+40000);
     },
 
     collectComboEgg: function(player, egg) {

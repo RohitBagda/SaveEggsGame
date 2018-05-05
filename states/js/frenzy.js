@@ -167,18 +167,19 @@ var frenzyState = {
     },
 
     collectBomb: function(egg){
-        gameData.lives--;
-        life.changeLife();
-        playState.calculateEggProbability(currentTime);
-        egg.kill();
-        if (lives == 0){
-           explosion.play();
-            frenzyMusic.stop();
-            this.game.state.start('gameOver');
-        } else{
-
-        }
-        bombCollect.play();
+        // gameData.lives--;
+        // life.changeLife();
+        // playState.calculateEggProbability(currentTime);
+        // egg.kill();
+        // if (lives == 0){
+        //    explosion.play();
+        //     frenzyMusic.stop();
+        //     this.game.state.start('gameOver');
+        // } else{
+        //
+        // }
+        // bombCollect.play();
+        playState.handleBomb();
 
     },
 
