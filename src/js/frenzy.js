@@ -8,24 +8,24 @@ var frenzyState = {
 
 
     create: function(){
-        gameData.addBackground();
-        this.frenzyEggPoints = gameData.frenzyPoints;
+        gameController.addBackground();
+        this.frenzyEggPoints = gameController.frenzyPoints;
         this.numberOfEggsAddedToScreen = 0;
         this.hasAchievedBonus = false;
         this.frenzyTime = 0;
         this.createFrenzyTimer();
-        gameData.createScoreText();
-        // gameData.scoreText = game.add.text(10,10, "Score: " + score, {font: 'bold 60px Corbel', fill: '#003366'});
+        gameController.createScoreText();
+        // gameController.scoreText = game.add.text(10,10, "Score: " + score, {font: 'bold 60px Corbel', fill: '#003366'});
         this.frenzyStateGroup = game.add.group();
         this.minDistanceBetweenPoints = this.createFrenzyEgg(-500, -500);
         this.points = this.generatePoints();
         this.drawEggsAtPoints(this.points);
         this.numberOfEggsCollected = 0;
         this.elapsedTime = 0;
-        gameData.createHeart();
+        gameController.createHeart();
         game.time.events.loop(1000, function(){
             if (this.frenzyTime >= this.durationOfFrenzyState){
-                gameData.frenzyMusic.stop();
+                gameController.frenzyMusic.stop();
                 backgroundMusic.play();
                 this.game.state.start('play');
             } else{
@@ -47,27 +47,27 @@ var frenzyState = {
         }
         if (this.numberOfEggsCollected == this.numberOfEggsAddedToScreen && !this.hasAchievedBonus){
             this.hasAchievedBonus = true;
-            gameData.score += this.bonusPointsFrenzy;
-            gameData.scoreText.text = "Score: " + gameData.score;
+            gameController.score += this.bonusPointsFrenzy;
+            gameController.scoreText.text = "Score: " + gameController.score;
             this.playBonusReceivedAnimation();
         }
-        if (gameData.score > gameData.highestScore){
-            gameData.highestScore = gameData.score;
+        if (gameController.score > gameController.highestScore){
+            gameController.highestScore = gameController.score;
         }
 
     },
 
     createFrenzyTimer: function () {
-        var frenzyTimerFormatting = gameData.createFormatting("bold 50pt Corbel", "#ff0000");
+        var frenzyTimerFormatting = gameController.createFormatting("bold 50pt Corbel", "#ff0000");
         this.timer = game.add.text(canvasWidth / 2, 0.03 * canvasHeight, this.durationOfFrenzyState, frenzyTimerFormatting);
         this.timer.anchor.setTo(0.5, 0.5);
         this.timer.scale.setTo(scaleRatio, scaleRatio);
     },
 
     playBonusReceivedAnimation: function(){
-        var bonusPointsFormat = gameData.createFormatting("bold 100pt Corbel", "#FF00FF");
+        var bonusPointsFormat = gameController.createFormatting("bold 100pt Corbel", "#FF00FF");
         var bonusText = "BONUS: +" + this.bonusPointsFrenzy;
-        gameData.createTweenAnimation(game.world.centerX, game.world.centerY, bonusText , bonusPointsFormat);
+        gameController.createTweenAnimation(game.world.centerX, game.world.centerY, bonusText , bonusPointsFormat);
 
     },
 
@@ -100,16 +100,16 @@ var frenzyState = {
     },
 
     collectBomb: function(egg){
-        gameData.lives--;
-        gameData.updateLifeCountLabel();
-        playState.calculateEggProbability(gameData.currentTime);
+        gameController.lives--;
+        gameController.updateLifeCountLabel();
+        playState.calculateEggProbability(gameController.currentTime);
         egg.kill();
-        if (gameData.lives == 0){
-            gameData.explosion.play();
-            gameData.frenzyMusic.stop();
+        if (gameController.lives == 0){
+            gameController.explosion.play();
+            gameController.frenzyMusic.stop();
             this.game.state.start('gameOver');
         } else{
-            gameData.bombCollect.play();
+            gameController.bombCollect.play();
         }
 
 
@@ -147,16 +147,16 @@ var frenzyState = {
         let eggX = egg.x;
         let eggY = egg.y;
         egg.kill();
-        gameData.frenzyTouch.play();
+        gameController.frenzyTouch.play();
         this.numberOfEggsCollected++;
         this.showScoreAnimation(eggX, eggY, this.frenzyEggPoints);
-        gameData.score += this.frenzyEggPoints;
-        gameData.scoreText.text = "Score: " + gameData.score;
+        gameController.score += this.frenzyEggPoints;
+        gameController.scoreText.text = "Score: " + gameController.score;
     },
 
     showScoreAnimation: function(xCoordinate, yCoordinate, numberOfPoints){
-        var scoreTextFormat = gameData.createFormatting("bold 40pt Corbel", "#003366");
-        gameData.createTweenAnimation(xCoordinate, yCoordinate, numberOfPoints, scoreTextFormat, 700);
+        var scoreTextFormat = gameController.createFormatting("bold 40pt Corbel", "#003366");
+        gameController.createTweenAnimation(xCoordinate, yCoordinate, numberOfPoints, scoreTextFormat, 700);
     },
 
 };

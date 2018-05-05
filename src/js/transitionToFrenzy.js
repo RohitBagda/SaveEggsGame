@@ -3,7 +3,7 @@ var transitionToFrenzyState = {
     create: function(){
         this.frenzyTweenDuration = 0;
 
-        gameData.addBackground();
+        gameController.addBackground();
 
         this.showFrenzyModeAnimation();
         game.time.events.loop(300, function(){
@@ -20,9 +20,9 @@ var transitionToFrenzyState = {
 
     showFrenzyModeAnimation: function(){
 
-        var frenzyTextFormat = gameData.createFormatting("bold 200px Times",  "#FF5500");
+        var frenzyTextFormat = gameController.createFormatting("bold 200px Times",  "#FF5500");
         var frenzyText = "FRENZY";
-        gameData.createTweenAnimation(canvasWidth/2, canvasHeight/2, frenzyText, frenzyTextFormat, 500);
+        gameController.createTweenAnimation(canvasWidth/2, canvasHeight/2, frenzyText, frenzyTextFormat, 500);
     }
 
 };

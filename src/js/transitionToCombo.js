@@ -2,7 +2,7 @@ var transitionToComboState = {
     create: function(){
         this.comboTweenDuration = 0;
 
-        gameData.addBackground();
+        gameController.addBackground();
 
         this.showComboModeAnimation();
 
@@ -17,8 +17,8 @@ var transitionToComboState = {
     },
 
     showComboModeAnimation: function(){
-        var comboTextFormat = gameData.createFormatting("bold 200px Times", "#00FF00");
+        var comboTextFormat = gameController.createFormatting("bold 200px Times", "#00FF00");
         var comboText = "COMBO";
-        gameData.createTweenAnimation(canvasWidth/2, canvasHeight/2, comboText, comboTextFormat, 500);
+        gameController.createTweenAnimation(canvasWidth/2, canvasHeight/2, comboText, comboTextFormat, 500);
     }
 };

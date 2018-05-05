@@ -1,4 +1,4 @@
-var gameData = {
+var gameController = {
     score : 0,
     highestScore: 0,
     lives: 3,
@@ -28,14 +28,39 @@ var gameData = {
         this.heart.scale.setTo(0.65*scaleRatio, 0.65*scaleRatio);
 
         // game.add.text(.81*canvasWidth, 0.01*canvasHeight, '×', {font: 'bold 60px Corbel', fill: '#003366'});
-        this.livesNum = game.add.text(.81*canvasWidth, 0.01*canvasHeight, ("×" +gameData.lives), {font: 'bold 60px Corbel', fill: '#003366'});
+        this.livesNum = game.add.text(.81*canvasWidth, 0.01*canvasHeight, ("×" +gameController.lives), {font: 'bold 60px Corbel', fill: '#003366'});
     },
 
     updateLifeCountLabel: function(){
-        if(gameData.lives >= 0 && gameData.lives <= gameData.maxLives) {
-            this.livesNum.setText("×" + gameData.lives);
+        if(gameController.lives >= 0 && gameController.lives <= gameController.maxLives) {
+            this.livesNum.setText("×" + gameController.lives);
         }
     },
+
+    createPause: function(){
+        this.createPauseLabel();
+        gameController.pauseLabel.events.onInputUp.add(function(){
+            gameController.pauseLabel.setText("►");
+            game.paused = true;
+            tutorialState.createEggDescriptions();
+        }, this);
+
+        game.input.onDown.add(function(){
+            if(game.paused) {
+                var eggImages = tutorialState.getEggImages();
+                var eggDescription = tutorialState.getEggDescriptions();
+                eggImages.forEach(function(image){
+                    image.destroy();
+                });
+                eggDescription.forEach(function(description){
+                    description.destroy();
+                });
+                game.paused = false;
+                gameController.pauseLabel.setText("II");
+            }
+        }, this);
+    },
+
 
     createFormatting: function(fontType, fillColor) {
         var format = {font: fontType, fill: fillColor};
@@ -56,7 +81,7 @@ var gameData = {
 
     createTweenText: function(x, y, text, format, duration){
         var tweenDisplay = game.add.text(x, y, text, format);
-        tweenDisplay.anchor.setTo(gameData.horizontalAnchor, gameData.verticalAnchor);
+        tweenDisplay.anchor.setTo(gameController.horizontalAnchor, gameController.verticalAnchor);
         game.add.tween(tweenDisplay)
             .to({alpha: 0}, 100, Phaser.Easing.Default, true, duration);
     },

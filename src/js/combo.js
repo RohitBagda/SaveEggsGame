@@ -7,43 +7,46 @@ var comboState = {
     comboEggsDropDuration: 10,
 
     create: function(){
-        gameData.addBackground();
-        gameData.createScoreText();
-        gameData.createHeart();
-        gameData.createPauseLabel();
-        this.comboEggPoints=gameData.comboPoints;
+        gameController.addBackground();
+        gameController.createScoreText();
+        gameController.createHeart();
+
+        this.comboEggPoints=gameController.comboPoints;
         this.comboTime=0;
         this.setupPlayer();
         this.comboEggs = game.add.group();
 
-        gameData.pauseLabel.events.onInputUp.add(function(){
-            gameData.pauseLabel.setText("►");
-            game.paused = true;
-            tutorialState.createEggDes();
-        }, this);
+        gameController.createPause();
 
-        game.input.onDown.add(function(){
-            if(game.paused) {
-                var eggPics = tutorialState.getEggImages();
-                var eggDes = tutorialState.getEggDescriptions();
-                eggPics.forEach(function(image){
-                    image.destroy();
-                });
-                eggDes.forEach(function(description){
-                    description.destroy();
-                });
-
-                game.paused = false;
-                gameData.pauseLabel.setText("II");
-            }
-        }, this);
+        // gameController.createPauseLabel();
+        // gameController.pauseLabel.events.onInputUp.add(function(){
+        //     gameController.pauseLabel.setText("►");
+        //     game.paused = true;
+        //     tutorialState.createEggDescriptions();
+        // }, this);
+        //
+        // game.input.onDown.add(function(){
+        //     if(game.paused) {
+        //         var eggPics = tutorialState.getEggImages();
+        //         var eggDes = tutorialState.getEggDescriptions();
+        //         eggPics.forEach(function(image){
+        //             image.destroy();
+        //         });
+        //         eggDes.forEach(function(description){
+        //             description.destroy();
+        //         });
+        //
+        //         game.paused = false;
+        //         gameController.pauseLabel.setText("II");
+        //     }
+        // }, this);
 
         game.time.events.loop(1000, this.dropComboEggWave, this);
         game.time.events.loop(1000, function(){
             if(this.comboTime>this.comboDuration){
                 this.waveScore = 0;
-                gameData.basketX = gameData.player.x;
-                gameData.basketY = gameData.player.y;
+                gameController.basketX = gameController.player.x;
+                gameController.basketY = gameController.player.y;
                 this.game.state.start('play');
             } else {
                 this.comboTime++;
@@ -54,11 +57,11 @@ var comboState = {
     update: function(){
         for(var i in this.comboEggs.children){
             var comboEgg = this.comboEggs.children[i];
-            comboEgg.body.velocity.y=gameData.eggVelocity;
+            comboEgg.body.velocity.y=gameController.eggVelocity;
 
-            if(comboEgg.y <= gameData.player.y - comboEgg.height){
-                game.physics.arcade.collide(gameData.player, comboEgg, this.collectComboEgg, null, this);
-            } else if(comboEgg.y > gameData.player.y+gameData.player.height-comboEgg.height){
+            if(comboEgg.y <= gameController.player.y - comboEgg.height){
+                game.physics.arcade.collide(gameController.player, comboEgg, this.collectComboEgg, null, this);
+            } else if(comboEgg.y > gameController.player.y+gameController.player.height-comboEgg.height){
                 this.crackComboEggs(comboEgg);
             }
         }
@@ -67,15 +70,15 @@ var comboState = {
 
     crackComboEggs: function(egg){
         if(egg.key==="combo") {
-            gameData.tweenEgg("crackedCombo", egg);
-            gameData.eggCrack.play();
+            gameController.tweenEgg("crackedCombo", egg);
+            gameController.eggCrack.play();
         }
 
     },
 
     setupPlayer: function(){
         //Create basket player sprite and enable physics
-        gameData.createBasket(gameData.basketX, gameData.basketY);
+        gameController.createBasket(gameController.basketX, gameController.basketY);
     },
 
     dropComboEggWave: function() {
@@ -102,7 +105,7 @@ var comboState = {
             var egg = game.add.sprite(eggX, eggY, eggType);
             egg.scale.setTo(scaleRatio, scaleRatio);
             game.physics.arcade.enable(egg);
-            this.eggGravity = gameData.calculateEggGravity(gameData.currentTime);
+            this.eggGravity = gameController.calculateEggGravity(gameController.currentTime);
             egg.body.gravity.y = this.eggGravity;
             this.comboEggs.add(egg);
         }
@@ -126,7 +129,7 @@ var comboState = {
     },
 
     collectComboEgg: function(player, egg) {
-        gameData.eggCollect.play();
+        gameController.eggCollect.play();
         egg.kill();
         this.comboEggCaughtPerWaveCount++;
         this.waveScore += this.comboEggPoints;
@@ -134,11 +137,11 @@ var comboState = {
     },
 
     showScoreAnimation: function(display){
-        var scoreTextFormat = gameData.createFormatting("bold 80pt Corbel","#003366");
-        gameData.createTweenAnimation(game.world.centerX, game.world.centerY, display, scoreTextFormat, 300);
+        var scoreTextFormat = gameController.createFormatting("bold 80pt Corbel","#003366");
+        gameController.createTweenAnimation(game.world.centerX, game.world.centerY, display, scoreTextFormat, 300);
     },
 
     updateScore: function(points){
-        gameData.updateScore(points);
+        gameController.updateScore(points);
     }
 };

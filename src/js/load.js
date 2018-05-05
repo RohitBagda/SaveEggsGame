@@ -23,27 +23,27 @@ var loadState = {
 
     loadImages: function(){
         // Loading all sprites
-        game.load.image('egg', 'assets/egg.png');
-        game.load.image('basket', 'assets/basket.png');
-        game.load.image('win', 'assets/bomb.png');
-        game.load.image('frenzy', 'assets/frenzy.png');
-        game.load.image('bomb', 'assets/bomb.png');
-        game.load.image('scoreBoost', 'assets/scoreBoost.png');
-        game.load.image('oneUp', 'assets/oneUp.png');
-        game.load.image('combo', 'assets/combo.png');
-        game.load.image('background', 'assets/background.png');
-        game.load.image('gametitle', 'assets/final_logo.png');
-        game.load.image('play', 'assets/play.png');
-        game.load.image('frenzy_basket', 'assets/frenzy_basket.png');
-        game.load.image('crackedEgg', "assets/cracked_egg.png");
-        game.load.image('crackedFrenzy', "assets/cracked_frenzy.png");
-        game.load.image('crackedOneUp', "assets/cracked_oneUp.png");
-        game.load.image('crackedScoreBoost', "assets/cracked_scoreBoost.png");
-        game.load.image('crackedCombo',"assets/cracked_combo.png");
-        game.load.image('bombCloud', "assets/bomb_cloud.png");
-        game.load.image('heart', "assets/heart.png");
+        game.load.image('egg', 'assets/images/egg.png');
+        game.load.image('basket', 'assets/images/basket.png');
+        game.load.image('win', 'assets/images/bomb.png');
+        game.load.image('frenzy', 'assets/images/frenzy.png');
+        game.load.image('bomb', 'assets/images/bomb.png');
+        game.load.image('scoreBoost', 'assets/images/scoreBoost.png');
+        game.load.image('oneUp', 'assets/images/oneUp.png');
+        game.load.image('combo', 'assets/images/combo.png');
+        game.load.image('background', 'assets/images/background.png');
+        game.load.image('gametitle', 'assets/images/final_logo.png');
+        game.load.image('play', 'assets/images/play.png');
+        game.load.image('frenzy_basket', 'assets/images/frenzy_basket.png');
+        game.load.image('crackedEgg', "assets/images/cracked_egg.png");
+        game.load.image('crackedFrenzy', "assets/images/cracked_frenzy.png");
+        game.load.image('crackedOneUp', "assets/images/cracked_oneUp.png");
+        game.load.image('crackedScoreBoost', "assets/images/cracked_scoreBoost.png");
+        game.load.image('crackedCombo',"assets/images/cracked_combo.png");
+        game.load.image('bombCloud', "assets/images/bomb_cloud.png");
+        game.load.image('heart', "assets/images/heart.png");
         //Loading the basket spritesheet to create exploding animation when a user dies
-        game.load.spritesheet('explode', "assets/explosion_spritesheet1.png", 155, 150);
+        game.load.spritesheet('explode', "assets/images/explosion_spritesheet1.png", 155, 150);
     },
 
     loadSounds: function(){

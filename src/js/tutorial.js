@@ -5,7 +5,7 @@ var tutorialState = {
         game.add.sprite(0, 0, "background");
         this.createLogo();
         this.createOverview();
-        this.createEggDes();
+        this.createEggDescriptions();
         this.createHome();
     },
     createOverview: function() {
@@ -18,7 +18,7 @@ var tutorialState = {
         this.game.add.text(RULE_FIRST_COLUMN_X, RULE_FIRST_ROW_Y, "1. Drag the Basket.", overviewFormatting);
         this.game.add.text(RULE_SECOND_COLUMN_X, RULE_FIRST_ROW_Y, "2. You have up to 3 lives.", overviewFormatting);
         this.game.add.text(RULE_FIRST_COLUMN_X, RULE_SECOND_ROW_Y, "3. Avoid Bombs!", overviewFormatting);
-        this.game.add.text(RULE_SECOND_COLUMN_X, RULE_SECOND_ROW_Y, "4. Missing eggs will lose points.", overviewFormatting);
+        this.game.add.text(RULE_SECOND_COLUMN_X, RULE_SECOND_ROW_Y, "4. Missing eggs will cost points.", overviewFormatting);
     },
     createLogo: function(){
         const LOGO_X = canvasWidth/2;
@@ -29,7 +29,7 @@ var tutorialState = {
         nameLabel.scale.setTo(LOGO_SCALE, LOGO_SCALE);
         nameLabel.anchor.setTo(LOGO_ANCHOR, LOGO_ANCHOR);
     },
-    createEggDes: function() {
+    createEggDescriptions: function() {
         const EGG_PICTURE_X = canvasWidth/12;
         const EGG_PICTURE_Y = canvasHeight/12;
         const DESCRITION_X = canvasWidth/5;
