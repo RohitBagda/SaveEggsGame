@@ -1,3 +1,4 @@
+//Create a new game and assign the width and height of the
 var game = new Phaser.Game(window.innerWidth, window.innerHeight, Phaser.AUTO, 'gameDiv');
 
 // Add States here
