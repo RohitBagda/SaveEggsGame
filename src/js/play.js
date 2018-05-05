@@ -1,7 +1,7 @@
 var playState = {
 
-    bombDisplayTexts: ["bruh", ":'(", "smh", "-___-"],
-    timeStages: [5,6,7,8,9],
+    bombDisplayTexts: ["bruh", ":'(", "-_-", "Oops"],
+    timeStages: [5, 15, 20, 30, 60],
 
     create: function(){
         this.setupGame();
@@ -12,31 +12,6 @@ var playState = {
         gameController.createScoreText();
         gameController.createHeart();
         gameController.createPause();
-
-        //Create pause label button
-        // gameController.createPauseLabel();
-        // gameController.pauseLabel.events.onInputUp.add(function(){
-        //     gameController.pauseLabel.setText("►");
-        //     game.paused = true;
-        //     tutorialState.createEggDescriptions();
-        // }, this);
-        //
-        // game.input.onDown.add(function(){
-        //     if(game.paused) {
-        //         var eggImages = tutorialState.getEggImages();
-        //         var eggDescription = tutorialState.getEggDescriptions();
-        //         eggImages.forEach(function(image){
-        //             image.destroy();
-        //         });
-        //         eggDescription.forEach(function(description){
-        //             description.destroy();
-        //         });
-        //         game.paused = false;
-        //         gameController.pauseLabel.setText("II");
-        //     }
-        // }, this);
-
-        // game.input.onDown.add(gameController.resumeGame(), this);
 
         game.time.events.loop(500, this.dropEgg, this);
         game.time.events.loop(1000, function(){
@@ -56,7 +31,7 @@ var playState = {
         } else if(time < this.timeStages[2]){
             gameController.setEggProbabilities(0.6,0.9,1,0,0,0);
         } else if(time<this.timeStages[3]){
-            gameController.setEggProbabilities(0.5,0.9,0.95,0.98,0,0);
+            gameController.setEggProbabilities(0.5,0.9,0.98,1,0,0);
         } else if(time <this.timeStages[4]){
             if(gameController.lives<gameController.maxLives){
                 this.calculateEggProbWithOneUP();
@@ -67,12 +42,12 @@ var playState = {
     },
 
     calculateEggProbWithOneUP: function(){
-        //gameController.setEggProbabilities(0.45,0.9,0.97,0.98,0.99,1);
-        gameController.setEggProbabilities(0.45,0.5,0.6,0.61,0.9,1);
+        gameController.setEggProbabilities(0.45,0.9,0.95,0.97,0.99,1);
+        // gameController.setEggProbabilities(0.45,0.5,0.6,0.61,0.9,1);
     },
 
     calculateEggProbWithoutOneUP: function(){
-        gameController.setEggProbabilities(0.45,0.9,0.91,0.92,1,0);
+        gameController.setEggProbabilities(0.45,0.9,0.95,0.97,1,0);
     },
 
     update: function(){

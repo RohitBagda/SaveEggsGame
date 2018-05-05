@@ -18,29 +18,6 @@ var comboState = {
 
         gameController.createPause();
 
-        // gameController.createPauseLabel();
-        // gameController.pauseLabel.events.onInputUp.add(function(){
-        //     gameController.pauseLabel.setText("►");
-        //     game.paused = true;
-        //     tutorialState.createEggDescriptions();
-        // }, this);
-        //
-        // game.input.onDown.add(function(){
-        //     if(game.paused) {
-        //         var eggPics = tutorialState.getEggImages();
-        //         var eggDes = tutorialState.getEggDescriptions();
-        //         eggPics.forEach(function(image){
-        //             image.destroy();
-        //         });
-        //         eggDes.forEach(function(description){
-        //             description.destroy();
-        //         });
-        //
-        //         game.paused = false;
-        //         gameController.pauseLabel.setText("II");
-        //     }
-        // }, this);
-
         game.time.events.loop(1000, this.dropComboEggWave, this);
         game.time.events.loop(1000, function(){
             if(this.comboTime>this.comboDuration){

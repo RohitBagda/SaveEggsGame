@@ -24,16 +24,15 @@ var gameController = {
     },
 
     createHeart: function () {
-        this.heart = game.add.sprite(.74*canvasWidth, 0.01*canvasHeight, "heart");
+        this.heart = game.add.sprite(.75*canvasWidth, 0.025*canvasHeight, "heart");
         this.heart.scale.setTo(0.65*scaleRatio, 0.65*scaleRatio);
-
-        // game.add.text(.81*canvasWidth, 0.01*canvasHeight, '×', {font: 'bold 60px Corbel', fill: '#003366'});
-        this.livesNum = game.add.text(.81*canvasWidth, 0.01*canvasHeight, ("×" +gameController.lives), {font: 'bold 60px Corbel', fill: '#003366'});
+        var livesLabelFormat = this.createFormatting("bold 60px Corbel", "fill: #003366");
+        this.livesLabel = game.add.text(.81*canvasWidth, 0.018*canvasHeight, ("×" +gameController.lives), livesLabelFormat);
     },
 
     updateLifeCountLabel: function(){
         if(gameController.lives >= 0 && gameController.lives <= gameController.maxLives) {
-            this.livesNum.setText("×" + gameController.lives);
+            this.livesLabel.setText("×" + gameController.lives);
         }
     },
 
