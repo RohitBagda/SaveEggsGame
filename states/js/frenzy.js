@@ -29,11 +29,11 @@ var frenzyState = {
         life.createHeart();
 
         //Create pause label button
-        this.pause_label = this.game.add.text(0.92*canvasWidth, 0.02*canvasHeight, 'II', {font:'bold 60px Corbel', fill:'#003366'});
-        this.pause_label.inputEnabled = true;
+        this.pauseLabel = this.game.add.text(0.92*canvasWidth, 0.02*canvasHeight, 'II', {font:'bold 60px Corbel', fill:'#003366'});
+        this.pauseLabel.inputEnabled = true;
 
-        this.pause_label.events.onInputUp.add(function(){
-            this.pause_label.setText("►");
+        this.pauseLabel.events.onInputUp.add(function(){
+            this.pauseLabel.setText("►");
 
             game.paused = true;
 
@@ -54,7 +54,7 @@ var frenzyState = {
                 });
 
                 game.paused = false;
-                this.pause_label.setText("II");
+                this.pauseLabel.setText("II");
             }
         }, this);
         

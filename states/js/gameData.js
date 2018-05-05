@@ -10,9 +10,24 @@ var gameData = {
     oneUpProb: 0,
     currentTime: 0,
     maxLives: 3,
+    hasReachedCombo: false,
 
     addBackground: function(){
         game.add.sprite(0,0, "background");
+    },
+
+    createHeart: function () {
+        this.heart = game.add.sprite(.74*canvasWidth, 0.01*canvasHeight, "heart");
+        this.heart.scale.setTo(0.65*scaleRatio, 0.65*scaleRatio);
+
+        // game.add.text(.81*canvasWidth, 0.01*canvasHeight, '×', {font: 'bold 60px Corbel', fill: '#003366'});
+        this.livesNum = game.add.text(.81*canvasWidth, 0.01*canvasHeight, ("×" +gameData.lives), {font: 'bold 60px Corbel', fill: '#003366'});
+    },
+
+    updateLifeCountLabel: function(){
+        if(gameData.lives >= 0 && gameData.lives <= gameData.maxLives) {
+            this.livesNum.setText("×" + gameData.lives);
+        }
     },
 
     createFormatting: function(fontType, fillColor) {
@@ -47,9 +62,12 @@ var gameData = {
     },
 
     createBasket: function(){
+        if (!this.hasReachedCombo){
+            this.basketX = canvasWidth/2;
+            this.basketY = canvasHeight/1.2;
+            this.hasReachedCombo = true;
+        }
         //Create basket player sprite and enable physics
-        this.basketX = canvasWidth/2;
-        this.basketY = canvasHeight/1.2;
         this.player = game.add.sprite(this.basketX, this.basketY, "explode");
         this.player.animations.add('explodeBomb', [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], 45);
         this.player.scale.setTo(scaleRatio/1.5, scaleRatio/1.5);
@@ -65,6 +83,14 @@ var gameData = {
         this.player.body.immovable = true;
         this.player.allowGravity = false;
     },
+
+    createPauseLabel: function(){
+        var pauseLabalFormat = this.createFormatting("bold 60px Corbel", "003366");
+        this.pauseLabel = game.add.text(0.92*canvasWidth, 0.02*canvasHeight, 'II', pauseLabalFormat);
+        this.pauseLabel.inputEnabled = true;
+    },
+
+
 
     setupSounds: function(){
         this.eggCrack = game.add.audio('egg_crack');
@@ -100,6 +126,12 @@ var gameData = {
         this.lives++;
     },
 
+    checkHighScore: function(){
+        if (this.highestScore < this.score) {
+            this.highestScore = this.score;
+        }
+    },
+
     resetScore: function(){
         this.score = 0;
     },
@@ -118,6 +150,7 @@ var gameData = {
         this.lives = 3;
         this.setEggProbabilities(1,0,0,0,0,0);
         this.score = 0;
+        this.hasReachedCombo = false;
     }
 
 };

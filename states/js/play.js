@@ -10,14 +10,12 @@ var playState = {
 
         this.eggs = game.add.group();
         gameData.createScoreText();
-        life.createHeart();
+        gameData.createHeart();
 
         //Create pause label button
-        this.pause_label = this.game.add.text(0.92*canvasWidth, 0.02*canvasHeight, 'II', {font:'bold 60px Corbel', fill:'#003366'});
-        this.pause_label.inputEnabled = true;
-
-        this.pause_label.events.onInputUp.add(function(){
-            this.pause_label.setText("►");
+        gameData.createPauseLabel();
+        gameData.pauseLabel.events.onInputUp.add(function(){
+            gameData.pauseLabel.setText("►");
             game.paused = true;
             tutorialState.createEggDes();
         }, this);
@@ -29,13 +27,15 @@ var playState = {
                 eggImages.forEach(function(image){
                     image.destroy();
                 });
-                eggDescription.forEach(function(pic){
-                    pic.destroy();
+                eggDescription.forEach(function(description){
+                    description.destroy();
                 });
                 game.paused = false;
-                this.pause_label.setText("II");
+                gameData.pauseLabel.setText("II");
             }
         }, this);
+
+        // game.input.onDown.add(gameData.resumeGame(), this);
 
         game.time.events.loop(500, this.dropEgg, this);
         game.time.events.loop(1000, function(){
@@ -81,10 +81,7 @@ var playState = {
 
             if(gameData.score < 0){
                 gameData.resetScore();
-                window.setTimeout(function(){
-                    backgroundMusic.stop();
-                    game.state.start("gameOver");
-                }, 100);
+                this.changeToGameOverState();
             }
 
             if(egg.y <= gameData.player.y - egg.height){
@@ -94,6 +91,13 @@ var playState = {
             }
 
         }
+    },
+
+    changeToGameOverState: function () {
+        window.setTimeout(function () {
+            backgroundMusic.stop();
+            game.state.start("gameOver");
+        }, 100);
     },
 
     crackEggs: function(egg){
@@ -199,7 +203,7 @@ var playState = {
     handleBomb: function(){
         gameData.bombCollect.play();
         gameData.decrementLives();
-        life.changeLife();
+        gameData.updateLifeCountLabel();
         this.showBombCaughtText();
 
         if(gameData.lives<gameData.maxLives){
@@ -207,21 +211,17 @@ var playState = {
         }
 
         if (gameData.lives==0){
-            gameData.player.inputEnabled = false;
-            gameData.player.body.checkCollision.up = false;
-            gameData.explosion.play();
-            gameData.player.animations.play('explodeBomb');
-
-            if (gameData.highestScore < gameData.score) {
-                gameData.highestScore = gameData.score;
-            }
-
-            window.setTimeout(function(){
-                backgroundMusic.stop();
-                game.state.start("gameOver");
-            }, 800);
-
+            gameData.checkHighScore();
+            this.handlePlayerAtGameEnd();
+            this.changeToGameOverState();
         }
+    },
+
+    handlePlayerAtGameEnd: function () {
+        gameData.player.inputEnabled = false;
+        gameData.player.body.checkCollision.up = false;
+        gameData.explosion.play();
+        gameData.player.animations.play('explodeBomb');
     },
 
     showBombCaughtText: function () {
@@ -237,6 +237,8 @@ var playState = {
 
     handleCombo: function () {
         gameData.eggCollect.play();
+        gameData.basketX = gameData.player.x;
+        gameData.basketY = gameData.player.y;
         this.game.state.start("transitionToCombo");
     },
 
@@ -250,24 +252,20 @@ var playState = {
     handleOneUp: function () {
         gameData.eggCollect.play();
         gameData.incrementLives();
-        life.changeLife();
+        gameData.updateLifeCountLabel();
         if (gameData.lives >= gameData.maxLives) {
             this.calculateEggProbability(gameData.currentTime);
         }
     },
 
     showTweenAnimation: function(display){
-        var tweenTextFormat = gameData.createFormatting("bold 80pt Corbel", "#ff0000");
-        // scoreTextFormat.stroke = "#A4CED9";
-        // scoreTextFormat.strokeThickness = 5;
-        if (typeof display != "number"){
-            var tweenText = display;
-        } else if(display>0){
+        if(display>0){
             var tweenText = "+" + display;
         } else{
             var tweenText = display;
         }
 
+        var tweenTextFormat = gameData.createFormatting("bold 80pt Corbel", "#ff0000");
         gameData.createTweenText(game.world.centerX, game.world.centerY, tweenText, tweenTextFormat);
     },
 
@@ -275,6 +273,6 @@ var playState = {
     updateScoreAndPlayAnimation: function(points){
         this.showTweenAnimation(points);
         gameData.updateScore(points);
-    }
+    },
 
 };
