@@ -13,6 +13,7 @@ game.state.add('transitionToCombo', transitionToComboState);
 game.state.add('transitionToFrenzy', transitionToFrenzyState);
 game.state.add('gameOver', gameOverState);
 game.state.add('attract', attractState);
+// game.state.add('lifeSymbol', life);
 
 // game.state.add('frenzy', frenzyState);
 // game.state.add('gameOver', gameOverState);
