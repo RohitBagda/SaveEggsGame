@@ -1,9 +1,12 @@
 var loadState = {
 
-    //Load the assets
+    /**
+     * Load all assets
+     */
     preload: function(){
         var loadingLabel = game.add.text(80, 150,'loading...',
                                         {font: '30px Courier', fill: '#ffffff'});
+
         // Loading all sprites
         game.load.image('egg', 'assets/egg.png');
         game.load.image('basket', 'assets/basket.png');
@@ -25,6 +28,7 @@ var loadState = {
         game.load.image('bombCloud', "assets/bomb_cloud.png");
         game.load.image('heart', "assets/heart.png");
 
+        //Loading the basket spritesheet to create exploding animation when a user dies
         game.load.spritesheet('explode', "assets/explosion_spritesheet1.png", 155, 150);
 
         // Loading all audio
@@ -37,16 +41,22 @@ var loadState = {
         game.load.audio('bomb_whoosh', ['assets/audio/bomb_whoosh.wav', 'assets/audio/bomb_whoosh.ogg']);
         game.load.audio('frenzy_touch', ['assets/audio/frenzy_touch.wav', 'assets/audio/frenzy_touch.ogg']);
         game.load.audio('bomb_collect', ['assets/audio/bomb_collect.mp3', 'assets/audio/bomb_collect.ogg']);
-
     },
 
     create : function(){
-      //Calling the menu state
-      game.state.start('menu');
+        //Calling the menu state
+        game.state.start('menu');
+        this.startMusic();
+    },
 
-      backgroundMusic = game.add.audio('background_music');
-      backgroundMusic.volume = 0.4;
-      backgroundMusic.loop = true;
-      backgroundMusic.play();
+    /**
+     * Start the background music to the game and play it throughout the game
+     */
+    startMusic : function(){
+        backgroundMusic = game.add.audio('background_music');
+        backgroundMusic.volume = 0.4;
+        backgroundMusic.loop = true;
+        backgroundMusic.play();
     }
+
 };
