@@ -1,121 +1,80 @@
 
 var frenzyState = {
 
-    frenzyEggPoints: 20,
     bonusPointsFrenzy: 50,
     xVelocityFrenzyEgg: 100,
     durationOfFrenzyState: 3,
+    probabilityOfAddingFrenzyEgg: 0.75,
+
 
     create: function(){
+        gameData.addBackground();
+        this.frenzyEggPoints = gameData.frenzyPoints;
         this.numberOfEggsAddedToScreen = 0;
         this.hasAchievedBonus = false;
-        //Screen Setup
-        this.currentTime = 0;
-        game.add.sprite(0,0, "background");
-        var frenzyTimerFormatting = {font: "bold 56pt Corbel", fill: "#0000ff"};
-
-        this.timer = game.add.text(canvasWidth/2, 0.008 * canvasHeight, this.durationOfFrenzyState, frenzyTimerFormatting);
-        this.timer.anchor.setTo(0.5, 0.2);
-        this.timer.scale.setTo(scaleRatio, scaleRatio);
-
-        this.scoreText = game.add.text(10,10, "Score: " + score, {font: 'bold 60px Corbel', fill: '#003366'});
-        this.frenzyEggsGroup = game.add.group();
+        this.frenzyTime = 0;
+        this.createFrenzyTimer();
+        gameData.createScoreText();
+        // gameData.scoreText = game.add.text(10,10, "Score: " + score, {font: 'bold 60px Corbel', fill: '#003366'});
+        this.frenzyStateGroup = game.add.group();
         this.minDistanceBetweenPoints = this.createFrenzyEgg(-500, -500);
         this.points = this.generatePoints();
         this.drawEggsAtPoints(this.points);
         this.numberOfEggsCollected = 0;
         this.elapsedTime = 0;
-
-        life.createHeart();
-
-        //Create pause label button
-        this.pauseLabel = this.game.add.text(0.92*canvasWidth, 0.02*canvasHeight, 'II', {font:'bold 60px Corbel', fill:'#003366'});
-        this.pauseLabel.inputEnabled = true;
-
-        this.pauseLabel.events.onInputUp.add(function(){
-            this.pauseLabel.setText("►");
-
-            game.paused = true;
-
-            tutorialState.createEggDes();
-        }, this);
-
-        game.input.onDown.add(function(){
-            if(game.paused) {
-                var eggPics = tutorialState.getEggImages();
-                var eggDes = tutorialState.getEggDescriptions();
-
-                eggPics.forEach(function(pics){
-                    pics.destroy();
-                });
-
-                eggDes.forEach(function(pics){
-                    pics.destroy();
-                });
-
-                game.paused = false;
-                this.pauseLabel.setText("II");
-            }
-        }, this);
-        
-        // this.generateFrenzyEggs(7, 8);
-        // this.jiggleFrenzyEggs();
-
-
+        gameData.createHeart();
         game.time.events.loop(1000, function(){
-            if (this.currentTime >= this.durationOfFrenzyState){
-                frenzyMusic.stop();
+            if (this.frenzyTime >= this.durationOfFrenzyState){
+                gameData.frenzyMusic.stop();
                 backgroundMusic.play();
                 this.game.state.start('play');
             } else{
-                this.currentTime ++;
-                this.timer.text = this.durationOfFrenzyState - this.currentTime;
+                this.frenzyTime ++;
+                this.timer.text = this.durationOfFrenzyState - this.frenzyTime;
             }
         }, this);
-        // this.switchBackToPlay(this.currentTime);
 
     },
-
 
     update: function(){
         this.elapsedTime += game.time.physicsElapsedMS;
         if (this.elapsedTime >= 150) {
             this.changeXVelocityOfEgg();
-            this.frenzyEggsGroup.forEach(function (egg) {
+            this.frenzyStateGroup.forEach(function (egg) {
                 egg.body.velocity.x = this.xVelocityFrenzyEgg;
             }, this);
             this.elapsedTime = 0;
         }
         if (this.numberOfEggsCollected == this.numberOfEggsAddedToScreen && !this.hasAchievedBonus){
             this.hasAchievedBonus = true;
-            score += this.bonusPointsFrenzy;
-            this.scoreText.text = "Score: " + score;
+            gameData.score += this.bonusPointsFrenzy;
+            gameData.scoreText.text = "Score: " + gameData.score;
             this.playBonusReceivedAnimation();
         }
-
-        if (score > highestScore){
-            highestScore = score;
+        if (gameData.score > gameData.highestScore){
+            gameData.highestScore = gameData.score;
         }
 
     },
 
-    playBonusReceivedAnimation: function(){
-        var bonusPointsFormat = {font: "bold 100pt Corbel", fill: "#FF00FF"};
-        bonusPointsFormat.stroke = "#A4CED9";
-        bonusPointsFormat.strokeThickness = 5;
-        var bonusText = "BONUS: +" + this.bonusPointsFrenzy;
+    createFrenzyTimer: function () {
+        var frenzyTimerFormatting = gameData.createFormatting("bold 50pt Corbel", "#ff0000");
+        this.timer = game.add.text(canvasWidth / 2, 0.03 * canvasHeight, this.durationOfFrenzyState, frenzyTimerFormatting);
+        this.timer.anchor.setTo(0.5, 0.5);
+        this.timer.scale.setTo(scaleRatio, scaleRatio);
+    },
 
-        this.bonusPointsDisplay = this.game.add.text(game.world.centerX, game.world.centerY, bonusText , bonusPointsFormat);
-        this.bonusPointsDisplay.anchor.setTo(0.5, 0.5);
-        this.game.add.tween(this.bonusPointsDisplay)
-            .to({alpha: 0}, 100, Phaser.Easing.Default, true, 700);
+    playBonusReceivedAnimation: function(){
+        var bonusPointsFormat = gameData.createFormatting("bold 100pt Corbel", "#FF00FF");
+        var bonusText = "BONUS: +" + this.bonusPointsFrenzy;
+        gameData.createTweenAnimation(game.world.centerX, game.world.centerY, bonusText , bonusPointsFormat);
 
     },
 
     generatePoints: function(){
         var poissonDiskSampler = new PoissonDiskSampler();
         poissonDiskSampler.radiusMin = this.minDistanceBetweenPoints/2;
-        poissonDiskSampler.radiusMax = this.minDistanceBetweenPoints;
+        poissonDiskSampler.radiusMax = this.minDistanceBetweenPoints/2;
         poissonDiskSampler.createPoints();
         return poissonDiskSampler.pointList;
     },
@@ -123,69 +82,41 @@ var frenzyState = {
     drawEggsAtPoints: function(points){
         let eggOffset = 50;
         var xOffSet = 0.1 * (canvasWidth-eggOffset);
-        var topYOffSet = 0.018 * canvasHeight;
+        var topYOffSet = 0.15 * canvasHeight;
         var bottomYOffSet = 0.2 * canvasHeight;
         for (var i = 0; i < points.length; i++){
-            let coordinate = points[i]
+            let coordinate = points[i];
             if ((coordinate.x > xOffSet) && (coordinate.x < (canvasWidth - xOffSet))
                 && (coordinate.y > topYOffSet) && (coordinate.y < (canvasHeight - bottomYOffSet))){
                 var prob = Math.random();
-                if (prob < 0.80){
-                    this.createFrenzyEgg(coordinate.x, coordinate.y);
+                if (prob < this.probabilityOfAddingFrenzyEgg){
+                    this.createFrenzyEgg(coordinate.x, coordinate.y, "frenzy");
                     this.numberOfEggsAddedToScreen++;
                 } else{
-                    this.createBomb(coordinate.x, coordinate.y);
+                    this.createFrenzyEgg(coordinate.x, coordinate.y, "bomb");
                 }
-
-
             }
-
         }
     },
 
-    createBomb: function(eggX, eggY){
-        var eggType = "bomb";
-        var frenzyEgg = game.add.sprite(eggX, eggY, eggType);
-        frenzyEgg.scale.setTo(scaleRatio * 1.5, scaleRatio * 1.5);
-
-        game.physics.arcade.enable(frenzyEgg, Phaser.Physics.ARCADE);
-        // frenzyEgg.scale.setTo(scaleRatio, scaleRatio);
-        game.physics.arcade.enable(frenzyEgg);
-
-        // frenzyEgg.enableDrag();
-        frenzyEgg.body.kinematic = true;
-        frenzyEgg.inputEnabled = true;
-        frenzyEgg.input.enableDrag(false, true, true);
-        frenzyEgg.input.allowVerticalDrag = true;
-        frenzyEgg.collideWorldBounds = true;
-        frenzyEgg.body.immovable = true;
-        // this.eggsInState.push(frenzyEgg);
-        this.frenzyEggsGroup.add(frenzyEgg);
-        // frenzyEgg.enableDrag(true, true, true, true, true, true);
-        //this.eggsOnScreen.push(frenzyEgg);
-        frenzyEgg.events.onInputDown.add(this.collectBomb, this);
-    },
-
     collectBomb: function(egg){
-        // gameData.lives--;
-        // life.changeLife();
-        // playState.calculateEggProbability(currentTime);
-        // egg.kill();
-        // if (lives == 0){
-        //    explosion.play();
-        //     frenzyMusic.stop();
-        //     this.game.state.start('gameOver');
-        // } else{
-        //
-        // }
-        // bombCollect.play();
-        playState.handleBomb();
+        gameData.lives--;
+        gameData.updateLifeCountLabel();
+        playState.calculateEggProbability(gameData.currentTime);
+        egg.kill();
+        if (gameData.lives == 0){
+            gameData.explosion.play();
+            gameData.frenzyMusic.stop();
+            this.game.state.start('gameOver');
+        } else{
+            gameData.bombCollect.play();
+        }
+
 
     },
 
-    createFrenzyEgg: function (eggX, eggY) {
-        var eggType = "frenzy";
-        var frenzyEgg = game.add.sprite(eggX, eggY, eggType);
+    createFrenzyEgg: function (eggX, eggY, eggName) {
+        var frenzyEgg = game.add.sprite(eggX, eggY, eggName);
         game.physics.arcade.enable(frenzyEgg, Phaser.Physics.ARCADE);
         game.physics.arcade.enable(frenzyEgg);
         frenzyEgg.scale.setTo(scaleRatio * 1.5, scaleRatio * 1.5);
@@ -195,10 +126,12 @@ var frenzyState = {
         frenzyEgg.input.allowVerticalDrag = true;
         frenzyEgg.collideWorldBounds = true;
         frenzyEgg.body.immovable = true;
-        this.frenzyEggsGroup.add(frenzyEgg);
-        frenzyEgg.events.onInputDown.add(this.collectEgg, this);
-        console.log("eggWidth: " + frenzyEgg.width + "eggHeight: " + frenzyEgg.height);
-
+        this.frenzyStateGroup.add(frenzyEgg);
+        if (eggName == "frenzy"){
+            frenzyEgg.events.onInputDown.add(this.collectEgg, this);
+        } else{
+            frenzyEgg.events.onInputDown.add(this.collectBomb, this);
+        }
         var distanceSquared = Math.pow(frenzyEgg.width, 2) + Math.pow(frenzyEgg.height, 2);
         var distance = Math.pow(distanceSquared, 0.5);
 
@@ -208,34 +141,22 @@ var frenzyState = {
 
     changeXVelocityOfEgg: function(){
         this.xVelocityFrenzyEgg = -1 * this.xVelocityFrenzyEgg;
-        // return -1*this.xVelocityGravityFrenzyEgg;
     },
 
     collectEgg: function(egg){
-        // this.game.state.start('menu');
         let eggX = egg.x;
         let eggY = egg.y;
-
         egg.kill();
-        frenzyTouch.play();
+        gameData.frenzyTouch.play();
         this.numberOfEggsCollected++;
-        this.createScoreAnimation(eggX, eggY, this.frenzyEggPoints);
-        score += this.frenzyEggPoints;
-        this.scoreText.text = "Score: " + score;
-
+        this.showScoreAnimation(eggX, eggY, this.frenzyEggPoints);
+        gameData.score += this.frenzyEggPoints;
+        gameData.scoreText.text = "Score: " + gameData.score;
     },
 
-    createScoreAnimation: function(xCoordinate, yCoordinate, numberOfPoints){
-        
-        let scoreText = "+" + numberOfPoints;
-        var scoreTextFormat = {font: "bold 40pt Corbel", fill: "#003366"};
-        scoreTextFormat.stroke = "#000000";
-        scoreTextFormat.strokeThickness = 5;
-
-        this.scoreTextDisplay = this.game.add.text(xCoordinate, yCoordinate, scoreText, scoreTextFormat);
-
-        this.game.add.tween(this.scoreTextDisplay)
-            .to({alpha: 0}, 100, Phaser.Easing.Default, true, 1000);
+    showScoreAnimation: function(xCoordinate, yCoordinate, numberOfPoints){
+        var scoreTextFormat = gameData.createFormatting("bold 40pt Corbel", "#003366");
+        gameData.createTweenAnimation(xCoordinate, yCoordinate, numberOfPoints, scoreTextFormat, 700);
     },
 
 };

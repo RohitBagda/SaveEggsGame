@@ -11,6 +11,13 @@ var gameData = {
     currentTime: 0,
     maxLives: 3,
     hasReachedCombo: false,
+    regularEggPoints: 5,
+    scoreBoostPoints: 30,
+    frenzyPoints: 20,
+    comboPoints: 100,
+    eggVelocity: 20,
+    horizontalAnchor: 0.5,
+    verticalAnchor: 0.5,
 
     addBackground: function(){
         game.add.sprite(0,0, "background");
@@ -47,11 +54,11 @@ var gameData = {
         this.scoreText.text = 'Score: ' + this.score;
     },
 
-    createTweenText: function(x, y, text, format){
+    createTweenText: function(x, y, text, format, duration){
         var tweenDisplay = game.add.text(x, y, text, format);
-        tweenDisplay.anchor.setTo(0.5, 0.5);
+        tweenDisplay.anchor.setTo(gameData.horizontalAnchor, gameData.verticalAnchor);
         game.add.tween(tweenDisplay)
-            .to({alpha: 0}, 100, Phaser.Easing.Default, true, 300);
+            .to({alpha: 0}, 100, Phaser.Easing.Default, true, duration);
     },
 
     tweenEgg: function(crackedEggImage, egg){
@@ -89,8 +96,6 @@ var gameData = {
         this.pauseLabel = game.add.text(0.92*canvasWidth, 0.02*canvasHeight, 'II', pauseLabalFormat);
         this.pauseLabel.inputEnabled = true;
     },
-
-
 
     setupSounds: function(){
         this.eggCrack = game.add.audio('egg_crack');
@@ -132,6 +137,10 @@ var gameData = {
         }
     },
 
+    calculateEggGravity: function(time){
+        return  67200*(1/(1+Math.exp(-0.1*(time-30)))+1);
+    },
+
     resetScore: function(){
         this.score = 0;
     },
@@ -151,7 +160,16 @@ var gameData = {
         this.setEggProbabilities(1,0,0,0,0,0);
         this.score = 0;
         this.hasReachedCombo = false;
-    }
+    },
+
+    createTweenAnimation: function(x, y, text, textFormat, duration){
+        if(text>0){
+            var tweenText = "+" + text;
+        } else{
+            var tweenText = text;
+        }
+        this.createTweenText(x, y, tweenText, textFormat, duration);
+    },
 
 };
 

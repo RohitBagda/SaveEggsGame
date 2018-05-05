@@ -77,7 +77,7 @@ var playState = {
     update: function(){
         for(var i in this.eggs.children){
             var egg = this.eggs.children[i];
-            egg.body.velocity.y=20;
+            egg.body.velocity.y= gameData.eggVelocity;
 
             if(gameData.score < 0){
                 gameData.resetScore();
@@ -104,22 +104,22 @@ var playState = {
         if(egg.key === "egg"){
             gameData.tweenEgg("crackedEgg", egg);
             gameData.eggCrack.play();
-            this.updateScoreAndPlayAnimation(-5);
+            this.updateScoreAndPlayAnimation(-gameData.regularEggPoints);
         } else if(egg.key === "bomb") {
             gameData.tweenEgg("bombCloud", egg);
             gameData.bombWhoosh.play();
         } else if(egg.key === "frenzy"){
             gameData.tweenEgg("crackedFrenzy", egg);
             gameData.eggCrack.play();
-            this.updateScoreAndPlayAnimation(-20);
+            this.updateScoreAndPlayAnimation(-gameData.frenzyPoints);
         }  else if(egg.key === "scoreBoost") {
             gameData.tweenEgg("crackedScoreBoost", egg);
             gameData.eggCrack.play();
-            this.updateScoreAndPlayAnimation(-30);
+            this.updateScoreAndPlayAnimation(-gameData.scoreBoostPoints);
         } else if(egg.key === "combo") {
             gameData.tweenEgg("crackedCombo", egg);
             gameData.eggCrack.play();
-            this.updateScoreAndPlayAnimation(-100);
+            this.updateScoreAndPlayAnimation(-gameData.comboPoints);
         } else if(egg.key === "oneUp" ) {
             gameData.tweenEgg("crackedOneUp", egg);
             gameData.eggCrack.play();
@@ -137,7 +137,7 @@ var playState = {
         var egg = game.add.sprite(eggX, eggY, eggType);
         egg.scale.setTo(scaleRatio, scaleRatio);
         game.physics.enable(egg, Phaser.Physics.ARCADE);
-        this.eggGravity = this.calculateEggGravity(gameData.currentTime);
+        this.eggGravity = gameData.calculateEggGravity(gameData.currentTime);
         egg.body.gravity.y = this.eggGravity;
         this.eggs.add(egg);
     },
@@ -171,10 +171,6 @@ var playState = {
         gameData.createBasket();
     },
 
-    calculateEggGravity: function(time){
-        return  67200*(1/(1+Math.exp(-0.1*(time-30)))+1);
-    },
-
     collectEgg: function(player, egg){
 
         egg.kill();
@@ -196,7 +192,7 @@ var playState = {
 
     handleRegularEgg: function () {
         gameData.eggCollect.play();
-        this.updateScoreAndPlayAnimation(5);
+        this.updateScoreAndPlayAnimation(gameData.regularEggPoints);
     },
 
 
@@ -231,7 +227,7 @@ var playState = {
     },
 
     handleScoreBoost: function () {
-        this.updateScoreAndPlayAnimation(30);
+        this.updateScoreAndPlayAnimation(gameData.scoreBoostPoints);
         gameData.eggCollect.play();
     },
 
@@ -259,15 +255,10 @@ var playState = {
     },
 
     showTweenAnimation: function(display){
-        if(display>0){
-            var tweenText = "+" + display;
-        } else{
-            var tweenText = display;
-        }
-
         var tweenTextFormat = gameData.createFormatting("bold 80pt Corbel", "#ff0000");
-        gameData.createTweenText(game.world.centerX, game.world.centerY, tweenText, tweenTextFormat);
+        gameData.createTweenAnimation(game.world.centerX, game.world.centerY, display, tweenTextFormat, 300);
     },
+
 
 
     updateScoreAndPlayAnimation: function(points){

@@ -1,34 +1,32 @@
 var gameOverState = {
     create: function () {
         game.add.sprite(0,0, "background");
-        var scoreLabel = this.game.add.text(canvasWidth/2, 0.3*canvasHeight, "Final score: " + gameData.score,
-            {font: 'bold 70px Corbel', fill: "#003366"});
-        scoreLabel.anchor.setTo(0.5, 0.5);
+        var xPos = canvasWidth/2;
+        var yPos = 0.3*canvasHeight;
 
-        var highestScoreLabel = this.game.add.text(canvasWidth/2, 0.4*canvasHeight, "High score: " + gameData.highestScore,
-            {font: 'bold 70px Corbel', fill: "#003366"});
-        highestScoreLabel.anchor.setTo(0.5, 0.5);
+        var scoreLabelFormat = gameData.createFormatting("bold 70px Corbel", "#003366");
+        var scoreLabel = this.game.add.text(xPos, yPos, "Final score: " + gameData.score,
+           scoreLabelFormat);
+        scoreLabel.anchor.setTo(gameData.horizontalAnchor, gameData.verticalAnchor);
 
-        var playAgainButtonFormatting = {font: "bold 50pt Corbel", fill: "#003366"};
-        playAgainButtonFormatting.stroke = "#000000";
-        playAgainButtonFormatting.strokeThickness = 1;
+        yPos+=canvasHeight*0.1;
+        var highScoreLabelFormat = gameData.createFormatting("bold 70px Corbel", "#003366");
+        var highestScoreLabel = this.game.add.text(xPos, yPos, "High score: " + gameData.highestScore, highScoreLabelFormat);
+        highestScoreLabel.anchor.setTo(gameData.horizontalAnchor, gameData.verticalAnchor);
 
-        var playAgainButton = this.game.add.text(canvasWidth/2, 0.65*canvasHeight, "Play Again", playAgainButtonFormatting);
-        playAgainButton.anchor.setTo(0.5, 0.5);
+        yPos+=canvasHeight*0.1;
+        var playAgainButtonFormat = gameData.createFormatting("bold 50pt Corbel", "#003366");
+        var playAgainButton = this.game.add.text(xPos, yPos, "Play Again", playAgainButtonFormat);
+        playAgainButton.anchor.setTo(gameData.horizontalAnchor, gameData.verticalAnchor);
         playAgainButton.inputEnabled = true;
         playAgainButton.events.onInputDown.add(this.restart, this);
 
-        var homeButton = this.game.add.text(canvasWidth/2, 0.75*canvasHeight, "Home", playAgainButtonFormatting);
-        homeButton.anchor.setTo(0.5, 0.5);
+        yPos+=canvasHeight*0.1;
+        homeButtonFormat = gameData.createFormatting("bold 70px Corbel", "#003366");
+        var homeButton = this.game.add.text(xPos, yPos, "Home", homeButtonFormat);
+        homeButton.anchor.setTo(gameData.horizontalAnchor, gameData.verticalAnchor);
         homeButton.inputEnabled = true;
         homeButton.events.onInputDown.add(this.goToHome, this);
-
-        var exitButton = this.game.add.text(canvasWidth/2, 0.85*canvasHeight, "Quit", playAgainButtonFormatting);
-        exitButton.anchor.setTo(0.5, 0.5);
-        exitButton.inputEnabled = true;
-        exitButton.events.onInputDown.add(this.shutGame, this);
-
-        //this.game.input.onDown.addOnce(this.restart, this);
     },
 
     restart: function(){
@@ -38,15 +36,9 @@ var gameOverState = {
     },
 
     goToHome: function(){
-        this.reset();
+        gameData.resetGameComponents();
         this.game.state.start('menu');
         backgroundMusic.play();
-    },
-
-    shutGame: function(){
-        this.reset();
-        this.game.destroy();
-
     }
 
 };
