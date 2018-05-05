@@ -48,10 +48,12 @@ To install the game on a Android device, we need:
        (2) http-server
        (3) Open up your browser and enter the localhost url indicated in the Node.js
 
-CITATION
+CITATIONS
 --------
 1) https://stackoverflow.com/
 
 2) https://phaser.io/tutorials/making-your-first-phaser-game
 
 3) https://github.com/kimchristiansen/poisson-disk-sampler-js/
+
+4) https://freesound.org/
