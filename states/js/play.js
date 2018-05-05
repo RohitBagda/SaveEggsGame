@@ -22,8 +22,8 @@ var playState = {
 
         game.input.onDown.add(function(){
             if(game.paused) {
-                var eggImages = tutorialState.getEggPics();
-                var eggDescription = tutorialState.getDes();
+                var eggImages = tutorialState.getEggImages();
+                var eggDescription = tutorialState.getEggDescriptions();
                 eggImages.forEach(function(image){
                     image.destroy();
                 });

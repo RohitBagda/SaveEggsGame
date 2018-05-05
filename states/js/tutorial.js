@@ -64,18 +64,18 @@ var tutorialState = {
         var aboutButton = this.game.add.text(canvasWidth / 2, 0.9 * canvasHeight, "Back To Main Menu", homeButtonFormatting);
         aboutButton.anchor.setTo(0.5, 0.5);
         aboutButton.inputEnabled = true;
-        aboutButton.events.onInputDown.add(this.goToHome, this);
+        aboutButton.events.onInputDown.add(this.goToMenu, this);
     },
 
-    getEggPics: function(){
+    getEggImages: function(){
         return this.eggImages;
     },
 
-    getDes: function(){
+    getEggDescriptions: function(){
         return this.eggDescriptions;
     },
 
-    goToHome: function(){
+    goToMenu: function(){
         this.game.state.start('menu');
     }
 };

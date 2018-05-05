@@ -26,8 +26,8 @@ var comboState = {
 
         game.input.onDown.add(function(){
             if(game.paused) {
-                var eggPics = tutorialState.getEggPics();
-                var eggDes = tutorialState.getDes();
+                var eggPics = tutorialState.getEggImages();
+                var eggDes = tutorialState.getEggDescriptions();
 
                 eggPics.forEach(function(pics){
                     pics.destroy();
