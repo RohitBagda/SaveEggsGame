@@ -16,8 +16,8 @@ var comboState = {
         this.comboEggs = game.add.group();
         this.eggGravity = 50000;
 
-        this.scoreText = game.add.text(10,10,'Score: ' + score, {font: 'bold 60px Corbel', fill: '#003366'});
-
+        //this.scoreText = game.add.text(10,10,'Score: ' + score, {font: 'bold 60px Corbel', fill: '#003366'});
+        gameData.createScoreText();
         life.createHeart();
 
         //Create pause label button
@@ -49,35 +49,6 @@ var comboState = {
                 this.pause_label.setText("II");
             }
         }, this);
-        // //Create pause label button
-        // this.pause_label = game.add.text(0.95*canvasWidth, 0.01*canvasHeight, 'II', {font:'bold 60px Corbel', fill:'#003366'});
-        // this.pause_label.inputEnabled = true;
-        //
-        // this.pause_label.events.onInputUp.add(function(){
-        //     game.paused = true;
-        //
-        //     tutorialState.createEggDes();
-        //
-        //     this.backButton = this.game.add.text(canvasWidth/2, 0.2*canvasHeight, "Back to Game", {font: 'bold 48px Corbel', fill: '#003366'});
-        //     this.backButton.anchor.setTo(0.5, 0.5);
-        //     this.backButton.inputEnabled = true;
-        //     this.backButton.events.onInputDown.add(function(){
-        //         var eggPics = tutorialState.getEggPics();
-        //         var eggDes = tutorialState.getDes();
-        //
-        //         eggPics.forEach(function(pics){
-        //             pics.destroy();
-        //         });
-        //
-        //         eggDes.forEach(function(pics){
-        //             pics.destroy();
-        //         });
-        //
-        //         this.backButton.destroy();
-        //
-        //         game.paused = false;
-        //     });
-        // });
 
 
         game.time.events.loop(1000, this.dropComboEggWave, this);
@@ -108,7 +79,11 @@ var comboState = {
     },
 
     crackComboEggs: function(egg){
-        this.tweenComboEggs("crackedCombo", egg);
+        if(egg.key==="combo") {
+            this.tweenComboEggs("crackedCombo", egg);
+            gameData.eggCrack.play();
+        }
+
     },
 
     tweenComboEggs: function(cracked, egg){
@@ -195,9 +170,10 @@ var comboState = {
     },
 
     collectComboEgg: function(player, egg) {
-        eggCollect.play();
+        gameData.eggCollect.play();
         egg.kill();
         this.comboEggCaughtPerWaveCount++;
+        this.waveScore += this.comboEggPoints;
         this.updateScore(this.comboEggPoints);
         // this.updateScore(100);
     },
@@ -217,13 +193,9 @@ var comboState = {
 
 
     updateScore: function(points){
-        this.waveScore += points;
-        score += points;
-
-        this.scoreText.text = 'Score: ' + score;
-        if (highestScore < score) {
-            highestScore = score;
-        }
+        gameData.updateScore(points);
+        // score += points;
+        // this.scoreText.text = 'Score: ' + score;
     }
 
 };

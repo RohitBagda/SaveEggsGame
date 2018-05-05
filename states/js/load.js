@@ -1,3 +1,7 @@
+/**
+ *
+ * @type {{preload: loadState.preload, create: loadState.create, startMusic: loadState.startMusic}}
+ */
 var loadState = {
 
     /**
@@ -6,7 +10,18 @@ var loadState = {
     preload: function(){
         var loadingLabel = game.add.text(80, 150,'loading...',
                                         {font: '30px Courier', fill: '#ffffff'});
+        this.loadImages();
+        this.loadSounds();
+    },
 
+    create : function(){
+        //Calling the menu state
+        game.state.start('menu');
+        this.startMusic();
+
+    },
+
+    loadImages: function(){
         // Loading all sprites
         game.load.image('egg', 'assets/egg.png');
         game.load.image('basket', 'assets/basket.png');
@@ -27,10 +42,11 @@ var loadState = {
         game.load.image('crackedCombo',"assets/cracked_combo.png");
         game.load.image('bombCloud', "assets/bomb_cloud.png");
         game.load.image('heart', "assets/heart.png");
-
         //Loading the basket spritesheet to create exploding animation when a user dies
         game.load.spritesheet('explode', "assets/explosion_spritesheet1.png", 155, 150);
+    },
 
+    loadSounds: function(){
         // Loading all audio
         game.load.audio('background_music', ['assets/audio/background_music.mp3', 'assets/audio/background_music.ogg']);
         game.load.audio('egg_crack', ['assets/audio/egg_crack.wav', 'assets/audio/egg_crack.ogg']);
@@ -43,12 +59,6 @@ var loadState = {
         game.load.audio('bomb_collect', ['assets/audio/bomb_collect.mp3', 'assets/audio/bomb_collect.ogg']);
     },
 
-    create : function(){
-        //Calling the menu state
-        game.state.start('menu');
-        this.startMusic();
-    },
-
     /**
      * Start the background music to the game and play it throughout the game
      */
@@ -58,5 +68,4 @@ var loadState = {
         backgroundMusic.loop = true;
         backgroundMusic.play();
     }
-
 };

@@ -1,12 +1,13 @@
 var playState = {
 
     bombDisplayTexts: ["bruh", ":'(", "smh", "-___-"],
-    timeStages: [5,10,20,30,40],
+    timeStages: [5,6,7,8,9],
     heartList: [],
 
     create: function(){
         this.setupGame();
-        this.setupSounds();
+        gameData.setupSounds();
+        // this.setupSounds();
         this.setupPlayer();
 
         this.eggs = game.add.group();
@@ -14,7 +15,8 @@ var playState = {
         // this.playerSpeed = 400;
 
         // This will contain the score and the timer.
-        this.scoreText = game.add.text(0.05*canvasWidth,0.02*canvasWidth,'Score: ' + score, {font: 'bold 60px Corbel', fill: '#003366'});
+        // this.scoreText = game.add.text(0.05*canvasWidth,0.02*canvasWidth,'Score: ' + score, {font: 'bold 60px Corbel', fill: '#003366'});
+        gameData.createScoreText();
 
         life.createHeart();
 
@@ -93,15 +95,15 @@ var playState = {
         bombProb = 0.5;
         scoreBoostProb = 0.6;
         frenzyProb = 0.61;
-        comboProb = 0.62;
+        comboProb = 0.9;
         oneUpProb = 1;
     },
 
     calculateEggProbWithoutOneUP: function(){
         regularEggProb = 0.45;
         bombProb = 0.9;
-        scoreBoostProb = 0.98;
-        frenzyProb = 0.99;
+        scoreBoostProb = 0.91;
+        frenzyProb = 0.92;
         comboProb = 1;
         oneUpProb = 0;
     },
@@ -111,11 +113,11 @@ var playState = {
             var egg = this.eggs.children[i];
             egg.body.velocity.y=20;
 
-            if(score < 0){
-                if (highestScore < score) {
-                    highestScore = score;
+            if(gameData.score < 0){
+                if (gameData.highestScore < gameData.score) {
+                    gameData.highestScore = gameData.score;
                 }
-                score = 0;
+                gameData.score = 0;
 
                 window.setTimeout(function(){
                     backgroundMusic.stop();
@@ -125,7 +127,7 @@ var playState = {
 
             if(egg.y <= this.player.y - egg.height/1.2){
                 game.physics.arcade.collide(this.player, egg, this.collectEgg, null, this);
-            } else if(egg.y > canvasHeight * 10/11){
+            } else if(egg.y > this.player.y+this.player.height-egg.height){
                 this.crackEggs(egg);
             }
 
@@ -135,26 +137,26 @@ var playState = {
     crackEggs: function(egg){
         if(egg.key === "egg"){
             this.tweenEggs("crackedEgg", egg);
-            eggCrack.play();
-            this.updateScore(-5);
+            gameData.eggCrack.play();
+            this.updateScoreAndPlayAnimation(-5);
         } else if(egg.key === "bomb") {
             this.tweenEggs("bombCloud", egg);
-            bombWhoosh.play();
+            gameData.bombWhoosh.play();
         } else if(egg.key === "frenzy"){
             this.tweenEggs("crackedFrenzy", egg);
-            eggCrack.play();
-            this.updateScore(-20);
+            gameData.eggCrack.play();
+            this.updateScoreAndPlayAnimation(-20);
         }  else if(egg.key === "scoreBoost") {
             this.tweenEggs("crackedScoreBoost", egg);
-            eggCrack.play();
-            this.updateScore(-30);
+            gameData.eggCrack.play();
+            this.updateScoreAndPlayAnimation(-30);
         } else if(egg.key === "combo") {
             this.tweenEggs("crackedCombo", egg);
-            eggCrack.play();
-            this.updateScore(-100);
+            gameData.eggCrack.play();
+            this.updateScoreAndPlayAnimation(-100);
         } else if(egg.key === "oneUp" ) {
             this.tweenEggs("crackedOneUp", egg);
-            eggCrack.play();
+            gameData.eggCrack.play();
         }
 
     },
@@ -163,11 +165,7 @@ var playState = {
         egg.loadTexture(cracked,0);
         egg.body.gravity.y = 0;
         this.game.add.tween(egg)
-            .to({alpha: 0}, 1000, Phaser.Easing.Default, true, 300)
-            .onComplete.add(function () {
-                console.log("This is called when the tween is done.");
-            }, this
-        );
+            .to({alpha: 0}, 1000, Phaser.Easing.Default, true, 300);
     },
 
     dropEgg: function() {
@@ -226,30 +224,31 @@ var playState = {
         game.physics.startSystem(Phaser.Physics.ARCADE);
     },
 
-    setupSounds: function() {
-        eggCrack = game.add.audio('egg_crack');
-        eggCrack.volume = 0.6;
-
-        frenzyMusic = game.add.audio('frenzy_music');
-        frenzyMusic.volume = 0.4;
-        frenzyCollect = game.add.audio('frenzy_collect');
-        frenzyCollect.volume = 0.4;
-
-        eggCollect = game.add.audio('egg_collect');
-        eggCollect.volume = 0.6;
-
-        explosion = game.add.audio('explosion');
-        explosion.volume = 0.8;
-
-        bombWhoosh = game.add.audio('bomb_whoosh');
-        bombWhoosh.volume = 0.6;
-
-        frenzyTouch = game.add.audio('frenzy_touch');
-        frenzyTouch.volume = 0.3;
-
-        bombCollect = game.add.audio('bomb_collect');
-        bombCollect.volume = 0.6;
-    },
+    // setupSounds: function() {
+    //     gameData.setupSounds();
+    //     // eggCrack = game.add.audio('egg_crack');
+    //     // eggCrack.volume = 0.6;
+    //     //
+    //     // frenzyMusic = game.add.audio('frenzy_music');
+    //     // frenzyMusic.volume = 0.4;
+    //     // frenzyCollect = game.add.audio('frenzy_collect');
+    //     // frenzyCollect.volume = 0.4;
+    //     //
+    //     // eggCollect = game.add.audio('egg_collect');
+    //     // eggCollect.volume = 0.6;
+    //     //
+    //     // explosion = game.add.audio('explosion');
+    //     // explosion.volume = 0.8;
+    //     //
+    //     // bombWhoosh = game.add.audio('bomb_whoosh');
+    //     // bombWhoosh.volume = 0.6;
+    //     //
+    //     // frenzyTouch = game.add.audio('frenzy_touch');
+    //     // frenzyTouch.volume = 0.3;
+    //     //
+    //     // bombCollect = game.add.audio('bomb_collect');
+    //     // bombCollect.volume = 0.6;
+    // },
 
     setupPlayer: function(){
         //Create basket player sprite and enable physics
@@ -278,24 +277,24 @@ var playState = {
         egg.kill();
 
         if (egg.key == "egg") {
-            this.updateScore(5);
-            eggCollect.play();
+            this.updateScoreAndPlayAnimation(5);
+            gameData.eggCollect.play();
         } else if (egg.key == "bomb") {
-            bombCollect.play();
+            gameData.bombCollect.play();
             this.handleBomb();
         } else if (egg.key == "scoreBoost") {
-            this.updateScore(30);
-            eggCollect.play();
+            this.updateScoreAndPlayAnimation(30);
+            gameData.eggCollect.play();
         } else if (egg.key == "combo") {
-            eggCollect.play();
+            gameData.eggCollect.play();
             this.game.state.start("transitionToCombo");
         } else if (egg.key == "frenzy") {
-            frenzyCollect.play();
-            frenzyMusic.play();
+            gameData.frenzyCollect.play();
+            gameData.frenzyMusic.play();
             backgroundMusic.stop();
             this.game.state.start("transitionToFrenzy");
         } else if (egg.key == "oneUp"){
-            eggCollect.play();
+            gameData.eggCollect.play();
             lives++;
             life.changeLife();
             if(lives>=3){
@@ -317,11 +316,11 @@ var playState = {
         if (lives==0){
             this.player.inputEnabled = false;
             this.player.body.checkCollision.up = false;
-            explosion.play();
+            gameData.explosion.play();
             this.player.animations.play('explodeBomb');
 
-            if (highestScore < score) {
-                highestScore = score;
+            if (gameData.highestScore < gameData.score) {
+                gameData.highestScore = gameData.score;
             }
 
             window.setTimeout(function(){
@@ -333,33 +332,27 @@ var playState = {
     },
 
     showScoreAnimation: function(display){
-        var scoreTextFormat = {font: "bold 80pt Arial", fill: "#ff0000"};
-        scoreTextFormat.stroke = "#A4CED9";
-        scoreTextFormat.strokeThickness = 5;
+        var tweenTextFormat = gameData.createFormatting("bold 80pt Corbel", "#ff0000");
+        // scoreTextFormat.stroke = "#A4CED9";
+        // scoreTextFormat.strokeThickness = 5;
         if (typeof display != "number"){
-            var scoreText = display;
+            var tweenText = display;
         } else if(display>0){
-            var scoreText = "+" + display;
+            var tweenText = "+" + display;
         } else{
-            var scoreText = display;
+            var tweenText = display;
         }
 
-        this.frenzyTextDisplay = this.game.add.text(game.world.centerX, game.world.centerY, scoreText, scoreTextFormat);
-        this.frenzyTextDisplay.anchor.setTo(0.5, 0.5);
-        this.game.add.tween(this.frenzyTextDisplay)
-            .to({alpha: 0}, 100, Phaser.Easing.Default, true, 300)
-            .onComplete.add(function () {
-                console.log("This is called when the tween is done.");
-            }, this
-        );
-
+        gameData.createTween(game.world.centerX, game.world.centerY, tweenText, tweenTextFormat);
+        // this.tweenDisplay.anchor.setTo(0.5, 0.5);
+        // this.game.add.tween(this.tweenDisplay)
+        //     .to({alpha: 0}, 100, Phaser.Easing.Default, true, 300);
     },
 
 
-    updateScore: function(points){
+    updateScoreAndPlayAnimation: function(points){
         this.showScoreAnimation(points);
-        score += points;
-        this.scoreText.text = 'Score: ' + score;
+        gameData.updateScore(points);
     }
 
 };

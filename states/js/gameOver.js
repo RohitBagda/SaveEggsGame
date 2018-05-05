@@ -1,11 +1,11 @@
 var gameOverState = {
     create: function () {
         game.add.sprite(0,0, "background");
-        var scoreLabel = this.game.add.text(canvasWidth/2, 0.3*canvasHeight, "Final score: " + score,
+        var scoreLabel = this.game.add.text(canvasWidth/2, 0.3*canvasHeight, "Final score: " + gameData.score,
             {font: 'bold 70px Corbel', fill: "#003366"});
         scoreLabel.anchor.setTo(0.5, 0.5);
 
-        var highestScoreLabel = this.game.add.text(canvasWidth/2, 0.4*canvasHeight, "High score: " + highestScore,
+        var highestScoreLabel = this.game.add.text(canvasWidth/2, 0.4*canvasHeight, "High score: " + gameData.highestScore,
             {font: 'bold 70px Corbel', fill: "#003366"});
         highestScoreLabel.anchor.setTo(0.5, 0.5);
 

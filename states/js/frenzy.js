@@ -217,7 +217,7 @@ var frenzyState = {
 
         egg.kill();
         frenzyTouch.play();
-        this.numberOfEggsCollected++
+        this.numberOfEggsCollected++;
         this.createScoreAnimation(eggX, eggY, this.frenzyEggPoints);
         score += this.frenzyEggPoints;
         this.scoreText.text = "Score: " + score;

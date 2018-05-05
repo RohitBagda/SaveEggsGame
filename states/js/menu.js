@@ -1,48 +1,53 @@
 var menuState = {
-
+    verticalSpaceBetweenButtons: 140,
     create : function(){
-        game.add.sprite(0,0, "background");
-        var nameLabel = game.add.sprite(canvasWidth/2, 0.3*canvasHeight, "gametitle");
-        nameLabel.scale.setTo(0.2*scaleRatio, 0.2*scaleRatio);
-        nameLabel.anchor.setTo(0.5,0.5);
+        //Spacing between "play" and "how to play button"
+        this.addBackground();
+        this.addLogo();
+        this.addPlayButton();
+        this.addAboutButton();
+        this.addExitButton();
 
-        var verticalSpaceBetweenButtons = 140;
+    },
 
-        var playButtonFormatting = {font: "bold 70pt Corbel", fill: "#003366"};
-        playButtonFormatting.stroke = "#000000";
-        playButtonFormatting.strokeThickness = 1;
+    addBackground: function(){
+        gameData.addBackground();
+    },
 
-        var playButton = this.game.add.text(canvasWidth/2, canvasHeight/2 + verticalSpaceBetweenButtons, "Play", playButtonFormatting);
+    addPlayButton: function(){
+        var playButtonFormat = gameData.createFormatting("bold 70pt Corbel", "#003366");
+        var playButton = this.game.add.text(canvasWidth/2, canvasHeight/2 + this.verticalSpaceBetweenButtons,
+            "Play", playButtonFormat);
         playButton.anchor.setTo(0.5, 0.5);
         playButton.inputEnabled = true;
         playButton.events.onInputDown.add(this.start, this);
+    },
 
-        var aboutButtonFormatting = {font: "bold 56pt Corbel", fill: "#003366"};
-        aboutButtonFormatting.stroke = "#000000";
-        aboutButtonFormatting.strokeThickness = 1;
-
-        var aboutButton = this.game.add.text(canvasWidth/2, canvasHeight/1.6 + verticalSpaceBetweenButtons, "How To Play", aboutButtonFormatting);
+    addAboutButton: function(){
+        var buttonFormat = gameData.createFormatting("bold 56pt Corbel", "#003366");
+        var aboutButton = this.game.add.text(canvasWidth/2, canvasHeight/1.6 + this.verticalSpaceBetweenButtons,
+            "How To Play", buttonFormat);
         aboutButton.anchor.setTo(0.5, 0.5);
         aboutButton.inputEnabled = true;
-        aboutButton.events.onInputDown.add(this.goToAboutPage, this);
+        aboutButton.events.onInputDown.add(this.goToTutorialPage, this);
+    },
 
-        var exitButton = this.game.add.text(canvasWidth/2, canvasHeight/1.35 + verticalSpaceBetweenButtons, "Quit", aboutButtonFormatting);
+    addExitButton: function(){
+        var buttonFormat = gameData.createFormatting("bold 56pt Corbel", "#003366");
+        var exitButton = this.game.add.text(canvasWidth/2, canvasHeight/1.35 + this.verticalSpaceBetweenButtons,
+            "Quit", buttonFormat);
         exitButton.anchor.setTo(0.5, 0.5);
         exitButton.inputEnabled = true;
         exitButton.events.onInputDown.add(this.shutGame, this);
-
-
-        // var wkey = game.input.keyboard.addKey(Phaser.Keyboard.W);
-        //
-        // wkey.onDown.addOnce(this.start, this);
-          // var nameLabel = game.add.sprite(160,160,'basket');
-          // nameLabel.anchor.setTo(0.5,0.5);
-          //
-          // var playButton = game.add.button(160, 320, game.world.height-80, 'basket', this.start, this);
-          // playButton.anchor.setTo(0.5, 0.5);
     },
 
-    goToAboutPage: function(){
+    addLogo: function(){
+        let nameLabel = game.add.sprite(canvasWidth/2, 0.3*canvasHeight, "gametitle");
+        nameLabel.scale.setTo(0.2*scaleRatio, 0.2*scaleRatio);
+        nameLabel.anchor.setTo(0.5,0.5);
+    },
+
+    goToTutorialPage: function(){
         game.state.start('tutorial');
     },
 
@@ -53,7 +58,6 @@ var menuState = {
 
     shutGame: function(){
         this.game.destroy();
-
     }
 
 };
