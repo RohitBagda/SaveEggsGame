@@ -23,7 +23,6 @@ var loadState = {
     loadImages: function(){
         // Loading all sprites
         game.load.image('egg', 'assets/images/egg.png');
-        game.load.image('basket', 'assets/images/basket.png');
         game.load.image('win', 'assets/images/bomb.png');
         game.load.image('frenzy', 'assets/images/frenzy.png');
         game.load.image('bomb', 'assets/images/bomb.png');
@@ -41,8 +40,8 @@ var loadState = {
         game.load.image('crackedCombo',"assets/images/cracked_combo.png");
         game.load.image('bombCloud', "assets/images/bomb_cloud.png");
         game.load.image('heart', "assets/images/heart.png");
-        //Loading the basket spritesheet to create exploding animation when a user dies
-        game.load.spritesheet('explode', "assets/images/explosion_spritesheet1.png", 155, 150);
+        //Loading the basket sprite esheet to create exploding animation when a user dies
+        game.load.spritesheet('explode', "assets/images/basket_spritesheet.png", 155, 150);
     },
 
     loadSounds: function(){

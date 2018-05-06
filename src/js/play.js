@@ -7,7 +7,9 @@ var playState = {
     bombDisplayTexts: ["bruh", ":'(", "-_-", "Oops"],    // list of words that can pop up when the user catches a bomb
     timeStages: [5, 15, 20, 30, 60],                     // array of time points that determines the probabilities of different eggs falling based on seconds passed
 
-    // This function controls the basic setup of the state once it opens
+    /**
+     * This function controls the basic setup of the state once it opens.
+     */
     create: function(){
         this.setupGame();
         gameController.setupSounds();
@@ -20,7 +22,9 @@ var playState = {
 
         game.time.events.loop(500, this.dropEgg, this);    // drops an egg every 500 milliseconds
 
-        // increases current time of game by 1 second every 1000 milliseconds
+        /**
+         * increases current time of game by 1 second every 1000 milliseconds
+         */
         game.time.events.loop(1000, function(){
             gameController.currentTime++;
             let changeTime = gameController.currentTime;
