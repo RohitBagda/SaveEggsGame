@@ -1,8 +1,13 @@
+/**
+ * This is the play state. It is the core of the gameplay.
+ */
+
 var playState = {
 
-    bombDisplayTexts: ["bruh", ":'(", "-_-", "Oops"],
-    timeStages: [5, 15, 20, 30, 60],
+    bombDisplayTexts: ["bruh", ":'(", "-_-", "Oops"],    // list of words that can pop up when the user catches a bomb
+    timeStages: [5, 15, 20, 30, 60],                     // array of time points that determines the probabilities of different eggs falling based on seconds passed
 
+    // This function controls the basic setup of the state once it opens
     create: function(){
         this.setupGame();
         gameController.setupSounds();
@@ -13,7 +18,9 @@ var playState = {
         gameController.createHeart();
         gameController.createPause();
 
-        game.time.events.loop(500, this.dropEgg, this);
+        game.time.events.loop(500, this.dropEgg, this);    // drops an egg every 500 milliseconds
+
+        // increases current time of game by 1 second every 1000 milliseconds
         game.time.events.loop(1000, function(){
             gameController.currentTime++;
             let changeTime = gameController.currentTime;
@@ -23,6 +30,10 @@ var playState = {
         }, this);
     },
 
+    /**
+     * This calculates the probability of each egg falling depending on the current time
+     * @param time - current time in the game
+     */
     calculateEggProbability: function(time){
         if(time<this.timeStages[0]){
             gameController.setEggProbabilities(1,0,0,0,0,0);
@@ -41,25 +52,36 @@ var playState = {
         } 
     },
 
+    /**
+     * When there is a one-up (when the user has < 3 lives), the probabilities of the eggs falling are readjusted
+     */
     calculateEggProbWithOneUP: function(){
         gameController.setEggProbabilities(0.45,0.9,0.95,0.97,0.99,1);
         // gameController.setEggProbabilities(0.45,0.5,0.6,0.61,0.9,1);
     },
 
+    /**
+     * When there cannot be a one-up (when the user has 3 lives), the probabilities of the eggs falling are readjusted
+     */
     calculateEggProbWithoutOneUP: function(){
         gameController.setEggProbabilities(0.45,0.9,0.95,0.97,1,0);
     },
 
+    /**
+     * This function handles the aspects of the game that need to be dynamically updated
+     */
     update: function(){
         for(var i in this.eggs.children){
             var egg = this.eggs.children[i];
-            egg.body.velocity.y= gameController.eggVelocity;
+            egg.body.velocity.y= gameController.eggVelocity;    // set initial vertical (y) velocity
 
+            // If the score is negative, the game ends and goes to the game over state
             if(gameController.score < 0){
                 gameController.resetScore();
                 this.changeToGameOverState();
             }
 
+            // This checks for collisions between the egg and basket, and otherwise cracks the egg if it has fallen past the basket
             if(egg.y <= gameController.player.y - egg.height){
                 game.physics.arcade.collide(gameController.player, egg, this.collectEgg, null, this);
             } else if(egg.y > gameController.player.y+gameController.player.height-egg.height){
@@ -70,12 +92,17 @@ var playState = {
     },
 
     changeToGameOverState: function () {
+        // After 100 milliseconds, the game switches to the game over state
         window.setTimeout(function () {
             backgroundMusic.stop();
             game.state.start("gameOver");
         }, 100);
     },
 
+    /**
+     * This cracks the egg and plays the according animation and sound depending on type of egg
+     * @param egg
+     */
     crackEggs: function(egg){
         if(egg.key === "egg"){
             gameController.tweenEgg("crackedEgg", egg);
@@ -103,14 +130,14 @@ var playState = {
 
     },
 
-
-
     dropEgg: function(){
         let eggOffset = 50;
-        var eggX = Math.random() * (canvasWidth-eggOffset);
+        var eggX = Math.random() * (canvasWidth-eggOffset);     // selects a random x coordinate on the screen
         var eggY = -0.05 * canvasHeight;
-        var eggType = this.getEggType();
+        var eggType = this.getEggType();                        // determines the correct egg to drop
         var egg = game.add.sprite(eggX, eggY, eggType);
+
+        // Sets the scale ratio and adds physics properties to the egg
         egg.scale.setTo(scaleRatio, scaleRatio);
         game.physics.enable(egg, Phaser.Physics.ARCADE);
         this.eggGravity = gameController.calculateEggGravity(gameController.currentTime);
@@ -118,6 +145,10 @@ var playState = {
         this.eggs.add(egg);
     },
 
+    /**
+     * Randomly selects an egg that will be dropped based on assigned probabilities
+     * @returns {*}
+     */
     getEggType: function(){
         var eggType;
         var randomNumber = Math.random();
@@ -137,6 +168,9 @@ var playState = {
         return eggType;
     },
 
+    /**
+     * Adds background image, sets bounds of the game world
+     */
     setupGame: function(){
         game.world.setBounds(0,0, canvasWidth, canvasHeight);
         gameController.addBackground();
@@ -147,6 +181,11 @@ var playState = {
         gameController.createBasket();
     },
 
+    /**
+     * This function determines what happens when the egg falls into the basket
+     * @param player - the basket, which is required by the Phaser library to handle the collision
+     * @param egg - the egg that fell into the basket
+     */
     collectEgg: function(player, egg){
 
         egg.kill();
@@ -166,12 +205,18 @@ var playState = {
         }
     },
 
+    /**
+     * Performs the necessary actions when a regular egg is caught
+     */
     handleRegularEgg: function () {
         gameController.eggCollect.play();
         this.updateScoreAndPlayAnimation(gameController.regularEggPoints);
     },
 
 
+    /**
+     * Performs the necessary actions when a bomb is caught
+     */
     handleBomb: function(){
         gameController.bombCollect.play();
         gameController.decrementLives();
@@ -189,6 +234,9 @@ var playState = {
         }
     },
 
+    /**
+     * Handles what happens when the player loses all their lives
+     */
     handlePlayerAtGameEnd: function () {
         gameController.player.inputEnabled = false;
         gameController.player.body.checkCollision.up = false;
@@ -196,17 +244,26 @@ var playState = {
         gameController.player.animations.play('explodeBomb');
     },
 
+    /**
+     * Randomly selects a string to display when a bomb is caught
+     */
     showBombCaughtText: function () {
         var index = Math.floor(Math.random() * 4);
         var bomdDisplayText = this.bombDisplayTexts[index];
         this.showTweenAnimation(bomdDisplayText);
     },
 
+    /**
+     * Performs the necessary actions when a score boost egg is caught
+     */
     handleScoreBoost: function () {
         this.updateScoreAndPlayAnimation(gameController.scoreBoostPoints);
         gameController.eggCollect.play();
     },
 
+    /**
+     * Performs the necessary actions when a combo egg is caught
+     */
     handleCombo: function () {
         gameController.eggCollect.play();
         gameController.basketX = gameController.player.x;
@@ -214,6 +271,9 @@ var playState = {
         this.game.state.start("transitionToCombo");
     },
 
+    /**
+     * Performs the necessary action when a frenzy egg is caught
+     */
     handleFrenzy: function () {
         gameController.frenzyCollect.play();
         gameController.frenzyMusic.play();
@@ -221,6 +281,9 @@ var playState = {
         this.game.state.start("transitionToFrenzy");
     },
 
+    /**
+     * Performs the necessary actions when a one-up egg is caught
+     */
     handleOneUp: function () {
         gameController.eggCollect.play();
         gameController.incrementLives();
@@ -230,14 +293,20 @@ var playState = {
         }
     },
 
+    /**
+     * Displays a pop-up text animation on the screen
+     * @param display - the expression to be displayed
+     */
     showTweenAnimation: function(display){
         var tweenSpeed = 100;
         var tweenTextFormat = gameController.createFormatting("bold 80pt Corbel", "#ff0000");
         gameController.createTweenAnimation(game.world.centerX, game.world.centerY, display, tweenTextFormat, 300, tweenSpeed);
     },
 
-
-
+    /**
+     * Updates the score by a certain number of points
+     * @param points
+     */
     updateScoreAndPlayAnimation: function(points){
         this.showTweenAnimation(points);
         gameController.updateScore(points);

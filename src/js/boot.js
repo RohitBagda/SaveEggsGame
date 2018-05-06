@@ -1,6 +1,5 @@
 /**
- * This state is used to start the Phaser physics engine and loads the load state.
- * @type {{create: bootState.create}}
+ * This state is used to start the Phaser physics engine and launches the load state.
  */
 var bootState = {
     //The create function is a standard Phaser function, and is automatically called

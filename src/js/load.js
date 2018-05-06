@@ -1,6 +1,5 @@
 /**
- *
- * @type {{preload: loadState.preload, create: loadState.create, startMusic: loadState.startMusic}}
+ * Loads the required image and sound files for the game
  */
 var loadState = {
 

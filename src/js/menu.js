@@ -1,7 +1,10 @@
+/**
+ * This state is responsible for the layout of the menu page of the game
+ */
+
 var menuState = {
-    verticalSpaceBetweenButtons: 140,
+    verticalSpaceBetweenButtons: 140,    // Spacing between "Play" and "How to Play" buttons
     create : function(){
-        //Spacing between "play" and "how to play button"
         this.addBackground();
         this.addLogo();
         this.addPlayButton();

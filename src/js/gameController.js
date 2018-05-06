@@ -1,13 +1,21 @@
+/**
+ * This file manages the overall game play and interacts with the individual states. It holds information that is
+ * relevant to all the states in the game, such as total score, lives, etc.
+ */
+
 var gameController = {
     score : 0,
     highestScore: 0,
     lives: 3,
+
+    // Initially, only regular eggs fall
     regularEggProb: 1,
     bombProb: 0,
     scoreBoostProb: 0,
     frenzyProb: 0,
     comboPro: 0,
     oneUpProb: 0,
+
     currentTime: 0,
     maxLives: 3,
     hasReachedCombo: false,
@@ -16,6 +24,8 @@ var gameController = {
     frenzyPoints: 20,
     comboPoints: 100,
     eggVelocity: 20,
+
+    // If an object is placed at a point (x,y), the anchor will set the center of the object to be (x,y)
     horizontalAnchor: 0.5,
     verticalAnchor: 0.5,
 
@@ -23,6 +33,9 @@ var gameController = {
         game.add.sprite(0,0, "background");
     },
 
+    /**
+     * This creates the heart symbol at the top right of the screen to represent lives
+     */
     createHeart: function () {
         this.heart = game.add.sprite(.75*canvasWidth, 0.025*canvasHeight, "heart");
         this.heart.scale.setTo(0.65*scaleRatio, 0.65*scaleRatio);
@@ -36,6 +49,9 @@ var gameController = {
         }
     },
 
+    /**
+     * Adds the pause button at the top right of the screen
+     */
     createPause: function(){
         this.createPauseLabel();
         gameController.pauseLabel.events.onInputUp.add(function(){
@@ -44,6 +60,7 @@ var gameController = {
             tutorialState.createEggDescriptions();
         }, this);
 
+        // This allows you to resume play by touching any point on the screen while the game is paused
         game.input.onDown.add(function(){
             if(game.paused) {
                 var eggImages = tutorialState.getEggImages();
@@ -60,7 +77,12 @@ var gameController = {
         }, this);
     },
 
-
+    /**
+     * Creates the appropriate formatting for any text that appears on the screen
+     * @param fontType
+     * @param fillColor
+     * @returns {{font: *, fill: *}}
+     */
     createFormatting: function(fontType, fillColor) {
         var format = {font: fontType, fill: fillColor};
         format.stroke = "#000000";
@@ -68,6 +90,9 @@ var gameController = {
         return format;
     },
 
+    /**
+     * Creates the total score at the top left of the screen
+     */
     createScoreText: function() {
         var scoreFormat = this.createFormatting("bold 60px Corbel", "#003366");
         this.scoreText = game.add.text(0.05*canvasWidth,0.02*canvasWidth,'Score: ' + this.score, scoreFormat);
@@ -78,6 +103,15 @@ var gameController = {
         this.scoreText.text = 'Score: ' + this.score;
     },
 
+    /**
+     * Displays the score animation that pops up on the screen for each individual egg
+     * @param x
+     * @param y
+     * @param text
+     * @param format
+     * @param duration
+     * @param speed
+     */
     createTweenText: function(x, y, text, format, duration, speed){
         var tweenDisplay = game.add.text(x, y, text, format);
         tweenDisplay.anchor.setTo(gameController.horizontalAnchor, gameController.verticalAnchor);
@@ -85,6 +119,11 @@ var gameController = {
             .to({alpha: 0}, speed, Phaser.Easing.Default, true, duration);
     },
 
+    /**
+     * Displays each egg as cracked when it falls past the basket to the ground
+     * @param crackedEggImage
+     * @param egg
+     */
     tweenEgg: function(crackedEggImage, egg){
         egg.loadTexture(crackedEggImage,0);
         egg.body.gravity.y = 0;
@@ -98,7 +137,8 @@ var gameController = {
             this.basketY = canvasHeight/1.2;
             this.hasReachedCombo = true;
         }
-        //Create basket player sprite and enable physics
+
+        //Create basket player sprite and enable physics properties on it
         this.player = game.add.sprite(this.basketX, this.basketY, "explode");
         this.player.animations.add('explodeBomb', [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], 45);
         this.player.scale.setTo(scaleRatio/1.5, scaleRatio/1.5);
@@ -116,11 +156,14 @@ var gameController = {
     },
 
     createPauseLabel: function(){
-        var pauseLabalFormat = this.createFormatting("bold 60px Corbel", "003366");
-        this.pauseLabel = game.add.text(0.92*canvasWidth, 0.02*canvasHeight, 'II', pauseLabalFormat);
+        var pauseLabelFormat = this.createFormatting("bold 60px Corbel", "003366");
+        this.pauseLabel = game.add.text(0.92*canvasWidth, 0.02*canvasHeight, 'II', pauseLabelFormat);
         this.pauseLabel.inputEnabled = true;
     },
 
+    /**
+     * Adds all the sounds to the game and sets the volume of each one
+     */
     setupSounds: function(){
         this.eggCrack = game.add.audio('egg_crack');
         this.eggCrack.volume = 0.6;
@@ -161,6 +204,11 @@ var gameController = {
         }
     },
 
+    /**
+     * Calculates the gravity of the egg based on the time passed in the game
+     * @param time
+     * @returns {number}
+     */
     calculateEggGravity: function(time){
         return  67200*(1/(1+Math.exp(-0.1*(time-30)))+1);
     },
@@ -178,6 +226,9 @@ var gameController = {
         this.oneUpProb = oneUpPr;
     },
 
+    /**
+     * Resets all aspects of the game when the user starts over
+     */
     resetGameComponents: function(){
         this.currentTime=0;
         this.lives = 3;
@@ -186,6 +237,15 @@ var gameController = {
         this.hasReachedCombo = false;
     },
 
+    /**
+     * Creates the text animation when the game transitions between states
+     * @param x
+     * @param y
+     * @param text
+     * @param textFormat
+     * @param duration
+     * @param speed
+     */
     createTweenAnimation: function(x, y, text, textFormat, duration, speed){
         if(text>0){
             var tweenText = "+" + text;

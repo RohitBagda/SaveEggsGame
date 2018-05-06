@@ -8,6 +8,10 @@ var tutorialState = {
         this.createEggDescriptions();
         this.createHome();
     },
+
+    /**
+     * This is where the basic game rules are laid out.
+     */
     createOverview: function() {
         const RULE_FIRST_COLUMN_X = canvasWidth/11;
         const RULE_FIRST_ROW_Y = canvasHeight/4;
@@ -20,6 +24,10 @@ var tutorialState = {
         this.game.add.text(RULE_FIRST_COLUMN_X, RULE_SECOND_ROW_Y, "3. Avoid Bombs!", overviewFormatting);
         this.game.add.text(RULE_SECOND_COLUMN_X, RULE_SECOND_ROW_Y, "4. Missed eggs cost points.", overviewFormatting);
     },
+
+    /**
+     * Adds the logo at the top of the page.
+     */
     createLogo: function(){
         const LOGO_X = canvasWidth/2;
         const LOGO_Y = canvasHeight/7;
@@ -30,6 +38,9 @@ var tutorialState = {
         nameLabel.anchor.setTo(LOGO_ANCHOR, LOGO_ANCHOR);
     },
 
+    /**
+     * Adds images and corresponding descriptions of each type of egg/object that falls.
+     */
     createEggDescriptions: function() {
         const EGG_PICTURE_X = canvasWidth/12;
         const EGG_PICTURE_Y = canvasHeight/12;
@@ -64,12 +75,19 @@ var tutorialState = {
         this.descriptions = [eggDes, scoreDes, frenzyDes, OneupDes, comboDes, bombDes];
     },
 
+    /**
+     * Scales images of eggs to fit correctly on the page.
+     * @param sourceArray
+     */
     createScale: function(sourceArray){
         sourceArray.forEach(function(element){
             element.scale.setTo(scaleRatio, scaleRatio);
         });
     },
 
+    /**
+     * Adds the button that directs the user back to the home page.
+     */
     createHome: function(){
         var homeButtonFormatting = {font: "bold 48pt Corbel", fill: "#003366"};
         homeButtonFormatting.stroke = "#000000";
