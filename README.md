@@ -40,12 +40,19 @@ To install the game on an Android device, we need:
     9) Enable Developer Mode on your phone
     10) adb install theCompiledGame.apk (tab)
 
-4. For device browser testing, please do the following:
-    1) Download Webstorm IDE, open this project, and run it;
-    2) Download Node.js server
-       (1) Go to the SavetheEggs Directory
-       (2) http-server
-       (3) Open up your browser and enter the localhost url indicated in the Node.js
+## For Developers
+We used HTML5, CSS, JavaScript, and the Phaser game engine to build our game. We used Webstorm IDE as our editor for JavaScript.
+
+### Download Webstorm
+Download [Webstorm](https://www.jetbrains.com/webstorm/download). Also, if you’re student, you can download the full version with your student account.
+
+### Clone with Webstorm
+
+Click ‘VCS’ >> ‘Check out from Version Control’ >> Git in Webstorm start menu. Log in to your github account. Copy our github repository URL and paste it to ‘Git Repository URL’ textbox.
+
+### Running the game on Webstorm
+
+Webstorm has its own local server. Open index.html in Webstorm and on the upper-right side, click on the brower icon you want to run.
 
 CITATIONS
 --------
