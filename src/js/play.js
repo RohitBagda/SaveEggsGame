@@ -105,22 +105,18 @@ var playState = {
         if(egg.key === "egg"){
             gameController.tweenEgg("crackedEgg", egg);
             gameController.eggCrack.play();
-            this.updateScoreAndPlayAnimation(0); //when eggs are missed, nothing happens to score
         } else if(egg.key === "bomb") {
             gameController.tweenEgg("bombCloud", egg);
             gameController.bombWhoosh.play();
         } else if(egg.key === "frenzy"){
             gameController.tweenEgg("crackedFrenzy", egg);
             gameController.eggCrack.play();
-            this.updateScoreAndPlayAnimation(0); //when eggs are missed, nothing happens to score
         }  else if(egg.key === "scoreBoost") {
             gameController.tweenEgg("crackedScoreBoost", egg);
             gameController.eggCrack.play();
-            this.updateScoreAndPlayAnimation(0); //when eggs are missed, nothing happens to score
         } else if(egg.key === "combo") {
             gameController.tweenEgg("crackedCombo", egg);
             gameController.eggCrack.play();
-            this.updateScoreAndPlayAnimation(0); //when eggs are missed, nothing happens to score
         } else if(egg.key === "oneUp" ) {
             gameController.tweenEgg("crackedOneUp", egg);
             gameController.eggCrack.play();
@@ -307,11 +303,9 @@ var playState = {
      */
     updateScoreAndPlayAnimation: function(points){
 
-        //no point deduction for missed eggs
-        if (points > 0) {
-            this.showTweenAnimation(points);
-            gameController.updateScore(points);
-        }
+        this.showTweenAnimation(points);
+        gameController.updateScore(points);
+
     },
 
 };
