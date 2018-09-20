@@ -79,12 +79,6 @@ var playState = {
             var egg = this.eggs.children[i];
             egg.body.velocity.y= gameController.eggVelocity;    // set initial vertical (y) velocity
 
-            // If the score is negative, the game ends and goes to the game over state
-            if(gameController.score < 0){
-                gameController.resetScore();
-                this.changeToGameOverState();
-            }
-
             // This checks for collisions between the egg and basket, and otherwise cracks the egg if it has fallen past the basket
             if(egg.y <= gameController.player.y - egg.height){
                 game.physics.arcade.collide(gameController.player, egg, this.collectEgg, null, this);
@@ -111,22 +105,18 @@ var playState = {
         if(egg.key === "egg"){
             gameController.tweenEgg("crackedEgg", egg);
             gameController.eggCrack.play();
-            this.updateScoreAndPlayAnimation(-gameController.regularEggPoints);
         } else if(egg.key === "bomb") {
             gameController.tweenEgg("bombCloud", egg);
             gameController.bombWhoosh.play();
         } else if(egg.key === "frenzy"){
             gameController.tweenEgg("crackedFrenzy", egg);
             gameController.eggCrack.play();
-            this.updateScoreAndPlayAnimation(-gameController.frenzyPoints);
         }  else if(egg.key === "scoreBoost") {
             gameController.tweenEgg("crackedScoreBoost", egg);
             gameController.eggCrack.play();
-            this.updateScoreAndPlayAnimation(-gameController.scoreBoostPoints);
         } else if(egg.key === "combo") {
             gameController.tweenEgg("crackedCombo", egg);
             gameController.eggCrack.play();
-            this.updateScoreAndPlayAnimation(-gameController.comboPoints);
         } else if(egg.key === "oneUp" ) {
             gameController.tweenEgg("crackedOneUp", egg);
             gameController.eggCrack.play();
@@ -312,8 +302,10 @@ var playState = {
      * @param points
      */
     updateScoreAndPlayAnimation: function(points){
+
         this.showTweenAnimation(points);
         gameController.updateScore(points);
+
     },
 
 };
