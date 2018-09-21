@@ -34,6 +34,10 @@ var playState = {
         }, this);
     },
 
+    render: function(){
+        game.debug.text(game.time.fps || '--', 10, 200, "#00ff00", '100px Courier');
+    },
+
     /**
      * This calculates the probability of each egg falling depending on the current time
      * @param time - current time in the game

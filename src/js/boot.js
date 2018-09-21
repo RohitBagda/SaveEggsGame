@@ -2,6 +2,10 @@
  * This state is used to start the Phaser physics engine and launches the load state.
  */
 var bootState = {
+    preload: function() {
+        game.time.advancedTiming = true;
+    },
+
     //The create function is a standard Phaser function, and is automatically called
     create: function() {
 
