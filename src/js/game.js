@@ -1,7 +1,7 @@
 /**
  * Creates a new game, assigns the width and height of the game window
  */
-var game = new Phaser.Game(window.innerWidth, window.innerHeight, Phaser.AUTO, 'gameDiv');
+var game = new Phaser.Game(window.innerWidth, window.innerHeight, Phaser.CANVAS, 'gameDiv');
 
 // Add states here
 game.state.add('boot', bootState);
