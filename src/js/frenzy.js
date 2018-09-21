@@ -188,7 +188,7 @@ var frenzyState = {
 
         // Spacing between "Play" and "How to Play" button
         if (eggName == "frenzy"){
-            frenzyEgg.events.onInputDown.add(this.collectEgg, this); x
+            frenzyEgg.events.onInputDown.add(this.collectEgg, this);
         } else{
             frenzyEgg.events.onInputDown.add(this.collectBomb, this);
         }
