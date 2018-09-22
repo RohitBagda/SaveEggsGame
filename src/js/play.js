@@ -188,18 +188,25 @@ var playState = {
 
         egg.kill();
 
-        if (egg.key == "egg") {
-            this.handleRegularEgg();
-        } else if (egg.key == "bomb") {
-            this.handleBomb();
-        } else if (egg.key == "scoreBoost") {
-            this.handleScoreBoost();
-        } else if (egg.key == "combo") {
-            this.handleCombo();
-        } else if (egg.key == "frenzy") {
-            this.handleFrenzy();
-        } else if (egg.key == "oneUp"){
-            this.handleOneUp();
+        switch(egg.key) {
+            case "egg":
+                this.handleRegularEgg();
+                break;
+            case "bomb":
+                this.handleBomb();
+                break;
+            case "scoreBoost":
+                this.handleScoreBoost();
+                break;
+            case "combo":
+                this.handleCombo();
+                break;
+            case "frenzy":
+                this.handleFrenzy();
+                break;
+            case "oneUp":
+                this.handleOneUp();
+                break;
         }
     },
 
