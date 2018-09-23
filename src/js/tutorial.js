@@ -55,12 +55,12 @@ var tutorialState = {
         };
         descriptionFormatting.stroke = "#000000";
         //Create all pictures in tutorial
-        let eggPic = game.add.sprite(EGG_PICTURE_X, EGG_PICTURE_Y * 4, 'egg');
-        let scoreBoostPic = game.add.sprite(EGG_PICTURE_X, EGG_PICTURE_Y * 5, 'scoreBoost');
-        let frenzyPic = game.add.sprite(EGG_PICTURE_X, EGG_PICTURE_Y * 6, 'frenzy');
-        let oneUpPic = game.add.sprite(EGG_PICTURE_X, EGG_PICTURE_Y * 7, 'oneUp');
-        let comboPic = game.add.sprite(EGG_PICTURE_X, EGG_PICTURE_Y * 8, 'combo');
-        let bombPic = game.add.sprite(EGG_PICTURE_X, EGG_PICTURE_Y * 9, 'bomb');
+        let eggPic = game.add.sprite(EGG_PICTURE_X, EGG_PICTURE_Y * 4, gameController.REGULAR_EGG);
+        let scoreBoostPic = game.add.sprite(EGG_PICTURE_X, EGG_PICTURE_Y * 5, gameController.SCORE_BOOST);
+        let frenzyPic = game.add.sprite(EGG_PICTURE_X, EGG_PICTURE_Y * 6, gameController.FRENZY_EGG);
+        let oneUpPic = game.add.sprite(EGG_PICTURE_X, EGG_PICTURE_Y * 7, gameController.ONE_UP);
+        let comboPic = game.add.sprite(EGG_PICTURE_X, EGG_PICTURE_Y * 8, gameController.COMBO_EGG);
+        let bombPic = game.add.sprite(EGG_PICTURE_X, EGG_PICTURE_Y * 9, gameController.BOMB);
         this.eggPics = [eggPic, scoreBoostPic, frenzyPic, oneUpPic, comboPic, bombPic];
         this.createScale(this.eggPics);
         //Create all the descriptions

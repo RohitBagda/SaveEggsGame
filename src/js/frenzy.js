@@ -135,10 +135,10 @@ var frenzyState = {
                 var prob = Math.random(); //generate a number between 0 and 1
 
                 if (prob < this.probabilityOfAddingFrenzyEgg){
-                    this.createFrenzyEgg(coordinate.x, coordinate.y, "frenzy");
+                    this.createFrenzyEgg(coordinate.x, coordinate.y, gameController.FRENZY_EGG);
                     this.numberOfEggsAddedToScreen++;
                 } else{
-                    this.createFrenzyEgg(coordinate.x, coordinate.y, "bomb");
+                    this.createFrenzyEgg(coordinate.x, coordinate.y, gameController.BOMB);
                 }
             }
         }

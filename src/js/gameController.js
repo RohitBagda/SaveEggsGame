@@ -4,6 +4,22 @@
  */
 
 var gameController = {
+
+    //important string constants for game sprites
+    REGULAR_EGG: "egg",
+    FRENZY_EGG: "frenzy",
+    BOMB: "bomb",
+    SCORE_BOOST: "scoreBoost",
+    ONE_UP: "oneUp",
+    COMBO_EGG: "combo",
+
+    CRACKED_REGULAR_EGG: "crackedEgg",
+    CRACKED_FRENZY_EGG: "crackedFrenzy",
+    CRACKED_ONE_UP: "crackedOneUp",
+    CRACKED_SCORE_BOOST: "crackedScoreBoost",
+    CRACKED_COMBO: "crackedCombo",
+    BOMB_EXPLOSION_CLOUD: "bombCloud",
+
     score : 0,
     highestScore: 0,
     lives: 3,
