@@ -30,7 +30,12 @@ var gameController = {
     verticalAnchor: 0.5,
 
     addBackground: function(){
-        game.add.sprite(0,0, "background");
+        var backgroundSprite = game.add.sprite(game.world.centerX, game.world.height, "background");
+        backgroundSprite.anchor.setTo(0.5, 1.0);
+
+        var scalingReqdToFillWidth = canvasWidth / backgroundSprite.texture.width;
+        var scalingReqdToFillHeight = canvasHeight / backgroundSprite.texture.height;
+        backgroundSprite.scale.setTo(Math.max(scalingReqdToFillHeight, scalingReqdToFillWidth));
     },
 
     /**
