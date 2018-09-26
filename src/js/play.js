@@ -89,7 +89,6 @@ var playState = {
             } else if(egg.y > gameController.player.y+gameController.player.height-egg.height){
                 this.crackEggs(egg);
             }
-
         }
     },
 
@@ -107,6 +106,8 @@ var playState = {
      */
     crackEggs: function(egg){
         if(egg.key === "egg"){
+            gameController.regularEggChain = 0;
+            // console.log(gameController.regularEggChain);
             gameController.tweenEgg("crackedEgg", egg);
             gameController.eggCrack.play();
         } else if(egg.key === "bomb") {
@@ -189,6 +190,7 @@ var playState = {
         egg.kill();
 
         if (egg.key == "egg") {
+            gameController.regularEggChain ++;
             this.handleRegularEgg();
         } else if (egg.key == "bomb") {
             this.handleBomb();
@@ -208,7 +210,7 @@ var playState = {
      */
     handleRegularEgg: function () {
         gameController.eggCollect.play();
-        this.updateScoreAndPlayAnimation(gameController.regularEggPoints);
+        this.updateScoreAndPlayAnimation(gameController.regularEggPoints*gameController.regularEggChain);
     },
 
 
@@ -225,7 +227,7 @@ var playState = {
             this.calculateEggProbability(gameController.currentTime);
         }
 
-        if (gameController.lives==0){
+        if (gameController.lives == 0){
             gameController.checkHighScore();
             this.handlePlayerAtGameEnd();
             this.changeToGameOverState();
