@@ -23,6 +23,7 @@ var gameController = {
     score : 0,
     highestScore: 0,
     lives: 3,
+    regularEggChain: 0,
 
     // Initially, only regular eggs fall
     regularEggProb: 1,
@@ -158,7 +159,7 @@ var gameController = {
         this.player = game.add.sprite(this.basketX, this.basketY, "explode");
 
         // Add animation for basket explosion in the form of a sprite sheet of 15 frames
-        this.player.animations.add('explodeBomb', [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], 45);
+        this.player.animations.add('explodeBomb', [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], 15);
 
         // Enable physics properties for the basket.
         this.player.scale.setTo(scaleRatio/1.5, scaleRatio/1.5);
@@ -233,10 +234,6 @@ var gameController = {
         return  67200*(1/(1+Math.exp(-0.1*(time-30)))+1);
     },
 
-    resetScore: function(){
-        this.score = 0;
-    },
-
     setEggProbabilities: function(regularEggPr, bombPr, scoreBoostPr, frenzyPr, comboPr, oneUpPr){
         this.regularEggProb = regularEggPr;
         this.bombProb = bombPr;
@@ -255,6 +252,7 @@ var gameController = {
         this.setEggProbabilities(1,0,0,0,0,0);
         this.score = 0;
         this.hasReachedCombo = false;
+        this.regularEggChain = 0;
     },
 
     /**

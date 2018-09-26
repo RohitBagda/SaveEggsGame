@@ -89,7 +89,6 @@ var playState = {
             } else if(egg.y > gameController.player.y+gameController.player.height-egg.height){
                 this.crackEggs(egg);
             }
-
         }
     },
 
@@ -98,7 +97,7 @@ var playState = {
         window.setTimeout(function () {
             backgroundMusic.stop();
             game.state.start("gameOver");
-        }, 100);
+        }, 1200);
     },
 
     /**
@@ -108,6 +107,7 @@ var playState = {
     crackEggs: function(egg){
         switch (egg.key){
             case gameController.REGULAR_EGG:
+                gameController.regularEggChain = 0;
                 gameController.tweenEgg(gameController.CRACKED_REGULAR_EGG, egg);
                 gameController.eggCrack.play();
                 break;
@@ -196,6 +196,7 @@ var playState = {
 
         switch(egg.key) {
             case gameController.REGULAR_EGG:
+                gameController.regularEggChain ++;
                 this.handleRegularEgg();
                 break;
             case gameController.BOMB:
@@ -221,7 +222,7 @@ var playState = {
      */
     handleRegularEgg: function () {
         gameController.eggCollect.play();
-        this.updateScoreAndPlayAnimation(gameController.regularEggPoints);
+        this.updateScoreAndPlayAnimation(gameController.regularEggPoints*gameController.regularEggChain);
     },
 
 
