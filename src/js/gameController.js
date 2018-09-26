@@ -143,7 +143,7 @@ var gameController = {
         this.player = game.add.sprite(this.basketX, this.basketY, "explode");
 
         // Add animation for basket explosion in the form of a sprite sheet of 15 frames
-        this.player.animations.add('explodeBomb', [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], 45);
+        this.player.animations.add('explodeBomb', [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], 15);
 
         // Enable physics properties for the basket.
         this.player.scale.setTo(scaleRatio/1.5, scaleRatio/1.5);

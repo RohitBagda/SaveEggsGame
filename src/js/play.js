@@ -97,7 +97,7 @@ var playState = {
         window.setTimeout(function () {
             backgroundMusic.stop();
             game.state.start("gameOver");
-        }, 100);
+        }, 1200);
     },
 
     /**
