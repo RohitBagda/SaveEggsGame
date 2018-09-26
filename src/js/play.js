@@ -84,7 +84,7 @@ var playState = {
             egg.body.velocity.y= gameController.eggVelocity;    // set initial vertical (y) velocity
 
             // This checks for collisions between the egg and basket, and otherwise cracks the egg if it has fallen past the basket
-            if(egg.bottom <= gameController.player.y){
+            if(egg.bottom <= gameController.player.top){
                 game.physics.arcade.collide(gameController.player, egg, this.collectEgg, null, this);
             } else if(egg.bottom > gameController.player.bottom){
                 this.crackEggs(egg);

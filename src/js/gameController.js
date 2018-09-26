@@ -13,7 +13,7 @@ var gameController = {
     bombProb: 0,
     scoreBoostProb: 0,
     frenzyProb: 0,
-    comboPro: 0,
+    comboProb: 0,
     oneUpProb: 0,
 
     currentTime: 0,
@@ -139,7 +139,7 @@ var gameController = {
     createBasket: function(){
         if (!this.hasReachedCombo){
             this.basketX = canvasWidth/2;
-            this.basketY = canvasHeight/1.2;
+            this.basketY = canvasHeight * 0.98;
             this.hasReachedCombo = true;
         }
 
@@ -151,7 +151,7 @@ var gameController = {
 
         // Enable physics properties for the basket.
         this.player.scale.setTo(scaleRatio/1.5, scaleRatio/1.5);
-        this.player.anchor.setTo(0.5,0);
+        this.player.anchor.setTo(0.5,1.0);
         game.physics.arcade.enable(this.player, Phaser.Physics.ARCADE);
         this.player.body.kinematic = true;
         this.player.inputEnabled = true;
