@@ -139,10 +139,10 @@ var frenzyState = {
                 (eggCenter.y - this.frenzyEggDimensions.height/2) < maxY) {
 
                 if (Math.random() < this.probabilityOfAddingFrenzyEgg){
-                    this.createFrenzyEgg(eggCenter.x, eggCenter.y, "frenzy");
+                    this.createFrenzyEgg(eggCenter.x, eggCenter.y, gameController.FRENZY_EGG);
                     this.numberOfEggsAddedToScreen++;
                 } else{
-                    this.createFrenzyEgg(eggCenter.x, eggCenter.y, "bomb");
+                    this.createFrenzyEgg(eggCenter.x, eggCenter.y, gameController.BOMB);
                 }
             }
         }

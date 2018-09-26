@@ -89,7 +89,6 @@ var playState = {
             } else if(egg.bottom > gameController.player.bottom){
                 this.crackEggs(egg);
             }
-
         }
     },
 
@@ -98,7 +97,7 @@ var playState = {
         window.setTimeout(function () {
             backgroundMusic.stop();
             game.state.start("gameOver");
-        }, 100);
+        }, 1200);
     },
 
     /**
@@ -106,26 +105,33 @@ var playState = {
      * @param egg
      */
     crackEggs: function(egg){
-        if(egg.key === "egg"){
-            gameController.tweenEgg("crackedEgg", egg);
-            gameController.eggCrack.play();
-        } else if(egg.key === "bomb") {
-            gameController.tweenEgg("bombCloud", egg);
-            gameController.bombWhoosh.play();
-        } else if(egg.key === "frenzy"){
-            gameController.tweenEgg("crackedFrenzy", egg);
-            gameController.eggCrack.play();
-        }  else if(egg.key === "scoreBoost") {
-            gameController.tweenEgg("crackedScoreBoost", egg);
-            gameController.eggCrack.play();
-        } else if(egg.key === "combo") {
-            gameController.tweenEgg("crackedCombo", egg);
-            gameController.eggCrack.play();
-        } else if(egg.key === "oneUp" ) {
-            gameController.tweenEgg("crackedOneUp", egg);
-            gameController.eggCrack.play();
+        switch (egg.key){
+            case gameController.REGULAR_EGG:
+                gameController.regularEggChain = 0;
+                gameController.tweenEgg(gameController.CRACKED_REGULAR_EGG, egg);
+                gameController.eggCrack.play();
+                break;
+            case gameController.BOMB:
+                gameController.tweenEgg(gameController.BOMB_EXPLOSION_CLOUD, egg);
+                gameController.bombWhoosh.play();
+                break;
+            case gameController.FRENZY_EGG:
+                gameController.tweenEgg(gameController.CRACKED_FRENZY_EGG, egg);
+                gameController.eggCrack.play();
+                break;
+            case gameController.SCORE_BOOST:
+                gameController.tweenEgg(gameController.CRACKED_SCORE_BOOST, egg);
+                gameController.eggCrack.play();
+                break;
+            case gameController.COMBO_EGG:
+                gameController.tweenEgg(gameController.CRACKED_COMBO, egg);
+                gameController.eggCrack.play();
+                break;
+            case gameController.ONE_UP:
+                gameController.tweenEgg(gameController.CRACKED_ONE_UP, egg);
+                gameController.eggCrack.play();
+                break;
         }
-
     },
 
     dropEgg: function(){
@@ -153,17 +159,17 @@ var playState = {
         var eggType;
         var randomNumber = Math.random();
         if(randomNumber <= gameController.regularEggProb){
-            eggType = "egg";
+            eggType = gameController.REGULAR_EGG;
         } else if(randomNumber<=gameController.bombProb) {
-            eggType = "bomb";
+            eggType = gameController.BOMB;
         } else if(randomNumber<=gameController.frenzyProb) {
-            eggType = "frenzy";
+            eggType = gameController.FRENZY_EGG;
         } else if(randomNumber<=gameController.comboProb) {
-            eggType = "combo";
+            eggType = gameController.COMBO_EGG;
         } else if(randomNumber<=gameController.scoreBoostProb) {
-            eggType = "scoreBoost";
+            eggType = gameController.SCORE_BOOST;
         }  else if(randomNumber<=gameController.oneUpProb && gameController.lives<gameController.maxLives){
-            eggType = "oneUp";
+            eggType = gameController.ONE_UP;
         }
         return eggType;
     },
@@ -190,18 +196,26 @@ var playState = {
 
         egg.kill();
 
-        if (egg.key == "egg") {
-            this.handleRegularEgg();
-        } else if (egg.key == "bomb") {
-            this.handleBomb();
-        } else if (egg.key == "scoreBoost") {
-            this.handleScoreBoost();
-        } else if (egg.key == "combo") {
-            this.handleCombo();
-        } else if (egg.key == "frenzy") {
-            this.handleFrenzy();
-        } else if (egg.key == "oneUp"){
-            this.handleOneUp();
+        switch(egg.key) {
+            case gameController.REGULAR_EGG:
+                gameController.regularEggChain ++;
+                this.handleRegularEgg();
+                break;
+            case gameController.BOMB:
+                this.handleBomb();
+                break;
+            case gameController.SCORE_BOOST:
+                this.handleScoreBoost();
+                break;
+            case gameController.COMBO_EGG:
+                this.handleCombo();
+                break;
+            case gameController.FRENZY_EGG:
+                this.handleFrenzy();
+                break;
+            case gameController.ONE_UP:
+                this.handleOneUp();
+                break;
         }
     },
 
@@ -210,7 +224,7 @@ var playState = {
      */
     handleRegularEgg: function () {
         gameController.eggCollect.play();
-        this.updateScoreAndPlayAnimation(gameController.regularEggPoints);
+        this.updateScoreAndPlayAnimation(gameController.regularEggPoints*gameController.regularEggChain);
     },
 
 
@@ -227,7 +241,7 @@ var playState = {
             this.calculateEggProbability(gameController.currentTime);
         }
 
-        if (gameController.lives==0){
+        if (gameController.lives == 0){
             gameController.checkHighScore();
             this.handlePlayerAtGameEnd();
             this.changeToGameOverState();
@@ -249,8 +263,8 @@ var playState = {
      */
     showBombCaughtText: function () {
         var index = Math.floor(Math.random() * 4);
-        var bomdDisplayText = this.bombDisplayTexts[index];
-        this.showTweenAnimation(bomdDisplayText);
+        var bombDisplayText = this.bombDisplayTexts[index];
+        this.showTweenAnimation(bombDisplayText);
     },
 
     /**
