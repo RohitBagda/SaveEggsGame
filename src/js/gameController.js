@@ -7,6 +7,7 @@ var gameController = {
     score : 0,
     highestScore: 0,
     lives: 3,
+    regularEggChain: 0,
 
     // Initially, only regular eggs fall
     regularEggProb: 1,
@@ -217,10 +218,6 @@ var gameController = {
         return  67200*(1/(1+Math.exp(-0.1*(time-30)))+1);
     },
 
-    resetScore: function(){
-        this.score = 0;
-    },
-
     setEggProbabilities: function(regularEggPr, bombPr, scoreBoostPr, frenzyPr, comboPr, oneUpPr){
         this.regularEggProb = regularEggPr;
         this.bombProb = bombPr;
@@ -239,6 +236,7 @@ var gameController = {
         this.setEggProbabilities(1,0,0,0,0,0);
         this.score = 0;
         this.hasReachedCombo = false;
+        this.regularEggChain = 0;
     },
 
     /**
