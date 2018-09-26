@@ -68,11 +68,8 @@ var comboState = {
      * @param egg
      */
     crackComboEgg: function(egg){
-        if(egg.key==="combo") {
-            gameController.tweenEgg("crackedCombo", egg);
-            gameController.eggCrack.play();
-        }
-
+        gameController.tweenEgg(gameController.CRACKED_COMBO, egg);
+        gameController.eggCrack.play();
     },
 
     /**
@@ -119,7 +116,7 @@ var comboState = {
         for (var i = 0; i < numEggs; i++){
             eggY -= yOffSet;
             eggX += xOffset;
-            var eggType = "combo";
+            var eggType = gameController.COMBO_EGG;
             var egg = game.add.sprite(eggX, eggY, eggType);
             egg.scale.setTo(scaleRatio, scaleRatio);
             game.physics.arcade.enable(egg);
