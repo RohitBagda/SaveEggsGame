@@ -84,9 +84,9 @@ var playState = {
             egg.body.velocity.y= gameController.eggVelocity;    // set initial vertical (y) velocity
 
             // This checks for collisions between the egg and basket, and otherwise cracks the egg if it has fallen past the basket
-            if(egg.y <= gameController.player.y - egg.height){
+            if(egg.bottom <= gameController.player.top){
                 game.physics.arcade.collide(gameController.player, egg, this.collectEgg, null, this);
-            } else if(egg.y > gameController.player.y+gameController.player.height-egg.height){
+            } else if(egg.bottom > gameController.player.bottom){
                 this.crackEggs(egg);
             }
         }
@@ -135,14 +135,16 @@ var playState = {
     },
 
     dropEgg: function(){
-        let eggOffset = 50;
-        var eggX = Math.random() * (canvasWidth-eggOffset);     // selects a random x coordinate on the screen
+        let eggMinDistanceFromEdge = canvasWidth * 0.1;
+        let eggXRangeSize = (canvasWidth - (eggMinDistanceFromEdge * 2));
+        var eggX = (Math.random() * eggXRangeSize) + eggMinDistanceFromEdge;
         var eggY = -0.05 * canvasHeight;
         var eggType = this.getEggType();                        // determines the correct egg to drop
         var egg = game.add.sprite(eggX, eggY, eggType);
 
         // Sets the scale ratio and adds physics properties to the egg
         egg.scale.setTo(scaleRatio, scaleRatio);
+        egg.anchor.setTo(0.5);
         game.physics.enable(egg, Phaser.Physics.ARCADE);
         this.eggGravity = gameController.calculateEggGravity(gameController.currentTime);
         egg.body.gravity.y = this.eggGravity;

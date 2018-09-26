@@ -54,9 +54,9 @@ var comboState = {
             comboEgg.body.velocity.y=gameController.eggVelocity;
 
             // Check for collision between combo egg and basket.
-            if(comboEgg.y <= gameController.player.y - comboEgg.height){
+            if(comboEgg.bottom <= gameController.player.top){
                 game.physics.arcade.collide(gameController.player, comboEgg, this.collectComboEgg, null, this);
-            } else if(comboEgg.y > gameController.player.y+gameController.player.height-comboEgg.height){
+            } else if(comboEgg.bottom > gameController.player.bottom){
                 this.crackComboEgg(comboEgg);
             }
         }
@@ -77,7 +77,7 @@ var comboState = {
      */
     setupPlayer: function(){
         //Create basket player sprite and enable physics
-        gameController.createBasket(gameController.basketX, gameController.basketY);
+        gameController.createBasket();
     },
 
     /**
