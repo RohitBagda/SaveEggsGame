@@ -3,11 +3,12 @@
  */
 var frenzyState = {
 
+    FRENZY_OBJECTS_SCALE: 1.5,
+
     bonusPointsFrenzy: 50,
     xVelocityFrenzyEgg: 100, // This is used to regulate the horizontal vibration of the eggs
     durationOfFrenzyState: 3,
     probabilityOfAddingFrenzyEgg: 0.75, // When drawing eggs, there is 75 percent chance it draws a frenzy egg instead of a bomb
-
 
     create: function(){
         gameController.addBackground();
@@ -21,8 +22,13 @@ var frenzyState = {
         gameController.createScoreText();
         this.frenzyStateGroup = game.add.group();
 
-        // creates a frenzy egg off the screen in order to determine the minimum distance between points in the poisson disk sampling
-        this.minDistanceBetweenPoints = this.createFrenzyEgg(-500, -500);
+       
+
+        let frenzyEggImage = game.cache.getImage("frenzy");
+        this.frenzyEggDimensions = { width: frenzyEggImage.width * scaleRatio * this.FRENZY_OBJECTS_SCALE,
+                                    height: frenzyEggImage.height * scaleRatio * this.FRENZY_OBJECTS_SCALE };
+                              
+        this.minDistanceBetweenPoints = Math.hypot(this.frenzyEggDimensions.width, this.frenzyEggDimensions.height);
 
         this.points = this.generatePoints();
         this.drawEggsAtPoints(this.points);
@@ -119,26 +125,24 @@ var frenzyState = {
      * @param points - an array containing coordinates
      */
     drawEggsAtPoints: function(points){
+        //set horizontal and vertical bounds to control positions at which the eggs are created
+        let minX = 0.05 * canvasWidth;
+        let maxX = canvasWidth - minX;
+        let minY = 0.15 * canvasHeight;
+        let maxY = 0.9 * canvasHeight;
 
-        let eggOffset = 50; //offset value to prevent eggs from going off screen
-
-        //set horizontal and vertical offsets to control positions at which the eggs are created
-        var xOffSet = 0.1 * (canvasWidth-eggOffset);
-        var topYOffSet = 0.15 * canvasHeight;
-        var bottomYOffSet = 0.2 * canvasHeight;
-
-        //
         for (var i = 0; i < points.length; i++){
-            let coordinate = points[i];
-            if ((coordinate.x > xOffSet) && (coordinate.x < (canvasWidth - xOffSet))
-                && (coordinate.y > topYOffSet) && (coordinate.y < (canvasHeight - bottomYOffSet))){
-                var prob = Math.random(); //generate a number between 0 and 1
+            let eggCenter = points[i];
+            if ((eggCenter.x - this.frenzyEggDimensions.width/2) > minX && 
+                (eggCenter.x + this.frenzyEggDimensions.width/2) < maxX && 
+                (eggCenter.y + this.frenzyEggDimensions.height/2) > minY && 
+                (eggCenter.y - this.frenzyEggDimensions.height/2) < maxY) {
 
-                if (prob < this.probabilityOfAddingFrenzyEgg){
-                    this.createFrenzyEgg(coordinate.x, coordinate.y, "frenzy");
+                if (Math.random() < this.probabilityOfAddingFrenzyEgg){
+                    this.createFrenzyEgg(eggCenter.x, eggCenter.y, "frenzy");
                     this.numberOfEggsAddedToScreen++;
                 } else{
-                    this.createFrenzyEgg(coordinate.x, coordinate.y, "bomb");
+                    this.createFrenzyEgg(eggCenter.x, eggCenter.y, "bomb");
                 }
             }
         }
@@ -175,27 +179,17 @@ var frenzyState = {
         var frenzyEgg = game.add.sprite(eggX, eggY, eggName);
 
         // sets up physical properties of egg
-        game.physics.arcade.enable(frenzyEgg, Phaser.Physics.ARCADE);
         game.physics.arcade.enable(frenzyEgg);
-        frenzyEgg.scale.setTo(scaleRatio * 1.5, scaleRatio * 1.5);
-        frenzyEgg.body.kinematic = true;
+        frenzyEgg.scale.setTo(scaleRatio * this.FRENZY_OBJECTS_SCALE);
+        frenzyEgg.anchor.setTo(0.5, 0.5);
         frenzyEgg.inputEnabled = true;
-        frenzyEgg.input.enableDrag(false, true, true);
-        frenzyEgg.input.allowVerticalDrag = true;
-        frenzyEgg.collideWorldBounds = true;
-        frenzyEgg.body.immovable = true;
         this.frenzyStateGroup.add(frenzyEgg);
 
-        // Spacing between "Play" and "How to Play" button
         if (eggName == "frenzy"){
             frenzyEgg.events.onInputDown.add(this.collectEgg, this);
         } else{
             frenzyEgg.events.onInputDown.add(this.collectBomb, this);
         }
-        var distanceSquared = Math.pow(frenzyEgg.width, 2) + Math.pow(frenzyEgg.height, 2);
-        var distance = Math.pow(distanceSquared, 0.5);
-
-        return distance;
     },
 
     /**
