@@ -253,7 +253,7 @@ var playState = {
      */
     handlePlayerAtGameEnd: function () {
         gameController.player.inputEnabled = false;
-        gameController.player.body.checkCollision.up = false;
+        gameController.player.body.enable = false;
         gameController.explosion.play();
         gameController.player.animations.play('explodeBomb');
     },
