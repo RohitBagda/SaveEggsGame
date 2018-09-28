@@ -48,15 +48,16 @@ var comboState = {
      */
     update: function(){
 
-        for(var i in this.comboEggs.children){
+        for(var comboEgg of this.comboEggs.children){
             // For each egg in the combo state. Set the initial velocity of the eggs
-            var comboEgg = this.comboEggs.children[i];
             comboEgg.body.velocity.y=gameController.eggVelocity;
 
             // Check for collision between combo egg and basket.
-            if(comboEgg.bottom <= gameController.player.top){
-                game.physics.arcade.collide(gameController.player, comboEgg, this.collectComboEgg, null, this);
-            } else if(comboEgg.bottom > gameController.player.bottom){
+            if(game.physics.arcade.overlap(gameController.player, comboEgg)) {
+                this.collectComboEgg(comboEgg);
+            // Note: we don't use the player body's bottom because we want eggs to crack when they
+            // *visually* go below the bucket, not when they go below the physics body.
+            } else if(comboEgg.body.bottom > gameController.player.bottom){
                 this.crackComboEgg(comboEgg);
             }
         }
@@ -158,9 +159,9 @@ var comboState = {
      * @param player
      * @param egg
      */
-    collectComboEgg: function(player, egg) {
+    collectComboEgg: function(egg) {
         gameController.eggCollect.play();
-        egg.kill();
+        egg.destroy();
         this.comboEggCaughtPerWaveCount++;
         this.waveScore += this.comboEggPoints;
         this.updateScore(this.comboEggPoints);

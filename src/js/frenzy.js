@@ -156,7 +156,7 @@ var frenzyState = {
         gameController.lives--;
         gameController.updateLifeCountLabel();
         playState.calculateEggProbability(gameController.currentTime);
-        egg.kill();
+        egg.destroy();
         if (gameController.lives == 0){
             gameController.explosion.play();
             gameController.frenzyMusic.stop();
@@ -206,7 +206,7 @@ var frenzyState = {
     collectEgg: function(egg){
         let eggX = egg.x;
         let eggY = egg.y;
-        egg.kill();
+        egg.destroy();
         gameController.frenzyTouch.play();
         this.numberOfEggsCollected++;
         this.showScoreAnimation(eggX, eggY, this.frenzyEggPoints);
