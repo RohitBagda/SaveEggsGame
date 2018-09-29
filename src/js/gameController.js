@@ -179,6 +179,8 @@ var gameController = {
         this.player.input.boundsRect = bounds;
         this.player.body.immovable = true;
         this.player.allowGravity = false;
+
+        this.player.body.setSize(127, 30, 12, 40);
     },
 
     createPauseLabel: function(){

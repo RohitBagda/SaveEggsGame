@@ -36,6 +36,12 @@ var playState = {
 
     render: function(){
         game.debug.text(game.time.fps || '--', 10, 200, "#00ff00", '100px Courier');
+
+        /* game.debug.body(gameController.player);
+
+        for(var egg of this.eggs.children){
+            game.debug.body(egg);
+        } */
     },
 
     /**
@@ -79,14 +85,15 @@ var playState = {
      * This function handles the aspects of the game that need to be dynamically updated
      */
     update: function(){
-        for(var i in this.eggs.children){
-            var egg = this.eggs.children[i];
+        for(var egg of this.eggs.children){
             egg.body.velocity.y= gameController.eggVelocity;    // set initial vertical (y) velocity
 
             // This checks for collisions between the egg and basket, and otherwise cracks the egg if it has fallen past the basket
-            if(egg.bottom <= gameController.player.top){
-                game.physics.arcade.collide(gameController.player, egg, this.collectEgg, null, this);
-            } else if(egg.bottom > gameController.player.bottom){
+            if(game.physics.arcade.overlap(gameController.player, egg)) {
+                this.collectEgg(egg);
+            // Note: we don't use the player body's bottom because we want eggs to crack when they
+            // *visually* go below the bucket, not when they go below the physics body.
+            } else if(egg.body.bottom > gameController.player.bottom){
                 this.crackEggs(egg);
             }
         }
@@ -189,13 +196,9 @@ var playState = {
 
     /**
      * This function determines what happens when the egg falls into the basket
-     * @param player - the basket, which is required by the Phaser library to handle the collision
      * @param egg - the egg that fell into the basket
      */
-    collectEgg: function(player, egg){
-
-        egg.kill();
-
+    collectEgg: function(egg){
         switch(egg.key) {
             case gameController.REGULAR_EGG:
                 gameController.regularEggChain ++;
@@ -217,6 +220,9 @@ var playState = {
                 this.handleOneUp();
                 break;
         }
+
+        egg.destroy();
+
     },
 
     /**
