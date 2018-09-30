@@ -114,29 +114,33 @@ var playState = {
     crackEggs: function(egg){
         switch (egg.key){
             case gameController.REGULAR_EGG:
-                gameController.regularEggChain = 0;
+                gameController.resetRegularEggStreak();
                 gameController.tweenEgg(gameController.CRACKED_REGULAR_EGG, egg);
-                gameController.eggCrack.play();
+                gameController.playEggCrackingSound();
                 break;
             case gameController.BOMB:
                 gameController.tweenEgg(gameController.BOMB_EXPLOSION_CLOUD, egg);
-                gameController.bombWhoosh.play();
+                gameController.playEggCrackingSound();
                 break;
             case gameController.FRENZY_EGG:
+                gameController.resetRegularEggStreak();
                 gameController.tweenEgg(gameController.CRACKED_FRENZY_EGG, egg);
-                gameController.eggCrack.play();
+                gameController.playEggCrackingSound();
                 break;
             case gameController.SCORE_BOOST:
+                gameController.resetRegularEggStreak();
                 gameController.tweenEgg(gameController.CRACKED_SCORE_BOOST, egg);
-                gameController.eggCrack.play();
+                gameController.playEggCrackingSound();
                 break;
             case gameController.COMBO_EGG:
+                gameController.resetRegularEggStreak();
                 gameController.tweenEgg(gameController.CRACKED_COMBO, egg);
-                gameController.eggCrack.play();
+                gameController.playEggCrackingSound();
                 break;
             case gameController.ONE_UP:
+                gameController.resetRegularEggStreak();
                 gameController.tweenEgg(gameController.CRACKED_ONE_UP, egg);
-                gameController.eggCrack.play();
+                gameController.playEggCrackingSound();
                 break;
         }
     },
@@ -247,7 +251,7 @@ var playState = {
             this.calculateEggProbability(gameController.currentTime);
         }
 
-        if (gameController.lives == 0){
+        if (gameController.lives === 0){
             gameController.checkHighScore();
             this.handlePlayerAtGameEnd();
             this.changeToGameOverState();
@@ -318,9 +322,8 @@ var playState = {
      * @param display - the expression to be displayed
      */
     showTweenAnimation: function(display){
-        var tweenSpeed = 100;
         var tweenTextFormat = gameController.createFormatting("bold 80pt Corbel", "#ff0000");
-        gameController.createTweenAnimation(game.world.centerX, game.world.centerY, display, tweenTextFormat, 300, tweenSpeed);
+        gameController.createTweenAnimation(game.world.centerX, game.world.centerY, display, tweenTextFormat, 300, gameController.tweenSpeed);
     },
 
     /**
@@ -331,7 +334,6 @@ var playState = {
 
         this.showTweenAnimation(points);
         gameController.updateScore(points);
-
     },
 
 };

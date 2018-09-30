@@ -45,6 +45,7 @@ var gameController = {
     // If an object is placed at a point (x,y), the anchor will set the center of the object to be (x,y)
     horizontalAnchor: 0.5,
     verticalAnchor: 0.5,
+    tweenSpeed: 100,
 
     addBackground: function(){
         var backgroundSprite = game.add.sprite(game.world.centerX, game.world.height, "background");
@@ -151,6 +152,10 @@ var gameController = {
         egg.body.gravity.y = 0;
         game.add.tween(egg)
             .to({alpha: 0}, 1000, Phaser.Easing.Default, true, 300);
+    },
+
+    resetRegularEggStreak: function(){
+        this.regularEggChain = 0;
     },
 
     createBasket: function(){
@@ -272,12 +277,16 @@ var gameController = {
      * @param speed
      */
     createTweenAnimation: function(x, y, text, textFormat, duration, speed){
+        var tweenText = text;
         if(text>0){
-            var tweenText = "+" + text;
-        } else{
-            var tweenText = text;
+            tweenText = "+" + text;
         }
+
         this.createTweenText(x, y, tweenText, textFormat, duration, speed);
+    },
+
+    playEggCrackingSound: function(){
+        this.eggCrack.play();
     },
 
 };
