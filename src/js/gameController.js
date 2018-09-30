@@ -289,5 +289,8 @@ var gameController = {
         this.eggCrack.play();
     },
 
+    removeBasket: function () {
+        this.player.destroy();
+    }
 };
 
