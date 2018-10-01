@@ -120,22 +120,18 @@ var playState = {
                 gameController.playEggCrackingSound();
                 break;
             case gameController.FRENZY_EGG:
-                gameController.resetRegularEggStreak();
                 gameController.tweenEgg(gameController.CRACKED_FRENZY_EGG, egg);
                 gameController.playEggCrackingSound();
                 break;
             case gameController.SCORE_BOOST:
-                gameController.resetRegularEggStreak();
                 gameController.tweenEgg(gameController.CRACKED_SCORE_BOOST, egg);
                 gameController.playEggCrackingSound();
                 break;
             case gameController.COMBO_EGG:
-                gameController.resetRegularEggStreak();
                 gameController.tweenEgg(gameController.CRACKED_COMBO, egg);
                 gameController.playEggCrackingSound();
                 break;
             case gameController.ONE_UP:
-                gameController.resetRegularEggStreak();
                 gameController.tweenEgg(gameController.CRACKED_ONE_UP, egg);
                 gameController.playEggCrackingSound();
                 break;
