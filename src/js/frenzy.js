@@ -223,7 +223,7 @@ var frenzyState = {
     showScoreAnimation: function(xCoordinate, yCoordinate, numberOfPoints){
         var tweenSpeed = 500;
         var scoreTextFormat = gameController.createFormatting("bold 40pt Corbel", "#003366");
-        gameController.createTweenAnimation(xCoordinate, yCoordinate, numberOfPoints, scoreTextFormat, 700, tweenSpeed);
+        gameController.createTweenAnimation(xCoordinate, yCoordinate, "+" + numberOfPoints, scoreTextFormat, 700, tweenSpeed);
     },
 
 };

@@ -126,22 +126,6 @@ var gameController = {
     },
 
     /**
-     * Displays the score animation that pops up on the screen for each individual egg
-     * @param x
-     * @param y
-     * @param text
-     * @param format
-     * @param duration
-     * @param speed
-     */
-    createTweenText: function(x, y, text, format, duration, speed){
-        var tweenDisplay = game.add.text(x, y, text, format);
-        tweenDisplay.anchor.setTo(gameController.horizontalAnchor, gameController.verticalAnchor);
-        game.add.tween(tweenDisplay)
-            .to({alpha: 0}, speed, Phaser.Easing.Default, true, duration);
-    },
-
-    /**
      * Displays each egg as cracked when it falls past the basket to the ground
      * @param crackedEggImage
      * @param egg
@@ -264,20 +248,14 @@ var gameController = {
 
     /**
      * Creates the text animation when the game transitions between states
-     * @param x
-     * @param y
-     * @param text
-     * @param textFormat
-     * @param duration
-     * @param speed
      */
     createTweenAnimation: function(x, y, text, textFormat, duration, speed){
-        if(text>0){
-            var tweenText = "+" + text;
-        } else{
-            var tweenText = text;
-        }
-        this.createTweenText(x, y, tweenText, textFormat, duration, speed);
+        var tweenText = text;
+
+        var tweenDisplay = game.add.text(x, y, tweenText, textFormat);
+        tweenDisplay.anchor.setTo(gameController.horizontalAnchor, gameController.verticalAnchor);
+        game.add.tween(tweenDisplay)
+            .to({alpha: 0}, speed, Phaser.Easing.Default, true, duration);
     },
 
 };

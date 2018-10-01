@@ -222,7 +222,6 @@ var playState = {
         }
 
         egg.destroy();
-
     },
 
     /**
@@ -329,7 +328,7 @@ var playState = {
      */
     updateScoreAndPlayAnimation: function(points){
 
-        this.showTweenAnimation(points);
+        this.showTweenAnimation("+" + points);
         gameController.updateScore(points);
 
     },
