@@ -23,7 +23,7 @@ function PoissonDiskSampler() {
     this.maxPoints = 70;
     this.radiusMin = 80;
     this.radiusMax = 85;
-    this.maxFails = 50;
+    this.maxFails = 100;
     this.pi2 = Math.PI * 2;
     this.w = canvasWidth;
     this.h = canvasHeight;

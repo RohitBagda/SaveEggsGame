@@ -171,6 +171,9 @@ var gameController = {
         // Add animation for basket explosion in the form of a sprite sheet of 15 frames
         this.player.animations.add('explodeBomb', [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], 15);
 
+        //add animation for bomb explosion specifically for frenzy
+        this.player.animations.add('explodeBombFrenzyState', [4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], 15);
+
         // Enable physics properties for the basket.
         this.player.scale.setTo(scaleRatio/1.5, scaleRatio/1.5);
         this.player.anchor.setTo(0.5,1.0);
