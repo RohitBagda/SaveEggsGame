@@ -42,6 +42,7 @@ var frenzyState = {
                 gameController.frenzyMusic.stop();
                 backgroundMusic.play();
                 this.game.state.start('play');
+                this.hasCaughtBomb = false;
             } else if (!this.hasCaughtBomb){
                 this.frenzyTime ++;
                 this.timer.text = this.durationOfFrenzyState - this.frenzyTime;
