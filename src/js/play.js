@@ -269,7 +269,7 @@ var playState = {
     showBombCaughtText: function () {
         var index = Math.floor(Math.random() * 4);
         var bombDisplayText = this.bombDisplayTexts[index];
-        this.showTweenAnimation(bombDisplayText);
+        this.displayCenteredScoreText(bombDisplayText);
     },
 
     /**
@@ -316,10 +316,10 @@ var playState = {
      * Displays a pop-up text animation on the screen
      * @param display - the expression to be displayed
      */
-    showTweenAnimation: function(display){
+    displayCenteredScoreText: function(display){
         var tweenSpeed = 100;
         var tweenTextFormat = gameController.createFormatting("bold 80pt Corbel", "#ff0000");
-        gameController.createTweenAnimation(game.world.centerX, game.world.centerY, display, tweenTextFormat, 300, tweenSpeed);
+        gameController.displayFadingText(game.world.centerX, game.world.centerY, display, tweenTextFormat, 300, tweenSpeed);
     },
 
     /**
@@ -328,7 +328,7 @@ var playState = {
      */
     updateScoreAndPlayAnimation: function(points){
 
-        this.showTweenAnimation("+" + points);
+        this.displayCenteredScoreText("+" + points);
         gameController.updateScore(points);
 
     },

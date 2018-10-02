@@ -249,13 +249,12 @@ var gameController = {
     /**
      * Creates the text animation when the game transitions between states
      */
-    createTweenAnimation: function(x, y, text, textFormat, duration, speed){
-        var tweenText = text;
-
-        var tweenDisplay = game.add.text(x, y, tweenText, textFormat);
-        tweenDisplay.anchor.setTo(gameController.horizontalAnchor, gameController.verticalAnchor);
-        game.add.tween(tweenDisplay)
-            .to({alpha: 0}, speed, Phaser.Easing.Default, true, duration);
+    displayFadingText: function(x, y, text, textFormat, timeBeforeFade, fadeLength){
+        var textObject = game.add.text(x, y, text, textFormat);
+        //Center text
+        textObject.anchor.setTo(0.5, 0.5);
+        game.add.tween(textObject)
+            .to({alpha: 0}, fadeLength, Phaser.Easing.Default, true, timeBeforeFade);
     },
 
 };
