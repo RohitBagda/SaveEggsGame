@@ -7,7 +7,7 @@ var frenzyState = {
 
     bonusPointsFrenzy: 50,
     xVelocityFrenzyEgg: 100, // This is used to regulate the horizontal vibration of the eggs
-    durationOfFrenzyState: 15,
+    durationOfFrenzyState: 4,
     probabilityOfAddingFrenzyEgg: 0.75, // When drawing eggs, there is 75 percent chance it draws a frenzy egg instead of a bomb
     hasCaughtBomb: false, //flag to check that bomb hasnt been caught yet
     userDragPathColour: 0xFFFF00, //the colour of the path of the user's thumb
