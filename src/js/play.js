@@ -374,6 +374,7 @@ var playState = {
 
         bustInRotationTween =  game.add.tween(textObject).to( { rotation: 0}, bustInLength, Phaser.Easing.Elastic.Out).start();
 
+        // Starting both tweens at the same time makes them run in sync.
         bustInTween.start();
         bustInRotationTween.start();
 
