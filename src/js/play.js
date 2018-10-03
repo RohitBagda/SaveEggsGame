@@ -180,6 +180,8 @@ var playState = {
         game.world.setBounds(0,0, canvasWidth, canvasHeight);
         gameController.addBackground();
         game.physics.startSystem(Phaser.Physics.ARCADE);
+        // we make sure camera is at position (0,0)
+        game.world.camera.position.set(0);
     },
 
     setupPlayer: function(){
@@ -232,6 +234,7 @@ var playState = {
     handleBomb: function(){
         gameController.bombCollect.play();
         this.showBombCaughtText();
+        this.shakeScreen();
         gameController.decrementLives();
         gameController.updateLifeCountLabel();
         gameController.explosion.play();
@@ -263,6 +266,10 @@ var playState = {
         if(gameController.lives<gameController.maxLives){
             this.calculateEggProbability(gameController.currentTime);
         }
+    },
+
+    shakeScreen: function(){
+        this.camera.shake(0.01, 1000, true, Phaser.Camera.SHAKE_BOTH, true);
     },
 
     /**
