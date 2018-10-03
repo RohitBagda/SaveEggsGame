@@ -9,19 +9,6 @@ var menuState = {
         this.addLogo();
         this.addPlayButton();
         this.addTutorialButton();
-
-        this.addTestText(canvasWidth/40, 50, "24pt Corbel");
-        this.addTestText(canvasWidth/40, 100, "36pt Corbel");
-        this.addTestText(canvasWidth/40, 150, "70pt Corbel");
-
-        this.addTestText(canvasWidth/40, 300, "24px Corbel");
-        this.addTestText(canvasWidth/40, 350, "36px Corbel");
-        this.addTestText(canvasWidth/40, 400, "70px Corbel");
-
-    },
-
-    addTestText: function(x, y, text) {
-        this.game.add.text(x, y, text, gameController.createFormatting(text, "#000000"))
     },
 
     addBackground: function(){
