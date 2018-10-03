@@ -41,6 +41,7 @@ var frenzyState = {
             if (this.frenzyTime >= this.durationOfFrenzyState - 1){
                 gameController.frenzyMusic.stop();
                 backgroundMusic.play();
+                gameController.resetFrenzyEggPoints();
                 this.game.state.start('play');
                 this.hasCaughtBomb = false;
             } else if (!this.hasCaughtBomb){

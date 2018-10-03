@@ -227,7 +227,7 @@ var playState = {
      */
     handleRegularEgg: function () {
         gameController.eggCollect.play();
-        this.updateScoreAndPlayAnimation(gameController.regularEggPoints*gameController.regularEggChain);
+        this.updateScoreAndPlayAnimation(gameController.getCurrentStreakScore());
     },
 
 
@@ -240,8 +240,9 @@ var playState = {
         gameController.decrementLives();
         gameController.updateLifeCountLabel();
         gameController.explosion.play();
+        gameController.resetRegularEggStreak();
 
-        //Pause eggs from falling to begin explosion animation
+        //Stopping eggs from falling by pausing all the time events loop to begin explosion animation
         game.time.gamePaused();
         gameController.player.animations.play('explodeBomb');
         gameController.player.inputEnabled = false;
@@ -254,7 +255,7 @@ var playState = {
                 gameController.createBasket();
             }
 
-            //Resume game after new basket is generated.
+            //Resuming the time loop after new basket is generated.
             game.time.gameResumed();
         }, 1200);
 
@@ -281,7 +282,8 @@ var playState = {
      * Performs the necessary actions when a score boost egg is caught
      */
     handleScoreBoost: function () {
-        this.updateScoreAndPlayAnimation(gameController.scoreBoostPoints);
+        gameController.regularEggChain += gameController.scoreBoostPoints / gameController.regularEggPoints;
+        this.updateScoreAndPlayAnimation(gameController.getCurrentStreakScore());
         gameController.eggCollect.play();
     },
 
@@ -302,6 +304,13 @@ var playState = {
         gameController.frenzyCollect.play();
         gameController.frenzyMusic.play();
         backgroundMusic.stop();
+
+        // When Hosea is done with frenzy improvements make sure to add code that will reset the frenzy points before it
+        // returns back to the play state.
+        if(gameController.regularEggChain > 0){
+            gameController.frenzyPoints = gameController.getCurrentStreakScore();
+        }
+        gameController.resetRegularEggStreak();
         this.game.state.start("transitionToFrenzy");
     },
 
