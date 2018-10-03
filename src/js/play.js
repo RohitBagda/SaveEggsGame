@@ -104,6 +104,8 @@ var playState = {
      * @param egg
      */
     crackEggs: function(egg){
+        egg.rotation = 0;
+        egg.body.angularVelocity = 0;
         switch (egg.key){
             case gameController.REGULAR_EGG:
                 gameController.resetRegularEggStreak();
@@ -147,6 +149,10 @@ var playState = {
         game.physics.enable(egg, Phaser.Physics.ARCADE);
         this.eggGravity = gameController.calculateEggGravity(gameController.currentTime);
         egg.body.gravity.y = this.eggGravity;
+
+        egg.rotation = Math.random() * 360;
+        egg.body.angularVelocity = ((Math.random() - 0.5) * 2) * 720;
+
         this.eggs.add(egg);
     },
 
