@@ -99,11 +99,6 @@ var playState = {
         }
     },
 
-    changeToGameOverState: function () {
-        backgroundMusic.stop();
-        game.state.start("gameOver");
-    },
-
     /**
      * This cracks the egg and plays the according animation and sound depending on type of egg
      * @param egg
@@ -256,12 +251,14 @@ var playState = {
 
             //Resume game after new basket is generated.
             game.time.gameResumed();
-        }, 1200);
 
-        if(gameController.lives === 0){
-            gameController.checkHighScore();
-            this.changeToGameOverState();
-        }
+            if(gameController.lives === 0){
+                gameController.checkHighScore();
+                backgroundMusic.stop();
+                game.state.start("gameOver");
+            }
+
+        }, 1200);
 
         if(gameController.lives<gameController.maxLives){
             this.calculateEggProbability(gameController.currentTime);
