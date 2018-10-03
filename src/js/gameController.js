@@ -24,6 +24,7 @@ var gameController = {
     highestScore: 0,
     lives: 3,
     regularEggChain: 0,
+    streakScore: 0,
 
     // Initially, only regular eggs fall
     regularEggProb: 1,
@@ -38,7 +39,8 @@ var gameController = {
     hasReachedCombo: false,
     regularEggPoints: 5,
     scoreBoostPoints: 30,
-    frenzyPoints: 20,
+    baseFrenzyPoints: 5,
+    frenzyPoints: 5,
     comboPoints: 100,
     eggVelocity: 20,
 
@@ -158,6 +160,15 @@ var gameController = {
         this.regularEggChain = 0;
     },
 
+    resetFrenzyEggPoints: function(){
+        this.frenzyPoints = this.baseFrenzyPoints;
+    },
+
+    getCurrentStreakScore: function(){
+        this.streakScore = this.regularEggChain*this.regularEggPoints;
+        return this.streakScore;
+    },
+
     createBasket: function(){
         if (!this.hasReachedCombo){
             this.basketX = canvasWidth/2;
@@ -267,7 +278,7 @@ var gameController = {
         this.setEggProbabilities(1,0,0,0,0,0);
         this.score = 0;
         this.hasReachedCombo = false;
-        this.regularEggChain = 0;
+        this.resetRegularEggStreak();
     },
 
     /**
