@@ -23,6 +23,8 @@ var gameController = {
     score : 0,
     highestScore: 0,
     lives: 3,
+    maxLives: 3,
+    livesList:[],
     regularEggChain: 0,
 
     // Initially, only regular eggs fall
@@ -34,7 +36,6 @@ var gameController = {
     oneUpProb: 0,
 
     currentTime: 0,
-    maxLives: 3,
     hasReachedCombo: false,
     regularEggPoints: 5,
     scoreBoostPoints: 30,
@@ -46,6 +47,7 @@ var gameController = {
     horizontalAnchor: 0.5,
     verticalAnchor: 0.5,
     tweenSpeed: 100,
+
 
     addBackground: function(){
         var backgroundSprite = game.add.sprite(game.world.centerX, game.world.height, "background");
@@ -59,16 +61,36 @@ var gameController = {
     /**
      * This creates the heart symbol at the top right of the screen to represent lives
      */
-    createHeart: function () {
-        this.heart = game.add.sprite(.75*canvasWidth, 0.025*canvasHeight, "heart");
-        this.heart.scale.setTo(0.65*scaleRatio, 0.65*scaleRatio);
-        var livesLabelFormat = this.createFormatting("bold 60px Corbel", "fill: #003366");
-        this.livesLabel = game.add.text(.81*canvasWidth, 0.018*canvasHeight, ("×" +gameController.lives), livesLabelFormat);
+    createLifeBuckets: function () {
+        // this.heart = game.add.sprite(.75*canvasWidth, 0.025*canvasHeight, "heart");
+        // this.heart.scale.setTo(0.65*scaleRatio, 0.65*scaleRatio);
+        // var livesLabelFormat = this.createFormatting("bold 60px Corbel", "fill: #003366");
+        // this.livesLabel = game.add.text(.81*canvasWidth, 0.018*canvasHeight, ("×" +gameController.lives), livesLabelFormat);
+
+        var bucketXPos = 0.75*canvasWidth;
+        var bucketYPos = 0.025*canvasHeight;
+        var bucketXOffset = 50;
+        for(var i=0; i<this.maxLives; i++){
+            this.livesList[i] = this.createALifeBucket(bucketXPos, bucketYPos);
+            bucketXPos -= bucketXOffset;
+        }
     },
 
-    updateLifeCountLabel: function(){
-        if(gameController.lives >= 0 && gameController.lives <= gameController.maxLives) {
-            this.livesLabel.setText("×" + gameController.lives);
+    createALifeBucket: function(xPos, yPos){
+        var bucket = game.add.sprite(xPos, yPos, "explode");
+        bucket.scale.setTo(0.20*scaleRatio, 0.20*scaleRatio);
+        return bucket;
+    },
+
+    removeALifeBucket: function(){
+        if(this.livesList.length > 0){
+            this.livesList.pop().destroy();
+        }
+    },
+
+    addLifeBucket: function(){
+        if(this.lives < this.maxLives){
+            this.livesList.push(this.createALifeBucket(this.livesList[0].x + this.livesList.length*50, 0.025*canvasHeight));
         }
     },
 

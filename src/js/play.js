@@ -17,7 +17,7 @@ var playState = {
 
         this.eggs = game.add.group();
         gameController.createScoreText();
-        gameController.createHeart();
+        gameController.createLifeBuckets();
         gameController.createPause();
 
         game.time.events.loop(500, this.dropEgg, this);    // drops an egg every 500 milliseconds
@@ -70,7 +70,7 @@ var playState = {
      * When there is a one-up (when the user has < 3 lives), the probabilities of the eggs falling are readjusted
      */
     calculateEggProbWithOneUP: function(){
-        gameController.setEggProbabilities(0.45,0.9,0.95,0.97,0.99,1);
+        gameController.setEggProbabilities(0.45,0.49,0.59,0.67,0.69,1);
         // gameController.setEggProbabilities(0.45,0.5,0.6,0.61,0.9,1);
     },
 
@@ -233,7 +233,7 @@ var playState = {
         gameController.bombCollect.play();
         this.showBombCaughtText();
         gameController.decrementLives();
-        gameController.updateLifeCountLabel();
+        gameController.removeALifeBucket();
         gameController.explosion.play();
 
         //Pause eggs from falling to begin explosion animation
@@ -308,7 +308,7 @@ var playState = {
     handleOneUp: function () {
         gameController.eggCollect.play();
         gameController.incrementLives();
-        gameController.updateLifeCountLabel();
+        gameController.addLifeBucket();
         if (gameController.lives >= gameController.maxLives) {
             this.calculateEggProbability(gameController.currentTime);
         }

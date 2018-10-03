@@ -34,7 +34,7 @@ var frenzyState = {
         this.numberOfEggsCollected = 0; // initially set the number of eggs the user has collected to 0
         this.elapsedTime = 0;
 
-        gameController.createHeart();
+        gameController.createLifeBuckets();
 
         // every 1s (1000ms), the time in the frenzy state increases and the timer text at the top of screen is updated
         game.time.events.loop(1000, function(){
@@ -196,7 +196,7 @@ var frenzyState = {
     collectBomb: function(bomb){
         this.hasCaughtBomb = true;
         gameController.lives--;
-        gameController.updateLifeCountLabel();
+        gameController.removeALifeBucket();
         playState.calculateEggProbability(gameController.currentTime);
         gameController.explosion.play();
         bomb.kill();
