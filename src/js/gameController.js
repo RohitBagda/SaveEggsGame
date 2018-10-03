@@ -45,6 +45,7 @@ var gameController = {
     // If an object is placed at a point (x,y), the anchor will set the center of the object to be (x,y)
     horizontalAnchor: 0.5,
     verticalAnchor: 0.5,
+    tweenSpeed: 100,
 
     addBackground: function(){
         var backgroundSprite = game.add.sprite(game.world.centerX, game.world.height, "background");
@@ -137,6 +138,10 @@ var gameController = {
             .to({alpha: 0}, 1000, Phaser.Easing.Default, true, 300);
     },
 
+    resetRegularEggStreak: function(){
+        this.regularEggChain = 0;
+    },
+
     createBasket: function(){
         if (!this.hasReachedCombo){
             this.basketX = canvasWidth/2;
@@ -149,6 +154,9 @@ var gameController = {
 
         // Add animation for basket explosion in the form of a sprite sheet of 15 frames
         this.player.animations.add('explodeBomb', [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], 15);
+
+        //add animation for bomb explosion specifically for frenzy
+        this.player.animations.add('explodeBombFrenzyState', [4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], 15);
 
         // Enable physics properties for the basket.
         this.player.scale.setTo(scaleRatio/1.5, scaleRatio/1.5);
@@ -257,5 +265,12 @@ var gameController = {
             .to({alpha: 0}, fadeLength, Phaser.Easing.Default, true, timeBeforeFade);
     },
 
+    playEggCrackingSound: function(){
+        this.eggCrack.play();
+    },
+
+    removeBasket: function () {
+        this.player.destroy();
+    }
 };
 

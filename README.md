@@ -22,8 +22,7 @@ INSTALLATION, BUILDING, and DEPLOYMENT
 -------
 
 To install the game on an Android device, we need:
-1. To include the phaser.min.js file in the folder. To obtain this, go to https://phaser.io/download/release/2.10.4
-   From there, download the latest version of Phaser.
+1. To install the game's dependencies. We use [Yarn](https://yarnpkg.com/en/) for dependency management, so just install Yarn and run it in the folder containing package.json.
 
 2. Zip the SaveEggsGame folder
 

@@ -101,44 +101,38 @@ var playState = {
         }
     },
 
-    changeToGameOverState: function () {
-        // After 100 milliseconds, the game switches to the game over state
-        window.setTimeout(function () {
-            backgroundMusic.stop();
-            game.state.start("gameOver");
-        }, 1200);
-    },
-
     /**
      * This cracks the egg and plays the according animation and sound depending on type of egg
      * @param egg
      */
     crackEggs: function(egg){
+        egg.rotation = 0;
+        egg.body.angularVelocity = 0;
         switch (egg.key){
             case gameController.REGULAR_EGG:
-                gameController.regularEggChain = 0;
+                gameController.resetRegularEggStreak();
                 gameController.tweenEgg(gameController.CRACKED_REGULAR_EGG, egg);
-                gameController.eggCrack.play();
+                gameController.playEggCrackingSound();
                 break;
             case gameController.BOMB:
                 gameController.tweenEgg(gameController.BOMB_EXPLOSION_CLOUD, egg);
-                gameController.bombWhoosh.play();
+                gameController.playEggCrackingSound();
                 break;
             case gameController.FRENZY_EGG:
                 gameController.tweenEgg(gameController.CRACKED_FRENZY_EGG, egg);
-                gameController.eggCrack.play();
+                gameController.playEggCrackingSound();
                 break;
             case gameController.SCORE_BOOST:
                 gameController.tweenEgg(gameController.CRACKED_SCORE_BOOST, egg);
-                gameController.eggCrack.play();
+                gameController.playEggCrackingSound();
                 break;
             case gameController.COMBO_EGG:
                 gameController.tweenEgg(gameController.CRACKED_COMBO, egg);
-                gameController.eggCrack.play();
+                gameController.playEggCrackingSound();
                 break;
             case gameController.ONE_UP:
                 gameController.tweenEgg(gameController.CRACKED_ONE_UP, egg);
-                gameController.eggCrack.play();
+                gameController.playEggCrackingSound();
                 break;
         }
     },
@@ -157,6 +151,10 @@ var playState = {
         game.physics.enable(egg, Phaser.Physics.ARCADE);
         this.eggGravity = gameController.calculateEggGravity(gameController.currentTime);
         egg.body.gravity.y = this.eggGravity;
+
+        egg.rotation = Math.random() * 360;
+        egg.body.angularVelocity = ((Math.random() - 0.5) * 2) * 720;
+
         this.eggs.add(egg);
     },
 
@@ -240,29 +238,38 @@ var playState = {
      */
     handleBomb: function(){
         gameController.bombCollect.play();
+        this.showBombCaughtText();
         gameController.decrementLives();
         gameController.updateLifeCountLabel();
-        this.showBombCaughtText();
+        gameController.explosion.play();
+
+        //Pause eggs from falling to begin explosion animation
+        game.time.gamePaused();
+        gameController.player.animations.play('explodeBomb');
+        gameController.player.inputEnabled = false;
+        gameController.player.body.enable = false;
+
+        //Timeout for animation to play before the basket is generated again
+        window.setTimeout(function () {
+            gameController.removeBasket();
+            if(gameController.lives > 0){
+                gameController.createBasket();
+            }
+
+            //Resume game after new basket is generated.
+            game.time.gameResumed();
+
+            if(gameController.lives === 0){
+                gameController.checkHighScore();
+                backgroundMusic.stop();
+                game.state.start("gameOver");
+            }
+
+        }, 1200);
 
         if(gameController.lives<gameController.maxLives){
             this.calculateEggProbability(gameController.currentTime);
         }
-
-        if (gameController.lives == 0){
-            gameController.checkHighScore();
-            this.handlePlayerAtGameEnd();
-            this.changeToGameOverState();
-        }
-    },
-
-    /**
-     * Handles what happens when the player loses all their lives
-     */
-    handlePlayerAtGameEnd: function () {
-        gameController.player.inputEnabled = false;
-        gameController.player.body.enable = false;
-        gameController.explosion.play();
-        gameController.player.animations.play('explodeBomb');
     },
 
     /**
@@ -399,7 +406,6 @@ var playState = {
         
         this.displayEpicScoreText(points);
         gameController.updateScore(points);
-
     },
 
 };

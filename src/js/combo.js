@@ -70,7 +70,7 @@ var comboState = {
      */
     crackComboEgg: function(egg){
         gameController.tweenEgg(gameController.CRACKED_COMBO, egg);
-        gameController.eggCrack.play();
+        gameController.playEggCrackingSound();
     },
 
     /**
@@ -172,9 +172,8 @@ var comboState = {
      * @param display
      */
     showScoreAnimation: function(display){
-        var tweenSpeed = 100;
         var scoreTextFormat = gameController.createFormatting("bold 80pt Corbel","#003366");
-        gameController.displayFadingText(game.world.centerX, game.world.centerY, "+" + display, scoreTextFormat, 300, tweenSpeed);
+        gameController.displayFadingText(game.world.centerX, game.world.centerY, display, scoreTextFormat, 300, gameController.tweenSpeed);
     },
 
     /**
