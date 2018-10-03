@@ -29,7 +29,7 @@ var transitionToFrenzyState = {
 
         var frenzyTextFormat = gameController.createFormatting("bold 200px Times",  "#FF5500");
         var frenzyText = "FRENZY";
-        gameController.createTweenAnimation(canvasWidth/2, canvasHeight/2, frenzyText, frenzyTextFormat, 500);
+        gameController.displayFadingText(canvasWidth/2, canvasHeight/2, frenzyText, frenzyTextFormat, 500);
     }
 
 };

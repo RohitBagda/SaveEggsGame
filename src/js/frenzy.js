@@ -41,6 +41,7 @@ var frenzyState = {
             if (this.frenzyTime >= this.durationOfFrenzyState - 1){
                 gameController.frenzyMusic.stop();
                 backgroundMusic.play();
+                gameController.resetFrenzyEggPoints();
                 this.game.state.start('play');
                 this.hasCaughtBomb = false;
             } else if (!this.hasCaughtBomb){
@@ -143,7 +144,7 @@ var frenzyState = {
     playBonusReceivedAnimation: function(){
         var bonusPointsFormat = gameController.createFormatting("bold 100pt Corbel", "#FF00FF");
         var bonusText = "BONUS: +" + this.bonusPointsFrenzy;
-        gameController.createTweenAnimation(game.world.centerX, game.world.centerY, bonusText , bonusPointsFormat);
+        gameController.displayFadingText(game.world.centerX, game.world.centerY, bonusText , bonusPointsFormat);
     },
 
     /**
@@ -274,7 +275,7 @@ var frenzyState = {
     showScoreAnimation: function(xCoordinate, yCoordinate, numberOfPoints){
         var tweenSpeed = 500;
         var scoreTextFormat = gameController.createFormatting("bold 40pt Corbel", "#003366");
-        gameController.createTweenAnimation(xCoordinate, yCoordinate, numberOfPoints, scoreTextFormat, 700, tweenSpeed);
+        gameController.displayFadingText(xCoordinate, yCoordinate, "+" + numberOfPoints, scoreTextFormat, 700, tweenSpeed);
     },
 
 };

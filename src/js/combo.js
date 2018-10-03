@@ -173,7 +173,7 @@ var comboState = {
      */
     showScoreAnimation: function(display){
         var scoreTextFormat = gameController.createFormatting("bold 80pt Corbel","#003366");
-        gameController.createTweenAnimation(game.world.centerX, game.world.centerY, display, scoreTextFormat, 300, gameController.tweenSpeed);
+        gameController.displayFadingText(game.world.centerX, game.world.centerY, display, scoreTextFormat, 300, gameController.tweenSpeed);
     },
 
     /**

@@ -7,6 +7,7 @@ var playState = {
     bombDisplayTexts: ["bruh", ":'(", "-_-", "Oops"],    // list of words that can pop up when the user catches a bomb
     timeStages: [5, 15, 20, 30, 60],                     // array of time points that determines the probabilities of different eggs falling based on seconds passed
 
+    rainbowTextEnabled: false,
     /**
      * This function controls the basic setup of the state once it opens.
      */
@@ -85,6 +86,7 @@ var playState = {
      * This function handles the aspects of the game that need to be dynamically updated
      */
     update: function(){
+        this.updateRainbowScoreColor();
         for(var egg of this.eggs.children){
             egg.body.velocity.y= gameController.eggVelocity;    // set initial vertical (y) velocity
 
@@ -186,6 +188,8 @@ var playState = {
         game.world.setBounds(0,0, canvasWidth, canvasHeight);
         gameController.addBackground();
         game.physics.startSystem(Phaser.Physics.ARCADE);
+        // we make sure camera is at position (0,0)
+        game.world.camera.position.set(0);
     },
 
     setupPlayer: function(){
@@ -220,7 +224,6 @@ var playState = {
         }
 
         egg.destroy();
-
     },
 
     /**
@@ -228,7 +231,7 @@ var playState = {
      */
     handleRegularEgg: function () {
         gameController.eggCollect.play();
-        this.updateScoreAndPlayAnimation(gameController.regularEggPoints*gameController.regularEggChain);
+        this.updateScoreAndPlayAnimation(gameController.getCurrentStreakScore());
     },
 
 
@@ -238,11 +241,13 @@ var playState = {
     handleBomb: function(){
         gameController.bombCollect.play();
         this.showBombCaughtText();
+        this.shakeScreen();
         gameController.decrementLives();
         gameController.removeALifeBucket();
         gameController.explosion.play();
+        gameController.resetRegularEggStreak();
 
-        //Pause eggs from falling to begin explosion animation
+        //Stopping eggs from falling by pausing all the time events loop to begin explosion animation
         game.time.gamePaused();
         gameController.player.animations.play('explodeBomb');
         gameController.player.inputEnabled = false;
@@ -255,7 +260,7 @@ var playState = {
                 gameController.createBasket();
             }
 
-            //Resume game after new basket is generated.
+            //Resuming the time loop after new basket is generated.
             game.time.gameResumed();
 
             if(gameController.lives === 0){
@@ -271,20 +276,26 @@ var playState = {
         }
     },
 
+    shakeScreen: function(){
+        this.camera.shake(0.01, 1000, true, Phaser.Camera.SHAKE_BOTH, true);
+    },
+
     /**
      * Randomly selects a string to display when a bomb is caught
      */
     showBombCaughtText: function () {
         var index = Math.floor(Math.random() * 4);
         var bombDisplayText = this.bombDisplayTexts[index];
-        this.showTweenAnimation(bombDisplayText);
+        var tweenTextFormat = gameController.createFormatting("bold 80pt Corbel", "#ff0000");
+        gameController.displayFadingText(game.world.centerX, game.world.centerY, bombDisplayText, tweenTextFormat, 300, 100);
     },
 
     /**
      * Performs the necessary actions when a score boost egg is caught
      */
     handleScoreBoost: function () {
-        this.updateScoreAndPlayAnimation(gameController.scoreBoostPoints);
+        gameController.regularEggChain += gameController.scoreBoostPoints / gameController.regularEggPoints;
+        this.updateScoreAndPlayAnimation(gameController.getCurrentStreakScore());
         gameController.eggCollect.play();
     },
 
@@ -305,6 +316,13 @@ var playState = {
         gameController.frenzyCollect.play();
         gameController.frenzyMusic.play();
         backgroundMusic.stop();
+
+        // When Hosea is done with frenzy improvements make sure to add code that will reset the frenzy points before it
+        // returns back to the play state.
+        if(gameController.regularEggChain > 0){
+            gameController.frenzyPoints = gameController.getCurrentStreakScore();
+        }
+        gameController.resetRegularEggStreak();
         this.game.state.start("transitionToFrenzy");
     },
 
@@ -320,13 +338,79 @@ var playState = {
         }
     },
 
-    /**
-     * Displays a pop-up text animation on the screen
-     * @param display - the expression to be displayed
-     */
-    showTweenAnimation: function(display){
-        var tweenTextFormat = gameController.createFormatting("bold 80pt Corbel", "#ff0000");
-        gameController.createTweenAnimation(game.world.centerX, game.world.centerY, display, tweenTextFormat, 300, gameController.tweenSpeed);
+    displayEpicScoreText: function(scoreValue){
+        // Destroy previous text so there's no overlap
+        if(this.currentScoreTextObject != null) {
+            this.currentScoreTextObject.destroy();
+            this.rainbowTextEnabled = false;
+        }
+
+        // Format text
+        var textColor;
+        var textScale;
+        if(scoreValue < 50) {
+            textScale = 0.5;
+            textColor = "rgb(71, 255, 89)";
+        } else if (scoreValue < 100) {
+            textScale = 0.6;
+            textColor = "rgb(255, 255, 45)";
+        } else if (scoreValue < 200) {
+            textScale = 0.7;
+            textColor = "rgb(255, 195, 0)";
+        } else if (scoreValue < 300) {
+            textScale = 0.8;
+            textColor = "rgb(255, 58, 58)";
+        } else if (scoreValue < 400) {
+            textScale = 0.9;
+            textColor = "rgb(238, 0, 255)";
+        } else {
+            textScale = 1.0;
+            this.rainbowTextEnabled = true;
+            textColor = "#000000";
+        }
+        var textFormat = {font: "bold 160pt Corbel", fill: textColor};
+        textFormat.stroke = "#000000";
+        textFormat.strokeThickness = 15;
+
+        // Create text object
+        var text = "+" + scoreValue;
+        var textObject = game.add.text(game.world.centerX, game.world.centerY, text, textFormat);
+        this.currentScoreTextObject = textObject;
+
+        //Center text at about the center of the numbers (i.e. ignore the plus sign)
+        var justNumbersProportion = (text.length / (text.length + 1));
+        var justNumbersStart = 1 - justNumbersProportion;
+        var xAnchor = justNumbersStart + (0.5 * justNumbersProportion);
+        textObject.anchor.setTo(xAnchor, 0.5);
+
+        // Set the text initial scale and rotation
+        textObject.scale.setTo(0.2);       
+        var rotationInitial = Math.random() > 0.5 ? -1: 1;
+        rotationInitial += (Math.random() - 0.5) * (0.4);
+        textObject.rotation = rotationInitial;
+
+        // Create tweens
+        var bustInLength = 800;
+        bustInTween = game.add.tween(textObject.scale).to( { x: textScale, y: textScale }, bustInLength, Phaser.Easing.Elastic.Out);
+        fadeOutTween = game.add.tween(textObject).to({alpha: 0}, 200, Phaser.Easing.Default)
+        bustInTween.chain(fadeOutTween);
+
+        bustInRotationTween =  game.add.tween(textObject).to( { rotation: 0}, bustInLength, Phaser.Easing.Elastic.Out).start();
+
+        // Starting both tweens at the same time makes them run in sync.
+        bustInTween.start();
+        bustInRotationTween.start();
+
+        // In case rainbow is enabled
+        this.updateRainbowScoreColor();
+    },
+
+    updateRainbowScoreColor() {
+        if(this.rainbowTextEnabled) {
+            let hue = Math.round((this.game.time.totalElapsedSeconds() * 500) % 360);
+            this.currentScoreTextObject.clearColors();
+            this.currentScoreTextObject.addColor("hsl(" + hue + ", 90%, 60%)", 0);
+        }
     },
 
     /**
@@ -335,7 +419,8 @@ var playState = {
      */
     updateScoreAndPlayAnimation: function(points){
 
-        this.showTweenAnimation(points);
+        
+        this.displayEpicScoreText(points);
         gameController.updateScore(points);
     },
 

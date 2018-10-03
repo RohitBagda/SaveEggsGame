@@ -26,6 +26,7 @@ var gameController = {
     maxLives: 3,
     livesList:[],
     regularEggChain: 0,
+    streakScore: 0,
 
     // Initially, only regular eggs fall
     regularEggProb: 1,
@@ -39,7 +40,8 @@ var gameController = {
     hasReachedCombo: false,
     regularEggPoints: 5,
     scoreBoostPoints: 30,
-    frenzyPoints: 20,
+    baseFrenzyPoints: 5,
+    frenzyPoints: 5,
     comboPoints: 100,
     eggVelocity: 20,
 
@@ -149,22 +151,6 @@ var gameController = {
     },
 
     /**
-     * Displays the score animation that pops up on the screen for each individual egg
-     * @param x
-     * @param y
-     * @param text
-     * @param format
-     * @param duration
-     * @param speed
-     */
-    createTweenText: function(x, y, text, format, duration, speed){
-        var tweenDisplay = game.add.text(x, y, text, format);
-        tweenDisplay.anchor.setTo(gameController.horizontalAnchor, gameController.verticalAnchor);
-        game.add.tween(tweenDisplay)
-            .to({alpha: 0}, speed, Phaser.Easing.Default, true, duration);
-    },
-
-    /**
      * Displays each egg as cracked when it falls past the basket to the ground
      * @param crackedEggImage
      * @param egg
@@ -178,6 +164,15 @@ var gameController = {
 
     resetRegularEggStreak: function(){
         this.regularEggChain = 0;
+    },
+
+    resetFrenzyEggPoints: function(){
+        this.frenzyPoints = this.baseFrenzyPoints;
+    },
+
+    getCurrentStreakScore: function(){
+        this.streakScore = this.regularEggChain*this.regularEggPoints;
+        return this.streakScore;
     },
 
     createBasket: function(){
@@ -289,25 +284,18 @@ var gameController = {
         this.setEggProbabilities(1,0,0,0,0,0);
         this.score = 0;
         this.hasReachedCombo = false;
-        this.regularEggChain = 0;
+        this.resetRegularEggStreak();
     },
 
     /**
      * Creates the text animation when the game transitions between states
-     * @param x
-     * @param y
-     * @param text
-     * @param textFormat
-     * @param duration
-     * @param speed
      */
-    createTweenAnimation: function(x, y, text, textFormat, duration, speed){
-        var tweenText = text;
-        if(text>0){
-            tweenText = "+" + text;
-        }
-
-        this.createTweenText(x, y, tweenText, textFormat, duration, speed);
+    displayFadingText: function(x, y, text, textFormat, timeBeforeFade, fadeLength){
+        var textObject = game.add.text(x, y, text, textFormat);
+        //Center text
+        textObject.anchor.setTo(0.5, 0.5);
+        game.add.tween(textObject)
+            .to({alpha: 0}, fadeLength, Phaser.Easing.Default, true, timeBeforeFade);
     },
 
     playEggCrackingSound: function(){
