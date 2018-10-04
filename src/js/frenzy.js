@@ -197,8 +197,8 @@ var frenzyState = {
     collectBomb: function(bomb){
         this.hasCaughtBomb = true;
         gameController.lives--;
-        gameController.removeALifeBucket();
-        playState.calculateEggProbability(gameController.currentTime);
+        gameController.hideALifeBucket();
+        gameController.calculateEggProbWithOrWithoutOneUp();
         gameController.explosion.play();
         bomb.kill();
         this.bombGroup.remove(bomb);

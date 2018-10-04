@@ -61,38 +61,32 @@ var gameController = {
     },
 
     /**
-     * This creates the heart symbol at the top right of the screen to represent lives
+     * This creates the intial baskets at the top right of the screen to represent lives
      */
     createLifeBuckets: function () {
-        // this.heart = game.add.sprite(.75*canvasWidth, 0.025*canvasHeight, "heart");
-        // this.heart.scale.setTo(0.65*scaleRatio, 0.65*scaleRatio);
-        // var livesLabelFormat = this.createFormatting("bold 60px Corbel", "fill: #003366");
-        // this.livesLabel = game.add.text(.81*canvasWidth, 0.018*canvasHeight, ("×" +gameController.lives), livesLabelFormat);
 
-        var bucketXPos = 0.75*canvasWidth;
-        var bucketYPos = 0.025*canvasHeight;
-        var bucketXOffset = 50;
-        for(var i=0; i<this.maxLives; i++){
-            this.livesList[i] = this.createALifeBucket(bucketXPos, bucketYPos);
+        var bucketXPos = 0.85*canvasWidth;
+        var bucketYPos = 0.02*canvasHeight;
+        var scaleRatioMultiplier = 0.25;
+        var bucketXOffset = this.player.width/3;
+
+        for(var i=0; i<this.lives; i++){
+            this.livesList[i] = game.add.sprite(bucketXPos, bucketYPos, "explode");
+            this.livesList[i].scale.setTo(scaleRatioMultiplier*scaleRatio, scaleRatioMultiplier*scaleRatio);
             bucketXPos -= bucketXOffset;
         }
     },
 
-    createALifeBucket: function(xPos, yPos){
-        var bucket = game.add.sprite(xPos, yPos, "explode");
-        bucket.scale.setTo(0.20*scaleRatio, 0.20*scaleRatio);
-        return bucket;
-    },
-
-    removeALifeBucket: function(){
+    hideALifeBucket: function(){
         if(this.livesList.length > 0){
-            this.livesList.pop().destroy();
+            this.livesList[this.lives].alpha = 0;
         }
+
     },
 
-    addLifeBucket: function(){
-        if(this.lives < this.maxLives){
-            this.livesList.push(this.createALifeBucket(this.livesList[0].x + this.livesList.length*50, 0.025*canvasHeight));
+    unHideLifeBucket: function(){
+        if(this.lives <= this.maxLives){
+            this.livesList[this.lives-1].alpha = 1;
         }
     },
 
@@ -273,6 +267,14 @@ var gameController = {
         this.frenzyProb = frenzyPr;
         this.comboProb = comboPr;
         this.oneUpProb = oneUpPr;
+    },
+
+    calculateEggProbWithOrWithoutOneUp(){
+        if(this.lives<this.maxLives){
+            playState.calculateEggProbWithOneUP();
+        } else {
+            playState.calculateEggProbWithoutOneUP();
+        }
     },
 
     /**
