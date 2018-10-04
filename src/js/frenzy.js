@@ -214,7 +214,7 @@ var frenzyState = {
         this.bombGroup.remove(bombToExplode);
         bombAnimationSprite.inputEnabled = false;
         bombAnimationSprite.animations.add("explode", [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]);
-        bombAnimationSprite.anchor.setTo(0.5,1.0);
+        bombAnimationSprite.anchor.setTo(0.5,0.5);
         bombAnimationSprite.animations.play('explode', 45, false, true);
 
     },
