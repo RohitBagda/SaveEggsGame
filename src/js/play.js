@@ -168,13 +168,13 @@ var playState = {
             eggType = gameController.REGULAR_EGG;
         } else if(randomNumber<=gameController.bombProb) {
             eggType = gameController.BOMB;
+        } else if(randomNumber<=gameController.scoreBoostProb) {
+            eggType = gameController.SCORE_BOOST;
         } else if(randomNumber<=gameController.frenzyProb) {
             eggType = gameController.FRENZY_EGG;
         } else if(randomNumber<=gameController.comboProb) {
             eggType = gameController.COMBO_EGG;
-        } else if(randomNumber<=gameController.scoreBoostProb) {
-            eggType = gameController.SCORE_BOOST;
-        }  else if(randomNumber<=gameController.oneUpProb && gameController.lives<gameController.maxLives){
+        } else if(randomNumber<=gameController.oneUpProb && gameController.lives<gameController.maxLives){
             eggType = gameController.ONE_UP;
         }
         return eggType;
