@@ -18,7 +18,7 @@ var playState = {
 
         this.eggs = game.add.group();
         gameController.createScoreText();
-        gameController.createHeart();
+        gameController.createLifeBuckets();
         gameController.createPause();
 
         game.time.events.loop(500, this.dropEgg, this);    // drops an egg every 500 milliseconds
@@ -72,7 +72,6 @@ var playState = {
      */
     calculateEggProbWithOneUP: function(){
         gameController.setEggProbabilities(0.45,0.9,0.95,0.97,0.99,1);
-        // gameController.setEggProbabilities(0.45,0.5,0.6,0.61,0.9,1);
     },
 
     /**
@@ -189,7 +188,6 @@ var playState = {
         gameController.addBackground();
         game.physics.startSystem(Phaser.Physics.ARCADE);
         // we make sure camera is at position (0,0)
-        game.world.camera.position.set(0);
     },
 
     setupPlayer: function(){
@@ -243,7 +241,8 @@ var playState = {
         this.showBombCaughtText();
         this.shakeScreen();
         gameController.decrementLives();
-        gameController.updateLifeCountLabel();
+        gameController.hideALifeBucket();
+        gameController.calculateEggProbWithOrWithoutOneUp();
         gameController.explosion.play();
         gameController.resetRegularEggStreak();
 
@@ -270,10 +269,6 @@ var playState = {
             }
 
         }, 1200);
-
-        if(gameController.lives<gameController.maxLives){
-            this.calculateEggProbability(gameController.currentTime);
-        }
     },
 
     shakeScreen: function(){
@@ -332,10 +327,8 @@ var playState = {
     handleOneUp: function () {
         gameController.eggCollect.play();
         gameController.incrementLives();
-        gameController.updateLifeCountLabel();
-        if (gameController.lives >= gameController.maxLives) {
-            this.calculateEggProbability(gameController.currentTime);
-        }
+        gameController.unHideLifeBucket();
+        gameController.calculateEggProbWithOrWithoutOneUp();
     },
 
     displayEpicScoreText: function(scoreValue){

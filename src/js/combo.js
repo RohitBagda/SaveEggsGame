@@ -19,7 +19,7 @@ var comboState = {
         //Setup background, score, lives and pause.
         gameController.addBackground();
         gameController.createScoreText();
-        gameController.createHeart();
+        gameController.createLifeBuckets();
         gameController.createPause();
 
         this.comboEggPoints=gameController.comboPoints;
