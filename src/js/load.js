@@ -42,6 +42,9 @@ var loadState = {
         game.load.image('heart', "assets/images/heart.png");
         //Loading the basket sprite esheet to create exploding animation when a user dies
         game.load.spritesheet('explode', "assets/images/basket_spritesheet.png", 155, 150);
+
+        //load the sprite sheet for the bomb explosion
+        game.load.spritesheet(gameController.BOMB_EXPLOSION_SPRITE_SHEET, "assets/images/bomb_explosion_frenzy_spritesheet.png", 155, 150);
     },
 
     loadSounds: function(){

@@ -7,10 +7,17 @@ var frenzyState = {
 
     bonusPointsFrenzy: 50,
     xVelocityFrenzyEgg: 100, // This is used to regulate the horizontal vibration of the eggs
-    durationOfFrenzyState: 4,
+    durationOfFrenzyState: 5, //5 seconds feels better than 4
     probabilityOfAddingFrenzyEgg: 0.75, // When drawing eggs, there is 75 percent chance it draws a frenzy egg instead of a bomb
     hasCaughtBomb: false, //flag to check that bomb hasnt been caught yet
     userDragPathColour: 0xFFFF00, //the colour of the path of the user's thumb
+
+    //The number of colours here must be the same as the duration of Frenzy State.
+    //if you wanna make frenzy last longer (for testing purposes), add more colours to this array
+    //this will help avoid null errors
+    //currently goes from yellow to orange to red to dark red to black
+    frenzyTimerColours: ["#FFFF00", "#FFA500", "#FF0000", "#8B0000", "#000000"],
+
     create: function(){
         gameController.addBackground();
         this.frenzyEggPoints = gameController.frenzyPoints;
@@ -18,7 +25,7 @@ var frenzyState = {
         this.hasAchievedBonus = false; // flag to check if the user has achieved the bonus
         this.frenzyTime = 0; // current time within the frenzy state
 
-        this.createFrenzyTimer(); // creates the timer at the top of the screen to remind the user of the duration of the frenzy state
+        this.showTimeLeft(this.frenzyTime);
 
         gameController.createScoreText();
         this.frenzyStateGroup = game.add.group();
@@ -38,7 +45,7 @@ var frenzyState = {
 
         // every 1s (1000ms), the time in the frenzy state increases and the timer text at the top of screen is updated
         game.time.events.loop(1000, function(){
-            if (this.frenzyTime >= this.durationOfFrenzyState - 1){
+            if (!this.hasCaughtBomb && this.frenzyTime >= this.durationOfFrenzyState - 1){
                 gameController.frenzyMusic.stop();
                 backgroundMusic.play();
                 gameController.resetFrenzyEggPoints();
@@ -46,7 +53,7 @@ var frenzyState = {
                 this.hasCaughtBomb = false;
             } else if (!this.hasCaughtBomb){
                 this.frenzyTime ++;
-                this.timer.text = this.durationOfFrenzyState - this.frenzyTime;
+                this.showTimeLeft(this.frenzyTime);
             }
         }, this);
 
@@ -54,7 +61,7 @@ var frenzyState = {
         //this eventually creates the path that traces the user's thumb
         game.time.events.loop(0.0001, function () {
             var gamePointer = game.input.activePointer;
-            if (gamePointer.isDown && gamePointer != null) {
+            if (!this.hasCaughtBomb && gamePointer.isDown && gamePointer != null) {
                 console.log("Pointer is down");
                 var userDragPath = game.add.graphics(0, 0);
                 userDragPath.lineStyle(22, this.userDragPathColour);
@@ -65,12 +72,11 @@ var frenzyState = {
         }, this);
 
         //after user catches a bomb, a bomb explodes every 250ms
-        game.time.events.loop(250, function () {
+        game.time.events.loop(400, function () {
             if (this.hasCaughtBomb){
                 //make sure there are still bombs in the bomb group
                 if (this.bombGroup.children.length > 0){
-                    this.bombGroup.children[0].destroy();
-                    gameController.explosion.play();
+                    this.playExplosion(this.bombGroup.children[0]);
                 }
                 else {
                     //if no bombs left in bomb group, stop frenzy music and transition back into appropriate state
@@ -127,15 +133,15 @@ var frenzyState = {
     },
 
     /**
-     * Creates a timer at the top of the screen in the frenzy state
+     * takes displays the time left in the frenzy state
+     * @param timeSpent: the number of seconds spent in the state
      */
-    createFrenzyTimer: function () {
-        var frenzyTimerFormatting = gameController.createFormatting("bold 50pt Corbel", "#ff0000");
-
-        //timer is added with a y-spacing of 3% of the canvas height. Adjust the scale ratio and properly centralise things
-        this.timer = game.add.text(canvasWidth / 2, 0.03 * canvasHeight, this.durationOfFrenzyState, frenzyTimerFormatting);
-        this.timer.anchor.setTo(0.5, 0.5);
-        this.timer.scale.setTo(scaleRatio, scaleRatio);
+    showTimeLeft: function(timeSpent) {
+        var timerFormatting = gameController.createFormatting("bold 150pt Corbel", this.frenzyTimerColours[timeSpent]);
+        var timeLeft = this.durationOfFrenzyState - timeSpent;
+        var x = canvasWidth/2;
+        var y = 0.03 * canvasHeight;
+        gameController.displayFadingText(x, y, timeLeft, timerFormatting, 400, 600);
     },
 
     /**
@@ -192,20 +198,36 @@ var frenzyState = {
 
     /**
      * Handles what happens when a bomb is collected
-     * @param egg - the egg (bomb) that is collected
+     * @param bomb - the bomb that is collected
      */
     collectBomb: function(bomb){
         this.hasCaughtBomb = true;
         gameController.lives--;
         gameController.hideALifeBucket();
+        gameController.frenzyMusic.stop();
         gameController.calculateEggProbWithOrWithoutOneUp();
+        this.camera.shake(0.01, 1000, true, Phaser.Camera.SHAKE_BOTH, true);
         gameController.explosion.play();
-        bomb.kill();
-        this.bombGroup.remove(bomb);
+        this.playExplosion(bomb);
         this.makeEggsInactive();
-        //---------------screen shake and wait would be great at this point in the code--------------//
+    },
+
+    /**
+     * takes a bomb and explodes it on the screen
+     * @param bombToExplode the bomb we want to explode
+     */
+    playExplosion: function(bombToExplode){
+        //add new spritesheet of explosion to current position of bomb
+        var bombAnimationSprite = game.add.sprite(bombToExplode.x, bombToExplode.y, gameController.BOMB_EXPLOSION_SPRITE_SHEET);
+        gameController.explosion.play();
+        this.bombGroup.remove(bombToExplode);
+        bombAnimationSprite.inputEnabled = false;
+        bombAnimationSprite.animations.add("explode", [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]);
+        bombAnimationSprite.anchor.setTo(0.5,0.5);
+        bombAnimationSprite.animations.play('explode', 45, false, true);
 
     },
+
 
     /**
      * prevents user from being able to touch any eggs or bomb on screen anymore
@@ -213,6 +235,9 @@ var frenzyState = {
     makeEggsInactive: function() {
         for (var egg of this.frenzyStateGroup.children) {
             egg.inputEnabled = false;
+        }
+        for (var bomb of this.bombGroup.children){
+            bomb.inputEnabled = false;
         }
     },
 
@@ -234,13 +259,10 @@ var frenzyState = {
         this.frenzyStateGroup.add(frenzyEgg);
 
         if (eggName == gameController.FRENZY_EGG){
-            // console.log("frenzy egg caught");
             frenzyEgg.events.onInputOver.add(this.collectEgg, this);
         } else {
-            // console.log("frenzy egg caught");
             this.bombGroup.add(frenzyEgg);
             frenzyEgg.events.onInputOver.add(this.collectBomb, this);
-            // console.log("frenzy egg caught2");
         }
     },
 
