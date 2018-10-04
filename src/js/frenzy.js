@@ -250,13 +250,10 @@ var frenzyState = {
         this.frenzyStateGroup.add(frenzyEgg);
 
         if (eggName == gameController.FRENZY_EGG){
-            // console.log("frenzy egg caught");
             frenzyEgg.events.onInputOver.add(this.collectEgg, this);
         } else {
-            // console.log("frenzy egg caught");
             this.bombGroup.add(frenzyEgg);
             frenzyEgg.events.onInputOver.add(this.collectBomb, this);
-            // console.log("frenzy egg caught2");
         }
     },
 
