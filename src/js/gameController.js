@@ -22,6 +22,8 @@ var gameController = {
 
     BOMB_EXPLOSION_SPRITE_SHEET: "bomb_explosion_sprite_sheet",
 
+    MAX_CAMERA_SHAKE_INTENSITY: 0.01,
+
     score : 0,
     highestScore: 0,
     lives: 3,
@@ -54,11 +56,14 @@ var gameController = {
 
 
     addBackground: function(){
-        var backgroundSprite = game.add.sprite(game.world.centerX, game.world.height, "background");
+        var maxShakeX = canvasWidth * this.MAX_CAMERA_SHAKE_INTENSITY;
+        var maxShakeY = canvasHeight * this.MAX_CAMERA_SHAKE_INTENSITY;
+
+        var backgroundSprite = game.add.sprite(game.world.centerX, game.world.height + maxShakeY, "background");
         backgroundSprite.anchor.setTo(0.5, 1.0);
 
-        var scalingReqdToFillWidth = canvasWidth / backgroundSprite.texture.width;
-        var scalingReqdToFillHeight = canvasHeight / backgroundSprite.texture.height;
+        var scalingReqdToFillWidth = (canvasWidth + maxShakeX*2) / backgroundSprite.texture.width;
+        var scalingReqdToFillHeight = (canvasHeight + maxShakeY*2) / backgroundSprite.texture.height;
         backgroundSprite.scale.setTo(Math.max(scalingReqdToFillHeight, scalingReqdToFillWidth));
     },
 

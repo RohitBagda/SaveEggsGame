@@ -272,7 +272,7 @@ var playState = {
     },
 
     shakeScreen: function(){
-        this.camera.shake(0.01, 1000, true, Phaser.Camera.SHAKE_BOTH, true);
+        this.camera.shake(gameController.MAX_CAMERA_SHAKE_INTENSITY, 1000, true, Phaser.Camera.SHAKE_BOTH, true);
     },
 
     /**
