@@ -7,10 +7,17 @@ var frenzyState = {
 
     bonusPointsFrenzy: 50,
     xVelocityFrenzyEgg: 100, // This is used to regulate the horizontal vibration of the eggs
-    durationOfFrenzyState: 4,
+    durationOfFrenzyState: 5, //5 seconds feels better than 4
     probabilityOfAddingFrenzyEgg: 0.75, // When drawing eggs, there is 75 percent chance it draws a frenzy egg instead of a bomb
     hasCaughtBomb: false, //flag to check that bomb hasnt been caught yet
     userDragPathColour: 0xFFFF00, //the colour of the path of the user's thumb
+
+    //The number of colours here must be the same as the duration of Frenzy State.
+    //if you wanna make frenzy last longer (for testing purposes), add more colours to this array
+    //this will help avoid null errors
+    //currently goes from yellow to orange to red to dark red to black
+    frenzyTimerColours: ["#FFFF00", "#FFA500", "#FF0000", "#8B0000", "#000000"],
+
     create: function(){
         gameController.addBackground();
         this.frenzyEggPoints = gameController.frenzyPoints;
@@ -18,7 +25,7 @@ var frenzyState = {
         this.hasAchievedBonus = false; // flag to check if the user has achieved the bonus
         this.frenzyTime = 0; // current time within the frenzy state
 
-        this.createFrenzyTimer(); // creates the timer at the top of the screen to remind the user of the duration of the frenzy state
+        this.showTimeLeft(this.frenzyTime);
 
         gameController.createScoreText();
         this.frenzyStateGroup = game.add.group();
@@ -46,7 +53,7 @@ var frenzyState = {
                 this.hasCaughtBomb = false;
             } else if (!this.hasCaughtBomb){
                 this.frenzyTime ++;
-                this.timer.text = this.durationOfFrenzyState - this.frenzyTime;
+                this.showTimeLeft(this.frenzyTime);
             }
         }, this);
 
@@ -126,15 +133,15 @@ var frenzyState = {
     },
 
     /**
-     * Creates a timer at the top of the screen in the frenzy state
+     * takes displays the time left in the frenzy state
+     * @param timeSpent: the number of seconds spent in the state
      */
-    createFrenzyTimer: function () {
-        var frenzyTimerFormatting = gameController.createFormatting("bold 50pt Corbel", "#ff0000");
-
-        //timer is added with a y-spacing of 3% of the canvas height. Adjust the scale ratio and properly centralise things
-        this.timer = game.add.text(canvasWidth / 2, 0.03 * canvasHeight, this.durationOfFrenzyState, frenzyTimerFormatting);
-        this.timer.anchor.setTo(0.5, 0.5);
-        this.timer.scale.setTo(scaleRatio, scaleRatio);
+    showTimeLeft: function(timeSpent) {
+        var timerFormatting = gameController.createFormatting("bold 150pt Corbel", this.frenzyTimerColours[timeSpent]);
+        var timeLeft = this.durationOfFrenzyState - timeSpent;
+        var x = canvasWidth/2;
+        var y = 0.03 * canvasHeight;
+        gameController.displayFadingText(x, y, timeLeft, timerFormatting, 400, 600);
     },
 
     /**
@@ -197,6 +204,7 @@ var frenzyState = {
         this.hasCaughtBomb = true;
         gameController.lives--;
         gameController.updateLifeCountLabel();
+        gameController.frenzyMusic.stop();
         playState.calculateEggProbability(gameController.currentTime);
         this.camera.shake(0.01, 1000, true, Phaser.Camera.SHAKE_BOTH, true);
         this.playExplosion(bomb);
