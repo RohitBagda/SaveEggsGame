@@ -145,7 +145,7 @@ var playState = {
         var egg = game.add.sprite(eggX, eggY, eggType);
 
         // Sets the scale ratio and adds physics properties to the egg
-        egg.scale.setTo(scaleRatio, scaleRatio);
+        egg.scale.setTo(scaleRatio);
         egg.anchor.setTo(0.5);
         game.physics.enable(egg, Phaser.Physics.ARCADE);
         this.eggGravity = gameController.calculateEggGravity(gameController.currentTime);
@@ -153,6 +153,20 @@ var playState = {
 
         egg.rotation = Math.random() * 360;
         egg.body.angularVelocity = ((Math.random() - 0.5) * 2) * 720;
+
+        // Since score boost eggs have larger texture (for the glow) we need to adjust their
+        // collision body to just be the egg
+        if(eggType == gameController.SCORE_BOOST) {
+            var normalEggImage = game.cache.getImage(gameController.REGULAR_EGG);
+            var normalEggWidth = normalEggImage.width;
+            var normalEggHeight = normalEggImage.height;
+
+            var textureCenterX = egg.texture.width / 2;
+            var textureCenterY = egg.texture.height / 2;
+
+            egg.body.setSize(normalEggWidth, normalEggHeight, 
+                textureCenterX - (normalEggWidth/2), textureCenterY - (normalEggHeight/2));
+        }
 
         this.eggs.add(egg);
     },

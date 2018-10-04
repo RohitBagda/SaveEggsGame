@@ -26,7 +26,7 @@ var loadState = {
         game.load.image('win', 'assets/images/bomb.png');
         game.load.image(gameController.FRENZY_EGG, 'assets/images/frenzy.png');
         game.load.image(gameController.BOMB, 'assets/images/bomb.png');
-        game.load.image(gameController.SCORE_BOOST, 'assets/images/scoreBoost.png');
+        game.load.image(gameController.SCORE_BOOST, 'assets/images/scoreBoostWithGlow.png');
         game.load.image(gameController.ONE_UP, 'assets/images/oneUp.png');
         game.load.image(gameController.COMBO_EGG, 'assets/images/combo.png');
         game.load.image('background', 'assets/images/background.png');
