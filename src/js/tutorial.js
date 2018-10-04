@@ -2,7 +2,7 @@ var tutorialState = {
     eggPics : [],
     descriptions : [],
     create: function () {
-        game.add.sprite(0, 0, "background");
+        gameController.addBackground();
         this.createLogo();
         this.createOverview();
         this.createEggDescriptions();
@@ -63,6 +63,9 @@ var tutorialState = {
         let bombPic = game.add.sprite(EGG_PICTURE_X, EGG_PICTURE_Y * 9, gameController.BOMB);
         this.eggPics = [eggPic, scoreBoostPic, frenzyPic, oneUpPic, comboPic, bombPic];
         this.createScale(this.eggPics);
+        // Need to do this because of glow
+        scoreBoostPic.centerX = eggPic.centerX;
+        scoreBoostPic.centerY = (eggPic.centerY + frenzyPic.centerY) / 2
         //Create all the descriptions
         let eggDes = this.game.add.text(DESCRITION_X, EGG_PICTURE_Y * 4 + EGG_AND_DESCRIPTION, "Regular egg - worth 5 points", descriptionFormatting);
         let scoreDes = this.game.add.text(DESCRITION_X, EGG_PICTURE_Y * 5 + EGG_AND_DESCRIPTION, "Score boost egg - worth 30 points", descriptionFormatting);
