@@ -3,28 +3,40 @@
  */
 
 var transitionToComboState = {
+    TOTAL_TRANSITION_LENGTH: 2000,
+
     create: function(){
-        this.comboTweenDuration = 0;
-
         gameController.addBackground();
+        gameController.createScoreText();
+        gameController.createLifeBuckets();
+        gameController.createPause();
 
-        this.showComboModeAnimation();
+        gameController.createBasket();
 
-        // This loop allows the switch into the combo state after 1.5 seconds, during which the combo text notification pops up
-        game.time.events.loop(300, function(){
-            if (this.comboTweenDuration >= 1.5){
-                this.game.state.start('combo');
-            } else{
-                this.comboTweenDuration ++;
+        gameController.displayFlashingComboText("COMBO", 200);
+
+        let transitionStartTime = game.time.time;
+
+        game.time.events.loop(80, function(){
+            let tweenLength = 400;
+
+            //Don't make an egg if will be onscreen when we switch to combo state
+            if(game.time.time - transitionStartTime < this.TOTAL_TRANSITION_LENGTH - tweenLength) {
+                var egg = game.add.sprite(gameController.player.centerX, gameController.player.centerY, gameController.COMBO_EGG);
+                egg.anchor.setTo(0.5);
+                egg.scale.setTo(scaleRatio, scaleRatio);
+
+                game.add.tween(egg).to({centerY: (0 - egg.height/2), centerX: Math.random() * canvasWidth}, 
+                    tweenLength, Phaser.Easing.Linear.None, true);
+
+                gameController.player.bringToTop();
             }
         }, this);
 
-    },
+        // This loop allows the switch into the combo state
+        game.time.events.add(this.TOTAL_TRANSITION_LENGTH, function(){
+            game.state.start('combo');
+        }, this);
 
-    // The combo text notification
-    showComboModeAnimation: function(){
-        var comboTextFormat = gameController.createFormatting("bold 200px Times", "#00FF00");
-        var comboText = "COMBO";
-        gameController.displayFadingText(canvasWidth/2, canvasHeight/2, comboText, comboTextFormat, 500);
-    }
+    },
 };
