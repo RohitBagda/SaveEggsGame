@@ -4,8 +4,6 @@
 
 var playState = {
 
-    bombDisplayTexts: ["bruh", ":'(", "-_-", "Oops"],    // list of words that can pop up when the user catches a bomb
-
     rainbowTextEnabled: false,
     /**
      * This function controls the basic setup of the state once it opens.
@@ -251,7 +249,6 @@ var playState = {
      */
     handleBomb: function(){
         gameController.bombCollect.play();
-        this.showBombCaughtText();
         this.shakeScreen();
         gameController.decrementLives();
         gameController.hideALifeBucket();
@@ -292,16 +289,6 @@ var playState = {
 
     shakeScreen: function(){
         this.camera.shake(gameController.MAX_CAMERA_SHAKE_INTENSITY, 1000, true, Phaser.Camera.SHAKE_BOTH, true);
-    },
-
-    /**
-     * Randomly selects a string to display when a bomb is caught
-     */
-    showBombCaughtText: function () {
-        var index = Math.floor(Math.random() * 4);
-        var bombDisplayText = this.bombDisplayTexts[index];
-        var tweenTextFormat = gameController.createFormatting("bold 80pt Corbel", "#ff0000");
-        gameController.displayFadingText(game.world.centerX, game.world.centerY, bombDisplayText, tweenTextFormat, 300, 100);
     },
 
     /**
