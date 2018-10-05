@@ -21,6 +21,8 @@ var gameController = {
     BOMB_EXPLOSION_CLOUD: "bombCloud",
 
     BOMB_EXPLOSION_SPRITE_SHEET: "bomb_explosion_sprite_sheet",
+    BASKET_EXPLOSION_SPRITE_SHEET: "basket",
+    BACKGROUND: "background",
 
     MAX_CAMERA_SHAKE_INTENSITY: 0.01,
 
@@ -41,6 +43,7 @@ var gameController = {
     oneUpProb: 0,
 
     currentTime: 0,
+    timeStages: [5, 15, 20, 30, 60],                     // array of time points that determines the probabilities of different eggs falling based on seconds passed
     hasReachedCombo: false,
     regularEggPoints: 5,
     scoreBoostPoints: 30,
@@ -59,7 +62,7 @@ var gameController = {
         var maxShakeX = canvasWidth * this.MAX_CAMERA_SHAKE_INTENSITY;
         var maxShakeY = canvasHeight * this.MAX_CAMERA_SHAKE_INTENSITY;
 
-        var backgroundSprite = game.add.sprite(game.world.centerX, game.world.height + maxShakeY, "background");
+        var backgroundSprite = game.add.sprite(game.world.centerX, game.world.height + maxShakeY, this.BACKGROUND);
         backgroundSprite.anchor.setTo(0.5, 1.0);
 
         var scalingReqdToFillWidth = (canvasWidth + maxShakeX*2) / backgroundSprite.texture.width;
@@ -78,7 +81,7 @@ var gameController = {
         var bucketXOffset = this.player.width/3;
 
         for(var i=0; i<this.lives; i++){
-            this.livesList[i] = game.add.sprite(bucketXPos, bucketYPos, "explode");
+            this.livesList[i] = game.add.sprite(bucketXPos, bucketYPos, gameController.BASKET_EXPLOSION_SPRITE_SHEET);
             this.livesList[i].scale.setTo(scaleRatioMultiplier*scaleRatio, scaleRatioMultiplier*scaleRatio);
             bucketXPos -= bucketXOffset;
         }
@@ -184,7 +187,7 @@ var gameController = {
         }
 
         // Create basket player sprite.
-        this.player = game.add.sprite(this.basketX, this.basketY, "explode");
+        this.player = game.add.sprite(this.basketX, this.basketY, gameController.BASKET_EXPLOSION_SPRITE_SHEET);
 
         // Add animation for basket explosion in the form of a sprite sheet of 15 frames
         this.player.animations.add('explodeBomb', [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], 15);

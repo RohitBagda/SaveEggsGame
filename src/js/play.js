@@ -5,7 +5,6 @@
 var playState = {
 
     bombDisplayTexts: ["bruh", ":'(", "-_-", "Oops"],    // list of words that can pop up when the user catches a bomb
-    timeStages: [5, 15, 20, 30, 60],                     // array of time points that determines the probabilities of different eggs falling based on seconds passed
 
     rainbowTextEnabled: false,
     /**
@@ -29,7 +28,7 @@ var playState = {
         game.time.events.loop(1000, function(){
             gameController.currentTime++;
             let changeTime = gameController.currentTime;
-            if(this.timeStages.includes(changeTime)){
+            if(gameController.timeStages.includes(changeTime)){
                 this.calculateEggProbability(changeTime);
             }
         }, this);
@@ -50,15 +49,15 @@ var playState = {
      * @param time - current time in the game
      */
     calculateEggProbability: function(time){
-        if(time<this.timeStages[0]){
+        if(time<gameController.timeStages[0]){
             gameController.setEggProbabilities(1,0,0,0,0,0);
-        } else if(gameController.currentTime <this.timeStages[1]){
+        } else if(gameController.currentTime < gameController.timeStages[1]){
             gameController.setEggProbabilities(0.8,1,0,0,0,0);
-        } else if(time < this.timeStages[2]){
+        } else if(time < gameController.timeStages[2]){
             gameController.setEggProbabilities(0.6,0.9,1,0,0,0);
-        } else if(time<this.timeStages[3]){
+        } else if(time < gameController.timeStages[3]){
             gameController.setEggProbabilities(0.5,0.9,0.98,1,0,0);
-        } else if(time <this.timeStages[4]){
+        } else if(time < gameController.timeStages[4]){
             if(gameController.lives<gameController.maxLives){
                 this.calculateEggProbWithOneUP();
             } else {
@@ -256,7 +255,13 @@ var playState = {
         this.shakeScreen();
         gameController.decrementLives();
         gameController.hideALifeBucket();
-        gameController.calculateEggProbWithOrWithoutOneUp();
+       
+        // We don't want combo eggs to fall when the user catches a bomb in the early stages. Without this check combo
+        // eggs and one ups will fall during the 1st 60 seconds.
+        if(gameController.currentTime>gameController.timeStages[4]){
+            gameController.calculateEggProbWithOrWithoutOneUp();
+        }
+        
         gameController.explosion.play();
         gameController.resetRegularEggStreak();
 
