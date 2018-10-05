@@ -11,6 +11,8 @@ var comboState = {
     comboEggsDropDuration: 10,
     eggGapInWave: 100,
 
+    totalScore: 0,
+
     /**
      * The create method in this object, sets up the combo state and is responsible for dropping egg waves, keeping
      * track of the combo duration and going back to the play state.
@@ -36,7 +38,7 @@ var comboState = {
                 this.waveScore = 0;
                 gameController.basketX = gameController.player.x;
                 gameController.basketY = gameController.player.y;
-                this.game.state.start('play');
+                this.game.state.start('transitionFromCombo');
             } else {
                 this.comboTime++;
             }
@@ -47,7 +49,7 @@ var comboState = {
      * This function handles the aspects of the game that need to be dynamically updated.
      */
     update: function(){
-
+        gameController.updateRainbowScoreColor();
         for(var comboEgg of this.comboEggs.children){
             // For each egg in the combo state. Set the initial velocity of the eggs
             comboEgg.body.velocity.y=gameController.eggVelocity;
@@ -172,8 +174,7 @@ var comboState = {
      * @param display
      */
     showScoreAnimation: function(display){
-        var scoreTextFormat = gameController.createFormatting("bold 80pt Corbel","#003366");
-        gameController.displayFadingText(game.world.centerX, game.world.centerY, display, scoreTextFormat, 300, gameController.tweenSpeed);
+        gameController.displayEpicScoreText(display)
     },
 
     /**
@@ -181,6 +182,7 @@ var comboState = {
      * @param points
      */
     updateScore: function(points){
+        this.totalScore += points;
         gameController.updateScore(points);
     }
 };

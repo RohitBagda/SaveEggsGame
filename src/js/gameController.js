@@ -308,6 +308,109 @@ var gameController = {
             .to({alpha: 0}, fadeLength, Phaser.Easing.Default, true, timeBeforeFade);
     },
 
+    displayFlashingComboText: function(text, sizePx) {
+        let darkerColor = "rgb(38, 68, 98)";
+        let lighterColor = "rgb(79, 158, 211)";
+        
+        let format = {
+            font: "Times",
+            fontWeight: "bold",
+            fontSize: sizePx,
+            fill: lighterColor,
+            strokeThickness: 10,
+            stroke: "rgb(0, 0, 0)",
+            align: "center"
+        };
+
+        let textObject = game.add.text(game.world.centerX, game.world.centerY, text, format);
+        textObject.anchor.setTo(0.5, 0.5);
+
+        let loopCount = 0;
+        game.time.events.loop(200, function(){
+            textObject.clearColors();
+            let color = loopCount % 2 === 0 ? darkerColor : lighterColor;
+            textObject.addColor(color, 0);
+            loopCount++;
+        }, this);
+
+        return textObject
+    },
+
+    displayEpicScoreText: function(scoreValue){
+        // Destroy previous text so there's no overlap
+        if(this.currentScoreTextObject != null) {
+            this.currentScoreTextObject.destroy();
+            this.rainbowTextEnabled = false;
+        }
+
+        // Format text
+        var textColor;
+        var textScale;
+        if(scoreValue < 50) {
+            textScale = 0.5;
+            textColor = "rgb(71, 255, 89)";
+        } else if (scoreValue < 100) {
+            textScale = 0.6;
+            textColor = "rgb(255, 255, 45)";
+        } else if (scoreValue < 200) {
+            textScale = 0.7;
+            textColor = "rgb(255, 195, 0)";
+        } else if (scoreValue < 300) {
+            textScale = 0.8;
+            textColor = "rgb(255, 58, 58)";
+        } else if (scoreValue < 400) {
+            textScale = 0.9;
+            textColor = "rgb(238, 0, 255)";
+        } else {
+            textScale = 1.0;
+            this.rainbowTextEnabled = true;
+            textColor = "#000000";
+        }
+        var textFormat = {font: "bold 160pt Corbel", fill: textColor};
+        textFormat.stroke = "#000000";
+        textFormat.strokeThickness = 15;
+
+        // Create text object
+        var text = "+" + scoreValue;
+        var textObject = game.add.text(game.world.centerX, game.world.centerY, text, textFormat);
+        this.currentScoreTextObject = textObject;
+
+        //Center text at about the center of the numbers (i.e. ignore the plus sign)
+        var justNumbersProportion = (text.length / (text.length + 1));
+        var justNumbersStart = 1 - justNumbersProportion;
+        var xAnchor = justNumbersStart + (0.5 * justNumbersProportion);
+        textObject.anchor.setTo(xAnchor, 0.5);
+
+        // Set the text initial scale and rotation
+        textObject.scale.setTo(0.2);       
+        var rotationInitial = Math.random() > 0.5 ? -1: 1;
+        rotationInitial += (Math.random() - 0.5) * (0.4);
+        textObject.rotation = rotationInitial;
+
+        // Create tweens
+        var bustInLength = 800;
+        bustInTween = game.add.tween(textObject.scale).to( { x: textScale, y: textScale }, bustInLength, Phaser.Easing.Elastic.Out);
+        fadeOutTween = game.add.tween(textObject).to({alpha: 0}, 200, Phaser.Easing.Default)
+        bustInTween.chain(fadeOutTween);
+
+        bustInRotationTween =  game.add.tween(textObject).to( { rotation: 0}, bustInLength, Phaser.Easing.Elastic.Out).start();
+
+        // Starting both tweens at the same time makes them run in sync.
+        bustInTween.start();
+        bustInRotationTween.start();
+
+        // In case rainbow is enabled
+        this.updateRainbowScoreColor();
+    },
+
+    updateRainbowScoreColor() {
+        if(this.rainbowTextEnabled) {
+            let hue = Math.round((game.time.totalElapsedSeconds() * 500) % 360);
+            this.currentScoreTextObject.clearColors();
+            this.currentScoreTextObject.addColor("hsl(" + hue + ", 90%, 60%)", 0);
+        }
+    },
+
     playEggCrackingSound: function(){
         this.eggCrack.play();
     },
