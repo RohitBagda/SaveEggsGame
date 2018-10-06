@@ -9,12 +9,12 @@ var playState = {
     rainbowTextEnabled: false,
 
     stages: [
-        { startTime:  0, probabilities: [   1,   0,    0,    0,    0, 0] },
-        { startTime:  5, probabilities: [ 0.8,   1,    0,    0,    0, 0] },
-        { startTime: 15, probabilities: [ 0.6, 0.9,    1,    0,    0, 0] },
-        { startTime: 20, probabilities: [ 0.5, 0.9, 0.98,    1,    0, 0] },
-        { startTime: 30, probabilities: [0.45, 0.9, 0.95, 0.97,    1, 0], 
-                            probabilitiesWhenHurt: [0.45, 0.9, 0.95, 0.97, 0.99, 1] }
+        { startTime:  0, probabilities: [1,    0,    0,    0,    0,    0] },
+        { startTime:  5, probabilities: [0.8,  0.2,  0,    0,    0,    0] },
+        { startTime: 15, probabilities: [0.6,  0.3,  0.1,  0,    0,    0] },
+        { startTime: 20, probabilities: [0.5,  0.4,  0.08, 0.02, 0,    0] },
+        { startTime: 30, probabilities: [0.45, 0.45, 0.05, 0.02, 0.03, 0], 
+                 probabilitiesWhenHurt: [0.45, 0.45, 0.05, 0.02, 0.02, 0.01] }
     ],
 
     /**
@@ -175,13 +175,20 @@ var playState = {
      */
     getEggType: function(){
         let randomNumber = Math.random();
+        let totalProbabilitySum = 0;
         for(let i = 0; i < this.currentProbabilities.length; i++) {
+            totalProbabilitySum += this.currentProbabilities[i];
 
-            //Use less than so that a probability of 0 means no chance
-            if(randomNumber < this.currentProbabilities[i]) {
+            if(randomNumber <= totalProbabilitySum) {
                 return this.probablilityMap[i];
             }
         }
+        // The only time this will happen is if float imprecision causes the probabilities to sum
+        // to slightly less than 1 and the random number is above that sum.
+        // It's an incredibly unlikely situation, so we don't need to worry about preserving the
+        // probabilities - we just return a regular egg cuz it's the only thing present in every
+        // stage.
+        return gameController.REGULAR_EGG;
     },
 
     /**
