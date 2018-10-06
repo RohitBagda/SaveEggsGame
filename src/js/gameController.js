@@ -34,23 +34,6 @@ var gameController = {
     regularEggChain: 0,
     streakScore: 0,
 
-    // Initially, only regular eggs fall
-    regularEggProb: 1,
-    bombProb: 0,
-    scoreBoostProb: 0,
-    frenzyProb: 0,
-    comboProb: 0,
-    oneUpProb: 0,
-
-    stages: [
-        { startTime:  0, probabilities: [   1,   0,    0,    0,    0, 0] },
-        { startTime:  5, probabilities: [ 0.8,   1,    0,    0,    0, 0] },
-        { startTime: 15, probabilities: [ 0.6, 0.9,    1,    0,    0, 0] },
-        { startTime: 20, probabilities: [ 0.5, 0.9, 0.98,    1,    0, 0] },
-        { startTime: 30, probabilities: [0.45, 0.9, 0.95, 0.97,    1, 0], 
-                         probabilitiesWhenHurt: [0.45, 0.9, 0.95, 0.97, 0.99, 1] }
-    ],
-
     currentGameStartTimeSecs: 0,
     hasReachedCombo: false,
     regularEggPoints: 5,
@@ -279,22 +262,12 @@ var gameController = {
         return  67200*(1/(1+Math.exp(-0.1*(time-30)))+1);
     },
 
-    setEggProbabilities: function(regularEggPr, bombPr, scoreBoostPr, frenzyPr, comboPr, oneUpPr){
-        this.regularEggProb = regularEggPr;
-        this.bombProb = bombPr;
-        this.scoreBoostProb = scoreBoostPr;
-        this.frenzyProb = frenzyPr;
-        this.comboProb = comboPr;
-        this.oneUpProb = oneUpPr;
-    },
-
     /**
      * Resets all aspects of the game when the user starts over
      */
     resetGameComponents: function(){
         gameController.currentGameStartTimeSecs = game.time.now / 1000; 
         this.lives = 3;
-        this.setEggProbabilities(1,0,0,0,0,0);
         this.score = 0;
         this.hasReachedCombo = false;
         this.resetRegularEggStreak();

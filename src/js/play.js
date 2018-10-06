@@ -7,6 +7,24 @@ var playState = {
     bombDisplayTexts: ["bruh", ":'(", "-_-", "Oops"],    // list of words that can pop up when the user catches a bomb
 
     rainbowTextEnabled: false,
+
+    // Initially, only regular eggs fall
+    regularEggProb: 1,
+    bombProb: 0,
+    scoreBoostProb: 0,
+    frenzyProb: 0,
+    comboProb: 0,
+    oneUpProb: 0,
+
+    stages: [
+        { startTime:  0, probabilities: [   1,   0,    0,    0,    0, 0] },
+        { startTime:  5, probabilities: [ 0.8,   1,    0,    0,    0, 0] },
+        { startTime: 15, probabilities: [ 0.6, 0.9,    1,    0,    0, 0] },
+        { startTime: 20, probabilities: [ 0.5, 0.9, 0.98,    1,    0, 0] },
+        { startTime: 30, probabilities: [0.45, 0.9, 0.95, 0.97,    1, 0], 
+                            probabilitiesWhenHurt: [0.45, 0.9, 0.95, 0.97, 0.99, 1] }
+    ],
+
     /**
      * This function controls the basic setup of the state once it opens.
      */
@@ -39,7 +57,7 @@ var playState = {
      */
     calculateEggProbability: function(time){
         var correctStage = null;
-        for(stage of gameController.stages) {
+        for(stage of this.stages) {
             if(time >= stage.startTime) {
                 correctStage = stage;
             } else {
@@ -55,8 +73,17 @@ var playState = {
             baseProbabilites = stage.probabilitiesWhenHurt
         }
 
-        gameController.setEggProbabilities(baseProbabilites[0],baseProbabilites[1],baseProbabilites[2],
+        this.setEggProbabilities(baseProbabilites[0],baseProbabilites[1],baseProbabilites[2],
             baseProbabilites[3],baseProbabilites[4],baseProbabilites[5]);
+    },
+
+    setEggProbabilities: function(regularEggPr, bombPr, scoreBoostPr, frenzyPr, comboPr, oneUpPr){
+        this.regularEggProb = regularEggPr;
+        this.bombProb = bombPr;
+        this.scoreBoostProb = scoreBoostPr;
+        this.frenzyProb = frenzyPr;
+        this.comboProb = comboPr;
+        this.oneUpProb = oneUpPr;
     },
 
     /**
@@ -157,17 +184,17 @@ var playState = {
     getEggType: function(){
         var eggType;
         var randomNumber = Math.random();
-        if(randomNumber <= gameController.regularEggProb){
+        if(randomNumber <= this.regularEggProb){
             eggType = gameController.REGULAR_EGG;
-        } else if(randomNumber<=gameController.bombProb) {
+        } else if(randomNumber<=this.bombProb) {
             eggType = gameController.BOMB;
-        } else if(randomNumber<=gameController.scoreBoostProb) {
+        } else if(randomNumber<=this.scoreBoostProb) {
             eggType = gameController.SCORE_BOOST;
-        } else if(randomNumber<=gameController.frenzyProb) {
+        } else if(randomNumber<=this.frenzyProb) {
             eggType = gameController.FRENZY_EGG;
-        } else if(randomNumber<=gameController.comboProb) {
+        } else if(randomNumber<=this.comboProb) {
             eggType = gameController.COMBO_EGG;
-        } else if(randomNumber<=gameController.oneUpProb && gameController.lives<gameController.maxLives){
+        } else if(randomNumber<=this.oneUpProb && gameController.lives<gameController.maxLives){
             eggType = gameController.ONE_UP;
         }
         return eggType;
