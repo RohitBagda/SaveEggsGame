@@ -45,8 +45,6 @@ var playState = {
      * @param time - current time in the game
      */
     calculateEggProbability: function(time){
-        time += 50;
-        
         var correctStage = null;
         for(stage of gameController.stages) {
             if(time >= stage.startTime) {
