@@ -42,6 +42,15 @@ var gameController = {
     comboProb: 0,
     oneUpProb: 0,
 
+    stages: [
+        { startTime:  0, probabilities: [   1,   0,    0,    0,    0, 0] },
+        { startTime:  5, probabilities: [ 0.8,   1,    0,    0,    0, 0] },
+        { startTime: 15, probabilities: [ 0.6, 0.9,    1,    0,    0, 0] },
+        { startTime: 20, probabilities: [ 0.5, 0.9, 0.98,    1,    0, 0] },
+        { startTime: 30, probabilities: [0.45, 0.9, 0.95, 0.97,    1, 0], 
+                         probabilitiesWhenHurt: [0.45, 0.9, 0.95, 0.97, 0.99, 1] }
+    ],
+
     currentTime: 0,
     timeStages: [5, 15, 20, 30, 60],                     // array of time points that determines the probabilities of different eggs falling based on seconds passed
     hasReachedCombo: false,
@@ -275,14 +284,6 @@ var gameController = {
         this.frenzyProb = frenzyPr;
         this.comboProb = comboPr;
         this.oneUpProb = oneUpPr;
-    },
-
-    calculateEggProbWithOrWithoutOneUp(){
-        if(this.lives<this.maxLives){
-            playState.calculateEggProbWithOneUP();
-        } else {
-            playState.calculateEggProbWithoutOneUP();
-        }
     },
 
     /**

@@ -27,10 +27,6 @@ var playState = {
          */
         game.time.events.loop(1000, function(){
             gameController.currentTime++;
-            let changeTime = gameController.currentTime;
-            if(gameController.timeStages.includes(changeTime)){
-                this.calculateEggProbability(changeTime);
-            }
         }, this);
     },
 
@@ -49,41 +45,34 @@ var playState = {
      * @param time - current time in the game
      */
     calculateEggProbability: function(time){
-        if(time<gameController.timeStages[0]){
-            gameController.setEggProbabilities(1,0,0,0,0,0);
-        } else if(gameController.currentTime < gameController.timeStages[1]){
-            gameController.setEggProbabilities(0.8,1,0,0,0,0);
-        } else if(time < gameController.timeStages[2]){
-            gameController.setEggProbabilities(0.6,0.9,1,0,0,0);
-        } else if(time < gameController.timeStages[3]){
-            gameController.setEggProbabilities(0.5,0.9,0.98,1,0,0);
-        } else if(time < gameController.timeStages[4]){
-            if(gameController.lives<gameController.maxLives){
-                this.calculateEggProbWithOneUP();
+        time += 50;
+        
+        var correctStage = null;
+        for(stage of gameController.stages) {
+            if(time >= stage.startTime) {
+                correctStage = stage;
             } else {
-                this.calculateEggProbWithoutOneUP();
+                break;
             }
-        } 
-    },
+        }
 
-    /**
-     * When there is a one-up (when the user has < 3 lives), the probabilities of the eggs falling are readjusted
-     */
-    calculateEggProbWithOneUP: function(){
-        gameController.setEggProbabilities(0.45,0.9,0.95,0.97,0.99,1);
-    },
+        var baseProbabilites = correctStage.probabilities;
+        
+        // Adjust for one-up if necessary
+        if(gameController.lives<gameController.maxLives
+            && (stage.probabilitiesWhenHurt != undefined)) {
+            baseProbabilites = stage.probabilitiesWhenHurt
+        }
 
-    /**
-     * When there cannot be a one-up (when the user has 3 lives), the probabilities of the eggs falling are readjusted
-     */
-    calculateEggProbWithoutOneUP: function(){
-        gameController.setEggProbabilities(0.45,0.9,0.95,0.97,1,0);
+        gameController.setEggProbabilities(baseProbabilites[0],baseProbabilites[1],baseProbabilites[2],
+            baseProbabilites[3],baseProbabilites[4],baseProbabilites[5]);
     },
 
     /**
      * This function handles the aspects of the game that need to be dynamically updated
      */
     update: function(){
+        this.calculateEggProbability(gameController.currentTime);
         gameController.updateRainbowScoreColor();
         for(var egg of this.eggs.children){
             egg.body.velocity.y= gameController.eggVelocity;    // set initial vertical (y) velocity
@@ -255,12 +244,6 @@ var playState = {
         this.shakeScreen();
         gameController.decrementLives();
         gameController.hideALifeBucket();
-       
-        // We don't want combo eggs to fall when the user catches a bomb in the early stages. Without this check combo
-        // eggs and one ups will fall during the 1st 60 seconds.
-        if(gameController.currentTime>gameController.timeStages[4]){
-            gameController.calculateEggProbWithOrWithoutOneUp();
-        }
         
         gameController.explosion.play();
         gameController.resetRegularEggStreak();
@@ -347,7 +330,6 @@ var playState = {
         gameController.eggCollect.play();
         gameController.incrementLives();
         gameController.unHideLifeBucket();
-        gameController.calculateEggProbWithOrWithoutOneUp();
     },
 
     /**
