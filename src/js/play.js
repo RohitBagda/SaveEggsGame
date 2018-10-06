@@ -8,14 +8,6 @@ var playState = {
 
     rainbowTextEnabled: false,
 
-    // Initially, only regular eggs fall
-    regularEggProb: 1,
-    bombProb: 0,
-    scoreBoostProb: 0,
-    frenzyProb: 0,
-    comboProb: 0,
-    oneUpProb: 0,
-
     stages: [
         { startTime:  0, probabilities: [   1,   0,    0,    0,    0, 0] },
         { startTime:  5, probabilities: [ 0.8,   1,    0,    0,    0, 0] },
@@ -38,6 +30,17 @@ var playState = {
         gameController.createLifeBuckets();
         gameController.createPause();
 
+        this.currentProbabilities = [];
+        this.probablilityMap = [
+            gameController.REGULAR_EGG,
+            gameController.BOMB,
+            gameController.SCORE_BOOST,
+            gameController.FRENZY_EGG,
+            gameController.COMBO_EGG,
+            gameController.ONE_UP,
+        ];
+
+        this.calculateEggProbability(0);
         game.time.events.loop(500, this.dropEgg, this);    // drops an egg every 500 milliseconds
     },
 
@@ -73,17 +76,7 @@ var playState = {
             baseProbabilites = stage.probabilitiesWhenHurt
         }
 
-        this.setEggProbabilities(baseProbabilites[0],baseProbabilites[1],baseProbabilites[2],
-            baseProbabilites[3],baseProbabilites[4],baseProbabilites[5]);
-    },
-
-    setEggProbabilities: function(regularEggPr, bombPr, scoreBoostPr, frenzyPr, comboPr, oneUpPr){
-        this.regularEggProb = regularEggPr;
-        this.bombProb = bombPr;
-        this.scoreBoostProb = scoreBoostPr;
-        this.frenzyProb = frenzyPr;
-        this.comboProb = comboPr;
-        this.oneUpProb = oneUpPr;
+        this.currentProbabilities = baseProbabilites;
     },
 
     /**
@@ -179,25 +172,16 @@ var playState = {
 
     /**
      * Randomly selects an egg that will be dropped based on assigned probabilities
-     * @returns {*}
      */
     getEggType: function(){
-        var eggType;
-        var randomNumber = Math.random();
-        if(randomNumber <= this.regularEggProb){
-            eggType = gameController.REGULAR_EGG;
-        } else if(randomNumber<=this.bombProb) {
-            eggType = gameController.BOMB;
-        } else if(randomNumber<=this.scoreBoostProb) {
-            eggType = gameController.SCORE_BOOST;
-        } else if(randomNumber<=this.frenzyProb) {
-            eggType = gameController.FRENZY_EGG;
-        } else if(randomNumber<=this.comboProb) {
-            eggType = gameController.COMBO_EGG;
-        } else if(randomNumber<=this.oneUpProb && gameController.lives<gameController.maxLives){
-            eggType = gameController.ONE_UP;
+        let randomNumber = Math.random();
+        for(let i = 0; i < this.currentProbabilities.length; i++) {
+
+            //Use less than so that a probability of 0 means no chance
+            if(randomNumber < this.currentProbabilities[i]) {
+                return this.probablilityMap[i];
+            }
         }
-        return eggType;
     },
 
     /**
