@@ -51,8 +51,7 @@ var gameController = {
                          probabilitiesWhenHurt: [0.45, 0.9, 0.95, 0.97, 0.99, 1] }
     ],
 
-    currentTime: 0,
-    timeStages: [5, 15, 20, 30, 60],                     // array of time points that determines the probabilities of different eggs falling based on seconds passed
+    currentGameStartTimeSecs: 0,
     hasReachedCombo: false,
     regularEggPoints: 5,
     scoreBoostPoints: 30,
@@ -66,6 +65,9 @@ var gameController = {
     verticalAnchor: 0.5,
     tweenSpeed: 100,
 
+    secondsSinceGameStart: function() {
+        return (game.time.now / 1000) - this.currentGameStartTimeSecs;
+    },
 
     addBackground: function(){
         var maxShakeX = canvasWidth * this.MAX_CAMERA_SHAKE_INTENSITY;
@@ -290,7 +292,7 @@ var gameController = {
      * Resets all aspects of the game when the user starts over
      */
     resetGameComponents: function(){
-        this.currentTime=0;
+        gameController.currentGameStartTimeSecs = game.time.now / 1000; 
         this.lives = 3;
         this.setEggProbabilities(1,0,0,0,0,0);
         this.score = 0;

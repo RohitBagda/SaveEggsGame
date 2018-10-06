@@ -21,13 +21,6 @@ var playState = {
         gameController.createPause();
 
         game.time.events.loop(500, this.dropEgg, this);    // drops an egg every 500 milliseconds
-
-        /**
-         * increases current time of game by 1 second every 1000 milliseconds
-         */
-        game.time.events.loop(1000, function(){
-            gameController.currentTime++;
-        }, this);
     },
 
     render: function(){
@@ -70,7 +63,7 @@ var playState = {
      * This function handles the aspects of the game that need to be dynamically updated
      */
     update: function(){
-        this.calculateEggProbability(gameController.currentTime);
+        this.calculateEggProbability(gameController.secondsSinceGameStart());
         gameController.updateRainbowScoreColor();
         for(var egg of this.eggs.children){
             egg.body.velocity.y= gameController.eggVelocity;    // set initial vertical (y) velocity
@@ -134,7 +127,7 @@ var playState = {
         egg.scale.setTo(scaleRatio);
         egg.anchor.setTo(0.5);
         game.physics.enable(egg, Phaser.Physics.ARCADE);
-        this.eggGravity = gameController.calculateEggGravity(gameController.currentTime);
+        this.eggGravity = gameController.calculateEggGravity(gameController.secondsSinceGameStart());
         egg.body.gravity.y = this.eggGravity;
 
         egg.rotation = Math.random() * 360;

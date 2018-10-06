@@ -45,6 +45,7 @@ var menuState = {
 
     //Start function calls the play state
     start : function(){
+        gameController.resetGameComponents();
         game.state.start('play');
     },
 
