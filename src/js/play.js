@@ -40,7 +40,7 @@ var playState = {
             gameController.ONE_UP,
         ];
 
-        this.calculateEggProbability(0);
+        this.calculateEggProbability(gameController.secondsSinceGameStart);
         game.time.events.loop(500, this.dropEgg, this);    // drops an egg every 500 milliseconds
     },
 
@@ -59,8 +59,8 @@ var playState = {
      * @param time - current time in the game
      */
     calculateEggProbability: function(time){
-        var correctStage = null;
-        for(stage of this.stages) {
+        let correctStage = null;
+        for(let stage of this.stages) {
             if(time >= stage.startTime) {
                 correctStage = stage;
             } else {
@@ -68,15 +68,13 @@ var playState = {
             }
         }
 
-        var baseProbabilites = correctStage.probabilities;
-        
         // Adjust for one-up if necessary
-        if(gameController.lives<gameController.maxLives
-            && (stage.probabilitiesWhenHurt != undefined)) {
-            baseProbabilites = stage.probabilitiesWhenHurt
+        if(gameController.lives < gameController.maxLives
+            && (correctStage.probabilitiesWhenHurt != undefined)) {
+            this.currentProbabilities = correctStage.probabilitiesWhenHurt;
+        } else {
+            this.currentProbabilities =  correctStage.probabilities;
         }
-
-        this.currentProbabilities = baseProbabilites;
     },
 
     /**
