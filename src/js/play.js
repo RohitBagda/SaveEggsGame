@@ -85,6 +85,7 @@ var playState = {
      */
     update: function(){
         gameController.updateRainbowScoreColor();
+        gameController.updateBasketPosition();
         for(var egg of this.eggs.children){
             egg.body.velocity.y= gameController.eggVelocity;    // set initial vertical (y) velocity
 
@@ -268,7 +269,7 @@ var playState = {
         //Stopping eggs from falling by pausing all the time events loop to begin explosion animation
         game.time.gamePaused();
         gameController.player.animations.play('explodeBomb');
-        gameController.player.inputEnabled = false;
+        gameController.bucketMovementEnabled = false;
         gameController.player.body.enable = false;
 
         //Timeout for animation to play before the basket is generated again

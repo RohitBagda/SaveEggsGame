@@ -51,6 +51,7 @@ var gameController = {
     frenzyPoints: 5,
     comboPoints: 100,
     eggVelocity: 20,
+    bucketMovementEnabled: true,
 
     // If an object is placed at a point (x,y), the anchor will set the center of the object to be (x,y)
     horizontalAnchor: 0.5,
@@ -198,16 +199,21 @@ var gameController = {
         this.player.anchor.setTo(0.5,1.0);
         game.physics.arcade.enable(this.player, Phaser.Physics.ARCADE);
         this.player.body.kinematic = true;
-        this.player.inputEnabled = true;
-        this.player.input.enableDrag(false, true, true);
-        this.player.input.allowVerticalDrag = false;
         this.player.collideWorldBounds = true;
-        let bounds = new Phaser.Rectangle(0,0, canvasWidth, canvasHeight);
-        this.player.input.boundsRect = bounds;
         this.player.body.immovable = true;
         this.player.allowGravity = false;
+        this.bucketMovementEnabled = true;
 
         this.player.body.setSize(127, 30, 12, 40);
+    },
+
+    updateBasketPosition: function() {
+        if(this.bucketMovementEnabled && game.input.activePointer.isDown) {
+            let mouseX = game.input.activePointer.x;
+            if(Math.abs(this.player.position.x - mouseX) < canvasWidth / 2) {
+                this.player.position.x = mouseX;
+            }
+        }
     },
 
     createPauseLabel: function(){
