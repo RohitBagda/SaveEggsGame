@@ -211,7 +211,10 @@ var gameController = {
         if(this.bucketMovementEnabled && game.input.activePointer.isDown) {
             let mouseX = game.input.activePointer.x;
             if(Math.abs(this.player.position.x - mouseX) < canvasWidth / 2) {
-                this.player.position.x = mouseX;
+                let maxX = canvasWidth - this.player.width / 2;
+                let minX =  this.player.width / 2;
+                let newX = Math.max(minX, Math.min(mouseX, maxX))
+                this.player.position.x = newX;
             }
         }
     },
