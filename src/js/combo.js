@@ -24,6 +24,8 @@ var comboState = {
         gameController.createLifeBuckets();
         gameController.createPause();
 
+        this.totalScore = 0;
+
         this.comboEggPoints=gameController.comboPoints;
         this.comboTime=0;
         this.setupPlayer();
@@ -85,11 +87,11 @@ var comboState = {
     },
 
     /**
-     * Drop a combo wave of 1 to 4 eggs  selected at random.
+     * Drop a combo wave of 2 to 4 eggs  selected at random.
      */
     dropComboEggWave: function() {
         if (this.comboTime<=this.comboEggsDropDuration) {
-            var numEggs = Math.floor(Math.random() * 4) + 1;
+            var numEggs = Math.floor(Math.random() * 3) + 2;
             this.createComboWave(numEggs);
         }
         this.tweenPreviousWaveScore();
