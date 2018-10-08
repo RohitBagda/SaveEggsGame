@@ -40,7 +40,7 @@ var playState = {
             gameController.ONE_UP,
         ];
 
-        this.calculateEggProbability(gameController.secondsSinceGameStart);
+        this.calculateEggProbability(gameController.secondsSinceGameStart());
         game.time.events.loop(500, this.dropEgg, this);    // drops an egg every 500 milliseconds
     },
 
