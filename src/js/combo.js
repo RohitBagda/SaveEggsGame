@@ -50,6 +50,7 @@ var comboState = {
      */
     update: function(){
         gameController.updateRainbowScoreColor();
+        gameController.updateBasketPosition();
         for(var comboEgg of this.comboEggs.children){
             // For each egg in the combo state. Set the initial velocity of the eggs
             comboEgg.body.velocity.y=gameController.eggVelocity;
