@@ -205,9 +205,7 @@ var frenzyState = {
         gameController.lives--;
         gameController.hideALifeBucket();
         gameController.frenzyMusic.stop();
-        if(gameController.currentTime < gameController.timeStages[4]){
-            gameController.calculateEggProbWithOrWithoutOneUp();
-        }
+
         this.camera.shake(gameController.MAX_CAMERA_SHAKE_INTENSITY, 1000, true, Phaser.Camera.SHAKE_BOTH, true);
         gameController.explosion.play();
         this.playExplosion(bomb);

@@ -5,6 +5,16 @@
 var playState = {
 
     rainbowTextEnabled: false,
+
+    stages: [
+        { startTime:  0, probabilities: [1,    0,    0,    0,    0,    0] },
+        { startTime:  5, probabilities: [0.8,  0.2,  0,    0,    0,    0] },
+        { startTime: 15, probabilities: [0.6,  0.3,  0.1,  0,    0,    0] },
+        { startTime: 20, probabilities: [0.5,  0.4,  0.08, 0.02, 0,    0] },
+        { startTime: 30, probabilities: [0.45, 0.45, 0.05, 0.02, 0.03, 0], 
+                 probabilitiesWhenHurt: [0.45, 0.45, 0.05, 0.02, 0.02, 0.01] }
+    ],
+
     /**
      * This function controls the basic setup of the state once it opens.
      */
@@ -18,18 +28,18 @@ var playState = {
         gameController.createLifeBuckets();
         gameController.createPause();
 
-        game.time.events.loop(500, this.dropEgg, this);    // drops an egg every 500 milliseconds
+        this.currentProbabilities = [];
+        this.probablilityMap = [
+            gameController.REGULAR_EGG,
+            gameController.BOMB,
+            gameController.SCORE_BOOST,
+            gameController.FRENZY_EGG,
+            gameController.COMBO_EGG,
+            gameController.ONE_UP,
+        ];
 
-        /**
-         * increases current time of game by 1 second every 1000 milliseconds
-         */
-        game.time.events.loop(1000, function(){
-            gameController.currentTime++;
-            let changeTime = gameController.currentTime;
-            if(gameController.timeStages.includes(changeTime)){
-                this.calculateEggProbability(changeTime);
-            }
-        }, this);
+        this.calculateEggProbability(gameController.secondsSinceGameStart());
+        game.time.events.loop(500, this.dropEgg, this);    // drops an egg every 500 milliseconds
     },
 
     render: function(){
@@ -47,41 +57,29 @@ var playState = {
      * @param time - current time in the game
      */
     calculateEggProbability: function(time){
-        if(time<gameController.timeStages[0]){
-            gameController.setEggProbabilities(1,0,0,0,0,0);
-        } else if(gameController.currentTime < gameController.timeStages[1]){
-            gameController.setEggProbabilities(0.8,1,0,0,0,0);
-        } else if(time < gameController.timeStages[2]){
-            gameController.setEggProbabilities(0.6,0.9,1,0,0,0);
-        } else if(time < gameController.timeStages[3]){
-            gameController.setEggProbabilities(0.5,0.9,0.98,1,0,0);
-        } else if(time < gameController.timeStages[4]){
-            if(gameController.lives<gameController.maxLives){
-                this.calculateEggProbWithOneUP();
+        let correctStage = null;
+        for(let stage of this.stages) {
+            if(time >= stage.startTime) {
+                correctStage = stage;
             } else {
-                this.calculateEggProbWithoutOneUP();
+                break;
             }
-        } 
-    },
+        }
 
-    /**
-     * When there is a one-up (when the user has < 3 lives), the probabilities of the eggs falling are readjusted
-     */
-    calculateEggProbWithOneUP: function(){
-        gameController.setEggProbabilities(0.45,0.9,0.95,0.97,0.99,1);
-    },
-
-    /**
-     * When there cannot be a one-up (when the user has 3 lives), the probabilities of the eggs falling are readjusted
-     */
-    calculateEggProbWithoutOneUP: function(){
-        gameController.setEggProbabilities(0.45,0.9,0.95,0.97,1,0);
+        // Adjust for one-up if necessary
+        if(gameController.lives < gameController.maxLives
+            && (correctStage.probabilitiesWhenHurt != undefined)) {
+            this.currentProbabilities = correctStage.probabilitiesWhenHurt;
+        } else {
+            this.currentProbabilities =  correctStage.probabilities;
+        }
     },
 
     /**
      * This function handles the aspects of the game that need to be dynamically updated
      */
     update: function(){
+        this.calculateEggProbability(gameController.secondsSinceGameStart());
         gameController.updateRainbowScoreColor();
         gameController.updateBasketPosition();
         for(var egg of this.eggs.children){
@@ -146,7 +144,7 @@ var playState = {
         egg.scale.setTo(scaleRatio);
         egg.anchor.setTo(0.5);
         game.physics.enable(egg, Phaser.Physics.ARCADE);
-        this.eggGravity = gameController.calculateEggGravity(gameController.currentTime);
+        this.eggGravity = gameController.calculateEggGravity(gameController.secondsSinceGameStart());
         egg.body.gravity.y = this.eggGravity;
 
         egg.rotation = Math.random() * 360;
@@ -171,25 +169,23 @@ var playState = {
 
     /**
      * Randomly selects an egg that will be dropped based on assigned probabilities
-     * @returns {*}
      */
     getEggType: function(){
-        var eggType;
-        var randomNumber = Math.random();
-        if(randomNumber <= gameController.regularEggProb){
-            eggType = gameController.REGULAR_EGG;
-        } else if(randomNumber<=gameController.bombProb) {
-            eggType = gameController.BOMB;
-        } else if(randomNumber<=gameController.scoreBoostProb) {
-            eggType = gameController.SCORE_BOOST;
-        } else if(randomNumber<=gameController.frenzyProb) {
-            eggType = gameController.FRENZY_EGG;
-        } else if(randomNumber<=gameController.comboProb) {
-            eggType = gameController.COMBO_EGG;
-        } else if(randomNumber<=gameController.oneUpProb && gameController.lives<gameController.maxLives){
-            eggType = gameController.ONE_UP;
+        let randomNumber = Math.random();
+        let totalProbabilitySum = 0;
+        for(let i = 0; i < this.currentProbabilities.length; i++) {
+            totalProbabilitySum += this.currentProbabilities[i];
+
+            if(randomNumber <= totalProbabilitySum) {
+                return this.probablilityMap[i];
+            }
         }
-        return eggType;
+        // The only time this will happen is if float imprecision causes the probabilities to sum
+        // to slightly less than 1 and the random number is above that sum.
+        // It's an incredibly unlikely situation, so we don't need to worry about preserving the
+        // probabilities - we just return a regular egg cuz it's the only thing present in every
+        // stage.
+        return gameController.REGULAR_EGG;
     },
 
     /**
@@ -253,12 +249,6 @@ var playState = {
         this.shakeScreen();
         gameController.decrementLives();
         gameController.hideALifeBucket();
-       
-        // We don't want combo eggs to fall when the user catches a bomb in the early stages. Without this check combo
-        // eggs and one ups will fall during the 1st 60 seconds.
-        if(gameController.currentTime>gameController.timeStages[4]){
-            gameController.calculateEggProbWithOrWithoutOneUp();
-        }
         
         gameController.explosion.play();
         gameController.resetRegularEggStreak();
@@ -335,7 +325,6 @@ var playState = {
         gameController.eggCollect.play();
         gameController.incrementLives();
         gameController.unHideLifeBucket();
-        gameController.calculateEggProbWithOrWithoutOneUp();
     },
 
     /**
