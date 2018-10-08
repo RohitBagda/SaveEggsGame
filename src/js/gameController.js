@@ -266,7 +266,7 @@ var gameController = {
      * Resets all aspects of the game when the user starts over
      */
     resetGameComponents: function(){
-        gameController.currentGameStartTimeSecs = game.time.now / 1000; 
+        this.currentGameStartTimeSecs = game.time.now / 1000; 
         this.lives = 3;
         this.score = 0;
         this.hasReachedCombo = false;
