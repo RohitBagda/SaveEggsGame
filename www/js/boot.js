@@ -10,6 +10,9 @@ var bootState = {
         //in between states phaser will pretend like they stopped when the state switched.
         //Setting resetLocked to true disables this behavior.
         game.input.resetLocked = true;
+
+        game.scale.scaleMode = Phaser.ScaleManager.USER_SCALE;
+        game.scale.setUserScale(1/window.devicePixelRatio, 1/window.devicePixelRatio);
     },
 
     //The create function is a standard Phaser function, and is automatically called
