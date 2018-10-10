@@ -236,6 +236,12 @@ var playState = {
      * Performs the necessary actions when a regular egg is caught
      */
     handleRegularEgg: function () {
+        gameController.totalRegEggsCaught++;
+        if(gameController.totalRegEggsCaught/gameController.currentLevel === gameController.eggsNeededToLevelUp){
+            gameController.currentLevel++;
+            gameController.updateRegEggPoints(gameController.regEggMultiplier*gameController.regularEggPoints);
+        }
+
         gameController.eggCollect.play();
         this.updateScoreAndPlayAnimation(gameController.getCurrentStreakScore());
     },
