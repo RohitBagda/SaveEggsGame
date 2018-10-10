@@ -1,14 +1,8 @@
 {
-    "name": "helloworld",
-    "displayName": "HelloCordova",
+    "name": "savetheeggs",
+    "displayName": "SaveTheEggs",
     "version": "1.0.0",
-    "description": "A sample Apache Cordova application that responds to the deviceready event.",
-    "main": "index.js",
-    "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
-    },
-    "author": "Apache Cordova Team",
-    "license": "Apache-2.0",
+    "description": "INSERT DESCRIPTION HERE",
     "dependencies": {
         "cordova-android": "^7.1.1",
         "cordova-browser": "^5.0.4",
