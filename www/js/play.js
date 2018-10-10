@@ -11,8 +11,8 @@ var playState = {
         { startTime:  5, probabilities: [0.8,  0.2,  0,    0,    0,    0] },
         { startTime: 15, probabilities: [0.6,  0.3,  0.1,  0,    0,    0] },
         { startTime: 20, probabilities: [0.5,  0.4,  0.08, 0.02, 0,    0] },
-        { startTime: 30, probabilities: [0.45, 0.45, 0.05, 0.02, 0.03, 0], 
-                 probabilitiesWhenHurt: [0.45, 0.45, 0.05, 0.02, 0.02, 0.01] }
+        { startTime: 30, probabilities: [0.45, 0.45, 0.05, 0.02, 0.03, 0],
+            probabilitiesWhenHurt: [0.45, 0.45, 0.05, 0.02, 0.02, 0.01] }
     ],
 
     /**
@@ -88,8 +88,8 @@ var playState = {
             // This checks for collisions between the egg and basket, and otherwise cracks the egg if it has fallen past the basket
             if(game.physics.arcade.overlap(gameController.player, egg)) {
                 this.collectEgg(egg);
-            // Note: we don't use the player body's bottom because we want eggs to crack when they
-            // *visually* go below the bucket, not when they go below the physics body.
+                // Note: we don't use the player body's bottom because we want eggs to crack when they
+                // *visually* go below the bucket, not when they go below the physics body.
             } else if(egg.body.bottom > gameController.player.bottom){
                 this.crackEggs(egg);
             }
@@ -160,7 +160,7 @@ var playState = {
             var textureCenterX = egg.texture.width / 2;
             var textureCenterY = egg.texture.height / 2;
 
-            egg.body.setSize(normalEggWidth, normalEggHeight, 
+            egg.body.setSize(normalEggWidth, normalEggHeight,
                 textureCenterX - (normalEggWidth/2), textureCenterY - (normalEggHeight/2));
         }
 
@@ -236,6 +236,12 @@ var playState = {
      * Performs the necessary actions when a regular egg is caught
      */
     handleRegularEgg: function () {
+        gameController.totalRegEggsCaught++;
+        if(gameController.totalRegEggsCaught/gameController.currentLevel === gameController.eggsNeededToLevelUp){
+            gameController.currentLevel++;
+            gameController.updateRegEggPoints(gameController.regEggMultiplier*gameController.regularEggPoints);
+        }
+
         gameController.eggCollect.play();
         this.updateScoreAndPlayAnimation(gameController.getCurrentStreakScore());
     },
@@ -249,7 +255,7 @@ var playState = {
         this.shakeScreen();
         gameController.decrementLives();
         gameController.hideALifeBucket();
-        
+
         gameController.explosion.play();
         gameController.resetRegularEggStreak();
 
@@ -333,7 +339,7 @@ var playState = {
      */
     updateScoreAndPlayAnimation: function(points){
 
-        
+
         gameController.displayEpicScoreText(points);
         gameController.updateScore(points);
     },
