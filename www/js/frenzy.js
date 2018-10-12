@@ -19,7 +19,7 @@ var frenzyState = {
     frenzyTimerColours: ["#FFFF00", "#FFA500", "#FF0000", "#8B0000", "#000000"],
 
     create: function(){
-        gameController.addBackground();
+        // gameController.addBackground();
         this.frenzyEggPoints = gameController.frenzyPoints;
         this.numberOfEggsAddedToScreen = 0; // initially 0 eggs are added to the screen
         this.hasAchievedBonus = false; // flag to check if the user has achieved the bonus

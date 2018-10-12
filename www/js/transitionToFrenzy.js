@@ -7,7 +7,7 @@ var transitionToFrenzyState = {
     create: function(){
         this.frenzyTweenDuration = 0;
 
-        gameController.addBackground();
+        // gameController.addBackground();
 
         this.showFrenzyModeAnimation();
 

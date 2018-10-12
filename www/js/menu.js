@@ -5,7 +5,7 @@
 var menuState = {
     verticalSpaceBetweenButtons: 140,    // Spacing between "Play" and "How to Play" buttons
     create : function(){
-        this.addBackground();
+        // this.addBackground();
         this.addLogo();
         this.addPlayButton();
         this.addTutorialButton();
