@@ -103,7 +103,8 @@ var gameController = {
         gameController.pauseLabel.events.onInputUp.add(function(){
             gameController.pauseLabel.setText("►");
             game.paused = true;
-            tutorialState.createEggDescriptions();
+            this.displayButtonToExitToMainMenu();
+            // tutorialState.createEggDescriptions();
         }, this);
 
         // This allows you to resume play by touching any point on the screen while the game is paused
@@ -119,6 +120,7 @@ var gameController = {
                 });
                 game.paused = false;
                 gameController.pauseLabel.setText("II");
+                this.exitButtonText.kill();
             }
         }, this);
     },
@@ -402,6 +404,21 @@ var gameController = {
 
     removeBasket: function () {
         this.player.destroy();
+    },
+
+    displayButtonToExitToMainMenu: function() {
+        if (game.paused){
+            var exitButtonFormat = this.createFormatting("bold 70px Corbel", "#FF0000");
+            this.exitButtonText = game.add.text(game.world.centerX, game.world.centerY, 'EXIT TO MAIN MENU', exitButtonFormat);
+            this.exitButtonText.anchor.setTo(this.horizontalAnchor, this.verticalAnchor);
+            this.exitButtonText.inputEnabled = true;
+            this.exitButtonText.events.onInputDown.add(this.exitToMainMenu, this);
+        }
+    },
+
+    exitToMainMenu: function() {
+        this.resetGameComponents();
+        game.state.start("menu");
     }
 };
 
