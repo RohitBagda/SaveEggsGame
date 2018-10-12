@@ -104,7 +104,6 @@ var gameController = {
             gameController.pauseLabel.setText("►");
             game.paused = true;
             this.displayButtonToExitToMainMenu();
-            // tutorialState.createEggDescriptions();
         }, this);
 
         // This allows you to resume play by touching any point on the screen while the game is paused
