@@ -118,14 +118,6 @@ var gameController = {
         // This allows you to resume play by touching any point on the screen while the game is paused
         game.input.onDown.add(function(){
             if(game.paused) {
-                var eggImages = tutorialState.getEggImages();
-                var eggDescription = tutorialState.getEggDescriptions();
-                eggImages.forEach(function(image){
-                    image.destroy();
-                });
-                eggDescription.forEach(function(description){
-                    description.destroy();
-                });
                 game.paused = false;
                 gameController.pauseLabel.setText("II");
                 this.exitButtonText.kill();
