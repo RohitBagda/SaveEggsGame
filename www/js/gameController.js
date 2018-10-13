@@ -101,7 +101,10 @@ var gameController = {
     createPause: function(){
         this.createPauseLabel();
         gameController.pauseLabel.events.onInputUp.add(function(){
-            gameController.pauseLabel.setText("►");
+
+            //basically remove the play sign (phones don't always interpret the string well) so I set it to empty string
+            //also, if I dont keep the setText call, then the thing stays as the "II" (pause sign) which we don't want
+            gameController.pauseLabel.setText("");
             game.paused = true;
             this.displayButtonToExitToMainMenu();
         }, this);
