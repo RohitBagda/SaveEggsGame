@@ -406,13 +406,13 @@ var gameController = {
     },
 
     displayButtonToExitToMainMenu: function() {
-        if (game.paused){
-            var exitButtonFormat = this.createFormatting("bold 70px Corbel", "#FF0000");
-            this.exitButtonText = game.add.text(game.world.centerX, game.world.centerY, 'EXIT TO MAIN MENU', exitButtonFormat);
-            this.exitButtonText.anchor.setTo(this.horizontalAnchor, this.verticalAnchor);
-            this.exitButtonText.inputEnabled = true;
-            this.exitButtonText.events.onInputDown.add(this.exitToMainMenu, this);
-        }
+        // if (game.paused){
+        var exitButtonFormat = this.createFormatting("bold 70px Corbel", "#FF0000");
+        this.exitButtonText = game.add.text(game.world.centerX, game.world.centerY, 'EXIT TO MAIN MENU', exitButtonFormat);
+        this.exitButtonText.anchor.setTo(this.horizontalAnchor, this.verticalAnchor);
+        this.exitButtonText.inputEnabled = true;
+        this.exitButtonText.events.onInputDown.add(this.exitToMainMenu, this);
+        // }
     },
 
     exitToMainMenu: function() {
