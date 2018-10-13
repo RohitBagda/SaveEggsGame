@@ -15,7 +15,6 @@ var app = {
         game.state.add('boot', bootState);
         game.state.add('load', loadState);
         game.state.add('menu', menuState);
-        game.state.add('tutorial', tutorialState);
         game.state.add('frenzy', frenzyState);
         game.state.add('play', playState);
         game.state.add('combo', comboState);
