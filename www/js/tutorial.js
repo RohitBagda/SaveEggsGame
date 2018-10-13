@@ -2,7 +2,7 @@ var tutorialState = {
     eggPics : [],
     descriptions : [],
     create: function () {
-        gameController.addBackground();
+        // gameController.addBackground();
         this.createLogo();
         this.createOverview();
         this.createEggDescriptions();

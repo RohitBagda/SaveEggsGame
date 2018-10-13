@@ -63,12 +63,12 @@ var gameController = {
         var maxShakeX = canvasWidth * this.MAX_CAMERA_SHAKE_INTENSITY;
         var maxShakeY = canvasHeight * this.MAX_CAMERA_SHAKE_INTENSITY;
 
-        var backgroundSprite = game.add.sprite(game.world.centerX, game.world.height + maxShakeY, this.BACKGROUND);
-        backgroundSprite.anchor.setTo(0.5, 1.0);
-
-        var scalingReqdToFillWidth = (canvasWidth + maxShakeX*2) / backgroundSprite.texture.width;
-        var scalingReqdToFillHeight = (canvasHeight + maxShakeY*2) / backgroundSprite.texture.height;
-        backgroundSprite.scale.setTo(Math.max(scalingReqdToFillHeight, scalingReqdToFillWidth));
+        // var backgroundSprite = game.add.sprite(game.world.centerX, game.world.height + maxShakeY, this.BACKGROUND);
+        // backgroundSprite.anchor.setTo(0.5, 1.0);
+        //
+        // var scalingReqdToFillWidth = (canvasWidth + maxShakeX*2) / backgroundSprite.texture.width;
+        // var scalingReqdToFillHeight = (canvasHeight + maxShakeY*2) / backgroundSprite.texture.height;
+        // backgroundSprite.scale.setTo(Math.max(scalingReqdToFillHeight, scalingReqdToFillWidth));
     },
 
     /**

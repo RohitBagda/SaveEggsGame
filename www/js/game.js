@@ -1,7 +1,8 @@
 var game;
-var canvasWidth;
-var canvasHeight;
-var scaleRatio;
+
+var canvasWidth = 1000;//window.innerWidth;
+var canvasHeight = 1605;//window.innerHeight;
+var scaleRatio = 2.2;//window.devicePixelRatio/1.2;
 
 var app = {
     initialize: function() {
@@ -9,7 +10,7 @@ var app = {
     },
 
     onDeviceReady: function() {
-        game = new Phaser.Game(window.innerWidth * window.devicePixelRatio, window.innerHeight * window.devicePixelRatio, Phaser.CANVAS, 'gameDiv');
+        game = new Phaser.Game(canvasWidth, canvasHeight, Phaser.CANVAS, 'gameDiv', null, true);
 
         // Add states here
         game.state.add('boot', bootState);
@@ -26,11 +27,6 @@ var app = {
 
         // Start the game
         game.state.start('boot');
-
-        // Sets up some global variables used throughout different states
-        canvasWidth = window.innerWidth * window.devicePixelRatio;
-        canvasHeight = window.innerHeight * window.devicePixelRatio;
-        scaleRatio = window.devicePixelRatio/1.2;
     },
 };
 

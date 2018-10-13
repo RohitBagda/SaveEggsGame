@@ -11,8 +11,8 @@ var bootState = {
         //Setting resetLocked to true disables this behavior.
         game.input.resetLocked = true;
 
-        game.scale.scaleMode = Phaser.ScaleManager.USER_SCALE;
-        game.scale.setUserScale(1/window.devicePixelRatio, 1/window.devicePixelRatio);
+        game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+        // game.scale.setUserScale(1/window.devicePixelRatio, 1/window.devicePixelRatio);
     },
 
     //The create function is a standard Phaser function, and is automatically called
