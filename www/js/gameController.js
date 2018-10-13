@@ -33,10 +33,16 @@ var gameController = {
     livesList:[],
     regularEggChain: 0,
     streakScore: 0,
+    totalRegEggsCaught: 0,
+    baseRegEggMultiplier: 2,
+    regEggMultiplier: 2,
+    eggsNeededToLevelUp: 25,
+    currentLevel:1,
 
     currentGameStartTimeSecs: 0,
     hasReachedCombo: false,
-    regularEggPoints: 5,
+    baseRegEggPoints: 1,
+    regularEggPoints: 1,
     scoreBoostPoints: 30,
     baseFrenzyPoints: 5,
     frenzyPoints: 5,
@@ -147,6 +153,10 @@ var gameController = {
     updateScore: function(points){
         this.score += points;
         this.scoreText.text = 'Score: ' + this.score;
+    },
+
+    updateRegEggPoints: function(points){
+        this.regularEggPoints = points;
     },
 
     /**
@@ -275,10 +285,14 @@ var gameController = {
      * Resets all aspects of the game when the user starts over
      */
     resetGameComponents: function(){
-        this.currentGameStartTimeSecs = game.time.now / 1000; 
-        this.lives = 3;
+        this.currentGameStartTimeSecs = game.time.now / 1000;
+        this.lives = this.maxLives;
         this.score = 0;
         this.hasReachedCombo = false;
+        this.totalRegEggsCaught = 0;
+        this.regularEggPoints = this.baseRegEggPoints;
+        this.regEggMultiplier = this.baseRegEggMultiplier;
+        this.currentLevel = 1;
         this.resetRegularEggStreak();
     },
 
@@ -296,7 +310,7 @@ var gameController = {
     displayFlashingComboText: function(text, sizePx) {
         let darkerColor = "rgb(38, 68, 98)";
         let lighterColor = "rgb(79, 158, 211)";
-        
+
         let format = {
             font: "Times",
             fontWeight: "bold",
@@ -367,7 +381,7 @@ var gameController = {
         textObject.anchor.setTo(xAnchor, 0.5);
 
         // Set the text initial scale and rotation
-        textObject.scale.setTo(0.2);       
+        textObject.scale.setTo(0.2);
         var rotationInitial = Math.random() > 0.5 ? -1: 1;
         rotationInitial += (Math.random() - 0.5) * (0.4);
         textObject.rotation = rotationInitial;
@@ -404,4 +418,3 @@ var gameController = {
         this.player.destroy();
     }
 };
-
