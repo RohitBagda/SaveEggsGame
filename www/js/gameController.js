@@ -304,9 +304,14 @@ var gameController = {
     },
 
     displayFlashingComboText: function(text, sizePx) {
-        let darkerColor = "rgb(38, 68, 98)";
-        let lighterColor = "rgb(79, 158, 211)";
+        return this.displayFlashingModeText(text, sizePx, "rgb(79, 158, 211)", "rgb(38, 68, 98)");
+    },
 
+    displayFlashingFrenzyText: function(text, sizePx) {
+        return this.displayFlashingModeText(text, sizePx, "rgb(226, 0, 237)", "rgb(124, 2, 103)");
+    },
+
+    displayFlashingModeText(text, sizePx, lighterColor, darkerColor) {
         let format = {
             font: "Times",
             fontWeight: "bold",
