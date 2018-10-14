@@ -108,15 +108,22 @@ var gameController = {
     /**
      * (Note: Returns a variable indicating if the player has run out of lives)
      */
-    loseLife: function() {
+    loseLife: function(hideBucket = true) {
         if(this.lives > 0) {
-            this.livesList[this.lives-1].alpha = 0;
+            if(hideBucket) {
+                this.livesList[this.lives-1].alpha = 0;
+            }
             this.lives--;
             return false;
         } else {
             return true;
         }
     },
+
+    getTopLifeBucket: function() {
+        return this.livesList[this.lives];
+    },
+
 
     /**
      * Adds the pause button at the top right of the screen

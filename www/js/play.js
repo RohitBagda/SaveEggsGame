@@ -299,14 +299,14 @@ var playState = {
         gameController.bombCollect.play();
         this.shakeScreen();
 
-        let runOutOfLives = gameController.loseLife();
+        let runOutOfLives = gameController.loseLife(false);
 
         gameController.explosion.play();
         gameController.resetRegularEggStreak();
 
-        //Stopping eggs from falling by pausing all the time events loop to begin explosion animation
         this.pauseEggFalling();
-        gameController.player.animations.play('explodeBomb');
+        gameController.player.animations.play('explodeBomb').killOnComplete = true;
+
         gameController.bucketMovementEnabled = false;
         gameController.player.body.enable = false;
 
@@ -315,17 +315,41 @@ var playState = {
             gameController.removeBasket();
             if(!runOutOfLives){
                 gameController.createBasket();
-            }
 
-            //Resuming the time loop after new basket is generated.
-            this.resumeEggFalling();
+                let player = gameController.player;
+                player.alpha = 0;
+                gameController.bucketMovementEnabled = false;
 
-            if(runOutOfLives){
+                let lifeBucket = gameController.getTopLifeBucket();
+                let originalScale = lifeBucket.scale.x;
+                let originalPosX = lifeBucket.x;
+                let originalPosY = lifeBucket.y;
+
+                scaleTween = game.add.tween(lifeBucket.scale).to( { x: player.scale.x, y: player.scale.y },
+                    1000, Phaser.Easing.Cubic.InOut);
+        
+                moveTween =  game.add.tween(lifeBucket).to( { centerX: player.centerX, centerY: player.centerY },
+                    1000, Phaser.Easing.Cubic.InOut);
+        
+                // Starting both tweens at the same time makes them run in sync.
+                scaleTween.start();
+                moveTween.start();
+
+                moveTween.onComplete.add(function() {
+                    lifeBucket.scale.setTo(originalScale);
+                    lifeBucket.x = originalPosX;
+                    lifeBucket.y = originalPosY;
+                    lifeBucket.alpha = 0;
+
+                    player.alpha = 1.0;
+                    gameController.bucketMovementEnabled = true;
+                    this.resumeEggFalling();
+                }, this)
+            } else {
                 gameController.checkHighScore();
                 backgroundMusic.stop();
                 game.state.start("gameOver");
             }
-
         }, this);
     },
 
