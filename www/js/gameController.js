@@ -39,7 +39,8 @@ var gameController = {
     eggsNeededToLevelUp: 25,
     currentLevel:1,
 
-    currentGameStartTimeSecs: 0,
+    // the timer that keeps track of how long eggs have been falling for. NOT for general-purpose timing usage.
+    elapsedEggFallingTimeSecs: 0,
     hasReachedCombo: false,
     baseRegEggPoints: 1,
     regularEggPoints: 1,
@@ -55,8 +56,12 @@ var gameController = {
     verticalAnchor: 0.5,
     tweenSpeed: 100,
 
-    secondsSinceGameStart: function() {
-        return (game.time.now / 1000) - this.currentGameStartTimeSecs;
+    /**
+     * Updates the timer that keeps track of how long eggs have been falling for.
+     * NOT for general-purpose timing usage
+     */
+    updateEggFallingTimer: function() {
+        this.elapsedEggFallingTimeSecs += game.time.physicsElapsed;
     },
 
     addBackground: function(){
@@ -285,7 +290,7 @@ var gameController = {
      * Resets all aspects of the game when the user starts over
      */
     resetGameComponents: function(){
-        this.currentGameStartTimeSecs = game.time.now / 1000;
+        this.elapsedEggFallingTimeSecs = 0;
         this.lives = this.maxLives;
         this.score = 0;
         this.hasReachedCombo = false;

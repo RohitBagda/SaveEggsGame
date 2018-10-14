@@ -4,6 +4,9 @@
 
 var playState = {
 
+    TIME_BETWEEN_EGG_DROPS_SECONDS: 0.5,
+    lastEggDropTimeSecs: 0,
+    eggFallingPaused: false,
     rainbowTextEnabled: false,
 
     stages: [
@@ -38,8 +41,10 @@ var playState = {
             gameController.ONE_UP,
         ];
 
-        this.calculateEggProbability(gameController.secondsSinceGameStart());
-        game.time.events.loop(500, this.dropEgg, this);    // drops an egg every 500 milliseconds
+        this.calculateEggProbability(gameController.elapsedEggFallingTimeSecs);
+
+        this.lastEggDropTimeSecs = 0;
+        this.eggFallingPaused = false;
     },
 
     render: function(){
@@ -79,8 +84,21 @@ var playState = {
      * This function handles the aspects of the game that need to be dynamically updated
      */
     update: function(){
-        this.calculateEggProbability(gameController.secondsSinceGameStart());
         gameController.updateRainbowScoreColor();
+
+        if(this.eggFallingPaused) {
+            return;
+        }
+
+        gameController.updateEggFallingTimer();
+        let dropDiff = gameController.elapsedEggFallingTimeSecs - this.lastEggDropTimeSecs;
+        if(dropDiff >= this.TIME_BETWEEN_EGG_DROPS_SECONDS) {
+            this.lastEggDropTimeSecs = gameController.elapsedEggFallingTimeSecs;
+            this.dropEgg();
+        }
+
+        this.calculateEggProbability(gameController.elapsedEggFallingTimeSecs);
+
         gameController.updateBasketPosition();
         for(var egg of this.eggs.children){
             egg.body.velocity.y= gameController.eggVelocity;    // set initial vertical (y) velocity
@@ -93,6 +111,33 @@ var playState = {
             } else if(egg.body.bottom > gameController.player.bottom){
                 this.crackEggs(egg);
             }
+        }
+    },
+
+    pauseEggFalling: function() {
+        this.eggFallingPaused = true;
+
+        for(var egg of this.eggs.children){
+            // We don't need to store old velocity because it gets reset every frame anyway
+
+            egg.oldGravity = egg.body.gravity.y;
+            egg.oldAngularVelocity = egg.body.angularVelocity;
+
+            egg.body.velocity.y = 0;
+            egg.body.gravity.y = 0;
+            egg.body.angularVelocity = 0;
+        }
+    },
+
+    resumeEggFalling: function() {
+        this.eggFallingPaused = false;
+
+        for(var egg of this.eggs.children){
+            egg.body.gravity.y = egg.oldGravity;
+            egg.body.angularVelocity = egg.oldAngularVelocity;
+
+            egg.oldGravity = undefined;
+            egg.oldAngularVelocity = undefined;
         }
     },
 
@@ -144,7 +189,7 @@ var playState = {
         egg.scale.setTo(scaleRatio);
         egg.anchor.setTo(0.5);
         game.physics.enable(egg, Phaser.Physics.ARCADE);
-        this.eggGravity = gameController.calculateEggGravity(gameController.secondsSinceGameStart());
+        this.eggGravity = gameController.calculateEggGravity(gameController.elapsedEggFallingTimeSecs);
         egg.body.gravity.y = this.eggGravity;
 
         egg.rotation = Math.random() * 360;
@@ -260,20 +305,20 @@ var playState = {
         gameController.resetRegularEggStreak();
 
         //Stopping eggs from falling by pausing all the time events loop to begin explosion animation
-        game.time.gamePaused();
+        this.pauseEggFalling();
         gameController.player.animations.play('explodeBomb');
         gameController.bucketMovementEnabled = false;
         gameController.player.body.enable = false;
 
         //Timeout for animation to play before the basket is generated again
-        window.setTimeout(function () {
+        game.time.events.add(1200, function() {
             gameController.removeBasket();
             if(!runOutOfLives){
                 gameController.createBasket();
             }
 
             //Resuming the time loop after new basket is generated.
-            game.time.gameResumed();
+            this.resumeEggFalling();
 
             if(runOutOfLives){
                 gameController.checkHighScore();
@@ -281,7 +326,7 @@ var playState = {
                 game.state.start("gameOver");
             }
 
-        }, 1200);
+        }, this);
     },
 
     shakeScreen: function(){
