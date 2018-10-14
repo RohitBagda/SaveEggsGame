@@ -253,8 +253,7 @@ var playState = {
     handleBomb: function(){
         gameController.bombCollect.play();
         this.shakeScreen();
-        gameController.decrementLives();
-        gameController.hideALifeBucket();
+        gameController.loseLife();
 
         gameController.explosion.play();
         gameController.resetRegularEggStreak();
@@ -329,8 +328,7 @@ var playState = {
      */
     handleOneUp: function () {
         gameController.eggCollect.play();
-        gameController.incrementLives();
-        gameController.unHideLifeBucket();
+        gameController.gainLife();
     },
 
     /**

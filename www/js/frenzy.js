@@ -202,8 +202,7 @@ var frenzyState = {
      */
     collectBomb: function(bomb){
         this.hasCaughtBomb = true;
-        gameController.lives--;
-        gameController.hideALifeBucket();
+        gameController.loseLife();
         gameController.frenzyMusic.stop();
 
         this.camera.shake(gameController.MAX_CAMERA_SHAKE_INTENSITY, 1000, true, Phaser.Camera.SHAKE_BOTH, true);

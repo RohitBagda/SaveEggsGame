@@ -88,16 +88,18 @@ var gameController = {
         }
     },
 
-    hideALifeBucket: function(){
-        if(this.livesList.length > 0){
-            this.livesList[this.lives].alpha = 0;
+    gainLife: function() {
+        if(this.lives < this.maxLives) {
+            this.livesList[this.lives].alpha = 1;
+            this.lives++;
+            
         }
-
     },
 
-    unHideLifeBucket: function(){
-        if(this.lives <= this.maxLives){
-            this.livesList[this.lives-1].alpha = 1;
+    loseLife: function() {
+        if(this.lives > 0) {
+            this.livesList[this.lives-1].alpha = 0;
+            this.lives--;
         }
     },
 
@@ -252,14 +254,6 @@ var gameController = {
 
         this.bombCollect = game.add.audio('bomb_collect');
         this.bombCollect.volume = 0.6;
-    },
-
-    decrementLives: function(){
-        this.lives--;
-    },
-
-    incrementLives: function(){
-        this.lives++;
     },
 
     checkHighScore: function(){
