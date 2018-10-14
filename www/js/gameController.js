@@ -82,26 +82,19 @@ var gameController = {
     createLifeBuckets: function () {
 
         var bucketXPos = 0.85*canvasWidth;
-        var bucketYPos = 0.02*canvasHeight;
+        var bucketYPos = 0.04*canvasHeight;
         var scaleRatioMultiplier = 0.25;
         var bucketXOffset = this.player.width/3;
 
         for(var i=0; i<this.maxLives; i++){
             this.livesList[i] = game.add.sprite(bucketXPos, bucketYPos, gameController.BASKET_EXPLOSION_SPRITE_SHEET);
             this.livesList[i].scale.setTo(scaleRatioMultiplier*scaleRatio, scaleRatioMultiplier*scaleRatio);
+            this.livesList[i].anchor.setTo(0.5);
             bucketXPos -= bucketXOffset;
 
             if(i >= this.lives) {
                 this.livesList[i].alpha = 0;
             }
-        }
-    },
-
-    gainLife: function() {
-        if(this.lives < this.maxLives) {
-            this.livesList[this.lives].alpha = 1;
-            this.lives++;
-            
         }
     },
 
@@ -120,10 +113,21 @@ var gameController = {
         }
     },
 
-    getTopLifeBucket: function() {
-        return this.livesList[this.lives];
+    getTopVisibleLifeBucket: function() {
+        for(let i = this.maxLives - 1; i >= 0; i--) {
+            if(this.livesList[i].alpha === 1) {
+                return this.livesList[i];
+            }
+        }
     },
 
+    getNextInvisibleLifeBucket: function() {
+        for(let bucket of this.livesList) {
+            if(bucket.alpha === 0) {
+                return bucket;
+            }
+        }
+    },
 
     /**
      * Adds the pause button at the top right of the screen

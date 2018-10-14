@@ -320,7 +320,7 @@ var playState = {
                 player.alpha = 0;
                 gameController.bucketMovementEnabled = false;
 
-                let lifeBucket = gameController.getTopLifeBucket();
+                let lifeBucket = gameController.getTopVisibleLifeBucket();
                 let originalScale = lifeBucket.scale.x;
                 let originalPosX = lifeBucket.x;
                 let originalPosY = lifeBucket.y;
@@ -398,7 +398,30 @@ var playState = {
      */
     handleOneUp: function () {
         gameController.eggCollect.play();
-        gameController.gainLife();
+        if(gameController.lives < gameController.maxLives) {
+            let lifeBucket = gameController.getNextInvisibleLifeBucket();
+            gameController.lives++;
+
+            lifeBucket.alpha = 1;
+
+            let finalXPos = lifeBucket.centerX;
+            let finalYPos = lifeBucket.centerY;
+
+            lifeBucket.centerX = gameController.player.centerX;
+            lifeBucket.centerY = gameController.player.top;
+            lifeBucket.rotation = Math.PI;
+
+            moveTween = game.add.tween(lifeBucket.position).to( { x: finalXPos, y: finalYPos },
+                1000, Phaser.Easing.Quintic.Out);
+    
+            rotateTween =  game.add.tween(lifeBucket).to( { rotation: 0 },
+                1000, Phaser.Easing.Quintic.Out);
+    
+            // Starting both tweens at the same time makes them run in sync.
+            moveTween.start();
+            rotateTween.start();
+
+        }
     },
 
     /**
