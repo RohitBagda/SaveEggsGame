@@ -81,10 +81,14 @@ var gameController = {
         var scaleRatioMultiplier = 0.25;
         var bucketXOffset = this.player.width/3;
 
-        for(var i=0; i<this.lives; i++){
+        for(var i=0; i<this.maxLives; i++){
             this.livesList[i] = game.add.sprite(bucketXPos, bucketYPos, gameController.BASKET_EXPLOSION_SPRITE_SHEET);
             this.livesList[i].scale.setTo(scaleRatioMultiplier*scaleRatio, scaleRatioMultiplier*scaleRatio);
             bucketXPos -= bucketXOffset;
+
+            if(i >= this.lives) {
+                this.livesList[i].alpha = 0;
+            }
         }
     },
 
