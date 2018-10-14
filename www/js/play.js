@@ -253,7 +253,8 @@ var playState = {
     handleBomb: function(){
         gameController.bombCollect.play();
         this.shakeScreen();
-        gameController.loseLife();
+
+        let runOutOfLives = gameController.loseLife();
 
         gameController.explosion.play();
         gameController.resetRegularEggStreak();
@@ -267,14 +268,14 @@ var playState = {
         //Timeout for animation to play before the basket is generated again
         window.setTimeout(function () {
             gameController.removeBasket();
-            if(gameController.lives > 0){
+            if(!runOutOfLives){
                 gameController.createBasket();
             }
 
             //Resuming the time loop after new basket is generated.
             game.time.gameResumed();
 
-            if(gameController.lives === 0){
+            if(runOutOfLives){
                 gameController.checkHighScore();
                 backgroundMusic.stop();
                 game.state.start("gameOver");
