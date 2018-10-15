@@ -416,7 +416,10 @@ var gameController = {
 
     displayButtonToExitToMainMenu: function() {
         // if (game.paused){
-        var exitButtonFormat = this.createFormatting("bold 70px Corbel", "#FF0000");
+        // var exitButtonFormat = this.createFormatting("bold 70px Corbel", "#00CCFF");
+        var exitButtonFormat = {font: "bold 85px Corbel", fill: "#FFFF00"};
+        exitButtonFormat.stroke = "#000000";
+        exitButtonFormat.strokeThickness = 12;
         this.exitButtonText = game.add.text(game.world.centerX, game.world.centerY, 'EXIT TO MAIN MENU', exitButtonFormat);
         this.exitButtonText.anchor.setTo(this.horizontalAnchor, this.verticalAnchor);
         this.exitButtonText.inputEnabled = true;
