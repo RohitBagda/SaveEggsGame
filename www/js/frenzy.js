@@ -24,7 +24,7 @@ var frenzyState = {
         this.numberOfEggsAddedToScreen = 0; // initially 0 eggs are added to the screen
         this.hasAchievedBonus = false; // flag to check if the user has achieved the bonus
         this.frenzyTime = 0; // current time within the frenzy state
-
+        this.totalEggsCollected = 0;
         this.showTimeLeft(this.frenzyTime);
 
         gameController.createScoreText();
@@ -49,7 +49,7 @@ var frenzyState = {
                 gameController.frenzyMusic.stop();
                 backgroundMusic.play();
                 gameController.resetFrenzyEggPoints();
-                this.game.state.start('play');
+                this.game.state.start('transitionFromFrenzy');
                 this.hasCaughtBomb = false;
             } else if (!this.hasCaughtBomb){
                 this.frenzyTime ++;
@@ -85,7 +85,7 @@ var frenzyState = {
                     if (gameController.lives == 0){
                         this.game.state.start('gameOver');
                     } else {
-                        this.game.state.start('play');
+                        this.game.state.start('transitionFromFrenzy');
                         backgroundMusic.play();
                     }
                     //important that this is reset to false so that the next time you enter frenzy state the bombs dont just explode
