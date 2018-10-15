@@ -10,7 +10,8 @@
     },
     "cordova": {
         "plugins": {
-            "cordova-plugin-whitelist": {}
+            "cordova-plugin-whitelist": {},
+            "cordova-plugin-browsersync": {}
         },
         "platforms": [
             "browser",
