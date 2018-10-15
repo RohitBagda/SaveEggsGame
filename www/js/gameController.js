@@ -43,7 +43,7 @@ var gameController = {
     hasReachedCombo: false,
     baseRegEggPoints: 1,
     regularEggPoints: 1,
-    scoreBoostPoints: 30,
+    scoreBoostPoints: 5,
     baseFrenzyPoints: 5,
     frenzyPoints: 5,
     comboPoints: 100,

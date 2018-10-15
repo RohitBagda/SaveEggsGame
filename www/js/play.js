@@ -292,8 +292,9 @@ var playState = {
      * Performs the necessary actions when a score boost egg is caught
      */
     handleScoreBoost: function () {
-        gameController.regularEggChain += gameController.scoreBoostPoints / gameController.regularEggPoints;
-        this.updateScoreAndPlayAnimation(gameController.getCurrentStreakScore());
+        gameController.streakScore += gameController.scoreBoostPoints*gameController.regularEggPoints;
+        gameController.regularEggChain += gameController.scoreBoostPoints;
+        this.updateScoreAndPlayAnimation(gameController.streakScore);
         gameController.eggCollect.play();
     },
 
