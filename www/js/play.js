@@ -4,6 +4,9 @@
 
 var playState = {
 
+    TIME_BETWEEN_EGG_DROPS_SECONDS: 0.5,
+    lastEggDropTimeSecs: 0,
+    eggFallingPaused: false,
     rainbowTextEnabled: false,
 
     stages: [
@@ -38,8 +41,10 @@ var playState = {
             gameController.ONE_UP,
         ];
 
-        this.calculateEggProbability(gameController.secondsSinceGameStart());
-        game.time.events.loop(500, this.dropEgg, this);    // drops an egg every 500 milliseconds
+        this.calculateEggProbability(gameController.elapsedEggFallingTimeSecs);
+
+        this.lastEggDropTimeSecs = 0;
+        this.eggFallingPaused = false;
     },
 
     render: function(){
@@ -79,8 +84,21 @@ var playState = {
      * This function handles the aspects of the game that need to be dynamically updated
      */
     update: function(){
-        this.calculateEggProbability(gameController.secondsSinceGameStart());
         gameController.updateRainbowScoreColor();
+
+        if(this.eggFallingPaused) {
+            return;
+        }
+
+        gameController.updateEggFallingTimer();
+        let dropDiff = gameController.elapsedEggFallingTimeSecs - this.lastEggDropTimeSecs;
+        if(dropDiff >= this.TIME_BETWEEN_EGG_DROPS_SECONDS) {
+            this.lastEggDropTimeSecs = gameController.elapsedEggFallingTimeSecs;
+            this.dropEgg();
+        }
+
+        this.calculateEggProbability(gameController.elapsedEggFallingTimeSecs);
+
         gameController.updateBasketPosition();
         for(var egg of this.eggs.children){
             egg.body.velocity.y= gameController.eggVelocity;    // set initial vertical (y) velocity
@@ -93,6 +111,33 @@ var playState = {
             } else if(egg.body.bottom > gameController.player.bottom){
                 this.crackEggs(egg);
             }
+        }
+    },
+
+    pauseEggFalling: function() {
+        this.eggFallingPaused = true;
+
+        for(var egg of this.eggs.children){
+            // We don't need to store old velocity because it gets reset every frame anyway
+
+            egg.oldGravity = egg.body.gravity.y;
+            egg.oldAngularVelocity = egg.body.angularVelocity;
+
+            egg.body.velocity.y = 0;
+            egg.body.gravity.y = 0;
+            egg.body.angularVelocity = 0;
+        }
+    },
+
+    resumeEggFalling: function() {
+        this.eggFallingPaused = false;
+
+        for(var egg of this.eggs.children){
+            egg.body.gravity.y = egg.oldGravity;
+            egg.body.angularVelocity = egg.oldAngularVelocity;
+
+            egg.oldGravity = undefined;
+            egg.oldAngularVelocity = undefined;
         }
     },
 
@@ -144,7 +189,7 @@ var playState = {
         egg.scale.setTo(scaleRatio);
         egg.anchor.setTo(0.5);
         game.physics.enable(egg, Phaser.Physics.ARCADE);
-        this.eggGravity = gameController.calculateEggGravity(gameController.secondsSinceGameStart());
+        this.eggGravity = gameController.calculateEggGravity(gameController.elapsedEggFallingTimeSecs);
         egg.body.gravity.y = this.eggGravity;
 
         egg.rotation = Math.random() * 360;
@@ -253,35 +298,59 @@ var playState = {
     handleBomb: function(){
         gameController.bombCollect.play();
         this.shakeScreen();
-        gameController.decrementLives();
-        gameController.hideALifeBucket();
+
+        let runOutOfLives = gameController.loseLife(false);
 
         gameController.explosion.play();
         gameController.resetRegularEggStreak();
 
-        //Stopping eggs from falling by pausing all the time events loop to begin explosion animation
-        game.time.gamePaused();
-        gameController.player.animations.play('explodeBomb');
+        this.pauseEggFalling();
+        gameController.player.animations.play('explodeBomb').killOnComplete = true;
+
         gameController.bucketMovementEnabled = false;
         gameController.player.body.enable = false;
 
         //Timeout for animation to play before the basket is generated again
-        window.setTimeout(function () {
+        game.time.events.add(1200, function() {
             gameController.removeBasket();
-            if(gameController.lives > 0){
+            if(!runOutOfLives){
                 gameController.createBasket();
-            }
 
-            //Resuming the time loop after new basket is generated.
-            game.time.gameResumed();
+                let player = gameController.player;
+                player.alpha = 0;
+                gameController.bucketMovementEnabled = false;
 
-            if(gameController.lives === 0){
+                let lifeBucket = gameController.getTopVisibleLifeBucket();
+                let originalScale = lifeBucket.scale.x;
+                let originalPosX = lifeBucket.x;
+                let originalPosY = lifeBucket.y;
+
+                scaleTween = game.add.tween(lifeBucket.scale).to( { x: player.scale.x, y: player.scale.y },
+                    1000, Phaser.Easing.Cubic.InOut);
+        
+                moveTween =  game.add.tween(lifeBucket).to( { centerX: player.centerX, centerY: player.centerY },
+                    1000, Phaser.Easing.Cubic.InOut);
+        
+                // Starting both tweens at the same time makes them run in sync.
+                scaleTween.start();
+                moveTween.start();
+
+                moveTween.onComplete.add(function() {
+                    lifeBucket.scale.setTo(originalScale);
+                    lifeBucket.x = originalPosX;
+                    lifeBucket.y = originalPosY;
+                    lifeBucket.alpha = 0;
+
+                    player.alpha = 1.0;
+                    gameController.bucketMovementEnabled = true;
+                    this.resumeEggFalling();
+                }, this)
+            } else {
                 gameController.checkHighScore();
                 backgroundMusic.stop();
                 game.state.start("gameOver");
             }
-
-        }, 1200);
+        }, this);
     },
 
     shakeScreen: function(){
@@ -329,8 +398,30 @@ var playState = {
      */
     handleOneUp: function () {
         gameController.eggCollect.play();
-        gameController.incrementLives();
-        gameController.unHideLifeBucket();
+        if(gameController.lives < gameController.maxLives) {
+            let lifeBucket = gameController.getNextInvisibleLifeBucket();
+            gameController.lives++;
+
+            lifeBucket.alpha = 1;
+
+            let finalXPos = lifeBucket.centerX;
+            let finalYPos = lifeBucket.centerY;
+
+            lifeBucket.centerX = gameController.player.centerX;
+            lifeBucket.centerY = gameController.player.top;
+            lifeBucket.rotation = Math.PI;
+
+            moveTween = game.add.tween(lifeBucket.position).to( { x: finalXPos, y: finalYPos },
+                1000, Phaser.Easing.Quintic.Out);
+    
+            rotateTween =  game.add.tween(lifeBucket).to( { rotation: 0 },
+                1000, Phaser.Easing.Quintic.Out);
+    
+            // Starting both tweens at the same time makes them run in sync.
+            moveTween.start();
+            rotateTween.start();
+
+        }
     },
 
     /**

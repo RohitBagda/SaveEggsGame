@@ -39,7 +39,8 @@ var gameController = {
     eggsNeededToLevelUp: 25,
     currentLevel:1,
 
-    currentGameStartTimeSecs: 0,
+    // the timer that keeps track of how long eggs have been falling for. NOT for general-purpose timing usage.
+    elapsedEggFallingTimeSecs: 0,
     hasReachedCombo: false,
     baseRegEggPoints: 1,
     regularEggPoints: 1,
@@ -55,8 +56,12 @@ var gameController = {
     verticalAnchor: 0.5,
     tweenSpeed: 100,
 
-    secondsSinceGameStart: function() {
-        return (game.time.now / 1000) - this.currentGameStartTimeSecs;
+    /**
+     * Updates the timer that keeps track of how long eggs have been falling for.
+     * NOT for general-purpose timing usage
+     */
+    updateEggFallingTimer: function() {
+        this.elapsedEggFallingTimeSecs += game.time.physicsElapsed;
     },
 
     addBackground: function(){
@@ -77,27 +82,50 @@ var gameController = {
     createLifeBuckets: function () {
 
         var bucketXPos = 0.85*canvasWidth;
-        var bucketYPos = 0.02*canvasHeight;
+        var bucketYPos = 0.04*canvasHeight;
         var scaleRatioMultiplier = 0.25;
         var bucketXOffset = this.player.width/3;
 
-        for(var i=0; i<this.lives; i++){
+        for(var i=0; i<this.maxLives; i++){
             this.livesList[i] = game.add.sprite(bucketXPos, bucketYPos, gameController.BASKET_EXPLOSION_SPRITE_SHEET);
             this.livesList[i].scale.setTo(scaleRatioMultiplier*scaleRatio, scaleRatioMultiplier*scaleRatio);
+            this.livesList[i].anchor.setTo(0.5);
             bucketXPos -= bucketXOffset;
+
+            if(i >= this.lives) {
+                this.livesList[i].alpha = 0;
+            }
         }
     },
 
-    hideALifeBucket: function(){
-        if(this.livesList.length > 0){
-            this.livesList[this.lives].alpha = 0;
+    /**
+     * (Note: Returns a variable indicating if the player has run out of lives)
+     */
+    loseLife: function(hideBucket = true) {
+        if(this.lives > 0) {
+            if(hideBucket) {
+                this.livesList[this.lives-1].alpha = 0;
+            }
+            this.lives--;
+            return false;
+        } else {
+            return true;
         }
-
     },
 
-    unHideLifeBucket: function(){
-        if(this.lives <= this.maxLives){
-            this.livesList[this.lives-1].alpha = 1;
+    getTopVisibleLifeBucket: function() {
+        for(let i = this.maxLives - 1; i >= 0; i--) {
+            if(this.livesList[i].alpha === 1) {
+                return this.livesList[i];
+            }
+        }
+    },
+
+    getNextInvisibleLifeBucket: function() {
+        for(let bucket of this.livesList) {
+            if(bucket.alpha === 0) {
+                return bucket;
+            }
         }
     },
 
@@ -254,14 +282,6 @@ var gameController = {
         this.bombCollect.volume = 0.6;
     },
 
-    decrementLives: function(){
-        this.lives--;
-    },
-
-    incrementLives: function(){
-        this.lives++;
-    },
-
     checkHighScore: function(){
         if (this.highestScore < this.score) {
             this.highestScore = this.score;
@@ -281,7 +301,7 @@ var gameController = {
      * Resets all aspects of the game when the user starts over
      */
     resetGameComponents: function(){
-        this.currentGameStartTimeSecs = game.time.now / 1000;
+        this.elapsedEggFallingTimeSecs = 0;
         this.lives = this.maxLives;
         this.score = 0;
         this.hasReachedCombo = false;

@@ -126,7 +126,7 @@ var comboState = {
             var egg = game.add.sprite(eggX, eggY, eggType);
             egg.scale.setTo(scaleRatio, scaleRatio);
             game.physics.arcade.enable(egg);
-            this.eggGravity = gameController.calculateEggGravity(gameController.secondsSinceGameStart());
+            this.eggGravity = gameController.calculateEggGravity(gameController.elapsedEggFallingTimeSecs);
             egg.body.gravity.y = this.eggGravity;
             this.comboEggs.add(egg);
         }

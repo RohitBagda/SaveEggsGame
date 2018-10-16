@@ -12,6 +12,8 @@ var frenzyState = {
     hasCaughtBomb: false, //flag to check that bomb hasnt been caught yet
     userDragPathColour: 0xFFFF00, //the colour of the path of the user's thumb
 
+    playerHasRunOutOfLives: false,
+
     //The number of colours here must be the same as the duration of Frenzy State.
     //if you wanna make frenzy last longer (for testing purposes), add more colours to this array
     //this will help avoid null errors
@@ -82,7 +84,7 @@ var frenzyState = {
                     //if no bombs left in bomb group, stop frenzy music and transition back into appropriate state
                     //which is frenzy or gameover
                     gameController.frenzyMusic.stop();
-                    if (gameController.lives == 0){
+                    if (this.playerHasRunOutOfLives){
                         this.game.state.start('gameOver');
                     } else {
                         this.game.state.start('play');
@@ -202,8 +204,7 @@ var frenzyState = {
      */
     collectBomb: function(bomb){
         this.hasCaughtBomb = true;
-        gameController.lives--;
-        gameController.hideALifeBucket();
+        this.playerHasRunOutOfLives = gameController.loseLife();
         gameController.frenzyMusic.stop();
 
         this.camera.shake(gameController.MAX_CAMERA_SHAKE_INTENSITY, 1000, true, Phaser.Camera.SHAKE_BOTH, true);
