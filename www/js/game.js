@@ -22,6 +22,7 @@ var app = {
         game.state.add('transitionToCombo', transitionToComboState);
         game.state.add('transitionFromCombo', transitionFromComboState);
         game.state.add('transitionToFrenzy', transitionToFrenzyState);
+        game.state.add('transitionFromFrenzy', transitionFromFrenzyState);
         game.state.add('gameOver', gameOverState);
 
         // Start the game
