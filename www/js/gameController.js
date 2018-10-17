@@ -44,7 +44,7 @@ var gameController = {
     hasReachedCombo: false,
     baseRegEggPoints: 1,
     regularEggPoints: 1,
-    scoreBoostPoints: 30,
+    scoreBoostPoints: 5,
     baseFrenzyPoints: 5,
     frenzyPoints: 5,
     comboPoints: 100,
@@ -206,8 +206,12 @@ var gameController = {
     },
 
     getCurrentStreakScore: function(){
-        this.streakScore = this.regularEggChain*this.regularEggPoints;
+        this.streakScore += this.regularEggPoints;
         return this.streakScore;
+    },
+
+    resetStreakScore: function(){
+      this.streakScore = 0;
     },
 
     createBasket: function(){

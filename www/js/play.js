@@ -151,6 +151,7 @@ var playState = {
         switch (egg.key){
             case gameController.REGULAR_EGG:
                 gameController.resetRegularEggStreak();
+                gameController.resetStreakScore();
                 gameController.tweenEgg(gameController.CRACKED_REGULAR_EGG, egg);
                 gameController.playEggCrackingSound();
                 break;
@@ -303,6 +304,7 @@ var playState = {
 
         gameController.explosion.play();
         gameController.resetRegularEggStreak();
+        gameController.resetStreakScore();
 
         this.pauseEggFalling();
         gameController.player.animations.play('explodeBomb').killOnComplete = true;
@@ -361,8 +363,9 @@ var playState = {
      * Performs the necessary actions when a score boost egg is caught
      */
     handleScoreBoost: function () {
-        gameController.regularEggChain += gameController.scoreBoostPoints / gameController.regularEggPoints;
-        this.updateScoreAndPlayAnimation(gameController.getCurrentStreakScore());
+        gameController.streakScore += gameController.scoreBoostPoints*gameController.regularEggPoints;
+        gameController.regularEggChain += gameController.scoreBoostPoints;
+        this.updateScoreAndPlayAnimation(gameController.streakScore);
         gameController.eggCollect.play();
     },
 
@@ -387,7 +390,7 @@ var playState = {
         // When Hosea is done with frenzy improvements make sure to add code that will reset the frenzy points before it
         // returns back to the play state.
         if(gameController.regularEggChain > 0){
-            gameController.frenzyPoints = gameController.getCurrentStreakScore();
+            gameController.frenzyPoints = gameController.streakScore;
         }
         gameController.resetRegularEggStreak();
         this.game.state.start("transitionToFrenzy");
