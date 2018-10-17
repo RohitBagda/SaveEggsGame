@@ -8,12 +8,19 @@
         #gameDiv {
             height: 100vh;
             margin: 0 auto;
-            background: url('assets/images/background.png');
+            /*background: url('assets/images/background.png');*/
             /*display: flex;*/
             /*background: transparent;*/
             background-size: cover;
             /*margin: auto;*/
             /*align-items: center;*/
+        }
+        .normalBackground {
+            background: url('assets/images/background.png');
+        }
+
+        .darken {
+            background: linear-gradient( rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('assets/images/background.png');
         }
 
         canvas {
@@ -39,7 +46,7 @@
         <link rel="stylesheet" type="text/css" href="css/index.css">
     </head>
     <body>
-        <div id="gameDiv"> </div>
+        <div id="gameDiv" class="normalBackground"> </div>
         <script type="text/javascript" src="cordova.js"></script>
         <script type="text/javascript" src="node_modules/phaser-ce/build/phaser.min.js"></script>
         <script type="text/javascript" src="js/PDS.js"></script>

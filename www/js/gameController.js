@@ -140,6 +140,7 @@ var gameController = {
             //also, if I dont keep the setText call, then the thing stays as the "II" (pause sign) which we don't want
             gameController.pauseLabel.setText("");
             game.paused = true;
+            this.dimBackground();
             this.displayButtonToExitToMainMenu();
         }, this);
 
@@ -148,6 +149,7 @@ var gameController = {
             if(game.paused) {
                 game.paused = false;
                 gameController.pauseLabel.setText("II");
+                this.setBackgroundToNormal();
                 this.exitButtonText.kill();
             }
         }, this);
@@ -441,12 +443,33 @@ var gameController = {
 
     displayButtonToExitToMainMenu: function() {
         // if (game.paused){
-        var exitButtonFormat = this.createFormatting("bold 70px Corbel", "#FF0000");
+        // var exitButtonFormat = this.createFormatting("bold 70px Corbel", "#00CCFF");
+        var exitButtonFormat = {font: "bold 85px Corbel", fill: "#FFFF00"};
+        exitButtonFormat.stroke = "#000000";
+        exitButtonFormat.strokeThickness = 12;
         this.exitButtonText = game.add.text(game.world.centerX, game.world.centerY, 'EXIT TO MAIN MENU', exitButtonFormat);
         this.exitButtonText.anchor.setTo(this.horizontalAnchor, this.verticalAnchor);
         this.exitButtonText.inputEnabled = true;
         this.exitButtonText.events.onInputDown.add(this.exitToMainMenu, this);
         // }
+    },
+
+    /**
+     * switches from regular background to a dim background
+     */
+    dimBackground: function(){
+        var backgroundDiv = document.getElementById("gameDiv");
+        backgroundDiv.classList.remove("normalBackground");
+        backgroundDiv.classList.add("darken"); //the name of the css class which does this is called "darken". see index.html
+    },
+
+    /**
+     * switches background from dim version to the normal one.
+     */
+    setBackgroundToNormal: function() {
+        var backgroundDiv = document.getElementById("gameDiv");
+        backgroundDiv.classList.remove("darken");
+        backgroundDiv.classList.add("normalBackground");
     },
 
     exitToMainMenu: function() {
