@@ -176,8 +176,12 @@ var gameController = {
     },
 
     getCurrentStreakScore: function(){
-        this.streakScore = this.regularEggChain*this.regularEggPoints;
+        this.streakScore += this.regularEggPoints;
         return this.streakScore;
+    },
+
+    resetStreakScore: function(){
+      this.streakScore = 0;
     },
 
     createBasket: function(){
