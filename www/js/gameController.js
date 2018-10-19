@@ -56,6 +56,9 @@ var gameController = {
     verticalAnchor: 0.5,
     tweenSpeed: 100,
 
+    rainbowTextEnabled: false,
+    didRainbowUpdateLastFrame: false,
+
     /**
      * Updates the timer that keeps track of how long eggs have been falling for.
      * NOT for general-purpose timing usage
@@ -390,8 +393,10 @@ var gameController = {
         } else {
             textScale = 1.0;
             this.rainbowTextEnabled = true;
+            this.didRainbowUpdateLastFrame = false;
             textColor = "#000000";
         }
+
         var textFormat = {font: "bold 160pt Corbel", fill: textColor};
         textFormat.stroke = "#000000";
         textFormat.strokeThickness = 15;
@@ -430,11 +435,12 @@ var gameController = {
     },
 
     updateRainbowScoreColor() {
-        if(this.rainbowTextEnabled) {
+        if(this.rainbowTextEnabled && !this.didRainbowUpdateLastFrame) {
             let hue = Math.round((game.time.totalElapsedSeconds() * 500) % 360);
             this.currentScoreTextObject.clearColors();
             this.currentScoreTextObject.addColor("hsl(" + hue + ", 90%, 60%)", 0);
         }
+        this.didRainbowUpdateLastFrame = !this.didRainbowUpdateLastFrame;
     },
 
     playEggCrackingSound: function(){
