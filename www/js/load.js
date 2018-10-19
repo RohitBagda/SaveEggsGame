@@ -40,6 +40,9 @@ var loadState = {
         game.load.spritesheet(gameController.BASKET_EXPLOSION_SPRITE_SHEET, "assets/images/basket_spritesheet.png", 155, 150);
         //load the sprite sheet for the bomb explosion
         game.load.spritesheet(gameController.BOMB_EXPLOSION_SPRITE_SHEET, "assets/images/bomb_explosion_frenzy_spritesheet.png", 155, 150);
+        
+        game.load.image("pauseIcon", 'assets/images/pause.png');
+        game.load.image("playIcon", 'assets/images/play.png');
     },
 
     loadSounds: function(){

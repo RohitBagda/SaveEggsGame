@@ -136,26 +136,40 @@ var gameController = {
      * Adds the pause button at the top right of the screen
      */
     createPause: function(){
-        this.createPauseLabel();
-        gameController.pauseLabel.events.onInputUp.add(function(){
-
-            //basically remove the play sign (phones don't always interpret the string well) so I set it to empty string
-            //also, if I dont keep the setText call, then the thing stays as the "II" (pause sign) which we don't want
-            gameController.pauseLabel.setText("");
-            game.paused = true;
-            this.dimBackground();
-            this.displayButtonToExitToMainMenu();
+        this.pauseLabel = game.add.sprite(0.92*canvasWidth, 0.02*canvasHeight, "pauseIcon");
+        this.pauseLabel.tint = "#003366";
+        this.pauseLabel.scale.setTo(0.5);
+        this.pauseLabel.inputEnabled = true;
+        this.pauseLabel.events.onInputDown.add(function(){
+            if(!game.paused) {
+                this.pauseGame();
+            } else {
+                this.unpauseGame();
+            }
         }, this);
 
         // This allows you to resume play by touching any point on the screen while the game is paused
+        // We don't trigger the event when the user could also be tapping the play button because otherwise
+        // we instantly unpause and pause the game.
         game.input.onDown.add(function(){
-            if(game.paused) {
-                game.paused = false;
-                gameController.pauseLabel.setText("II");
-                this.setBackgroundToNormal();
-                this.exitButtonText.kill();
+            if(game.paused && game.input.y > this.pauseLabel.bottom) {
+                this.unpauseGame();
             }
         }, this);
+    },
+
+    pauseGame: function() {
+        game.paused = true;
+        this.pauseLabel.loadTexture("playIcon");
+        this.dimBackground();
+        this.displayButtonToExitToMainMenu();
+    },
+
+    unpauseGame: function() {
+        game.paused = false;
+        this.pauseLabel.loadTexture("pauseIcon");
+        this.setBackgroundToNormal();
+        this.exitButtonText.kill();
     },
 
     /**
@@ -254,12 +268,6 @@ var gameController = {
                 this.player.position.x = newX;
             }
         }
-    },
-
-    createPauseLabel: function(){
-        var pauseLabelFormat = this.createFormatting("bold 60px Corbel", "003366");
-        this.pauseLabel = game.add.text(0.92*canvasWidth, 0.02*canvasHeight, 'II', pauseLabelFormat);
-        this.pauseLabel.inputEnabled = true;
     },
 
     /**
