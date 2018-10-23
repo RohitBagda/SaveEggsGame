@@ -282,6 +282,7 @@ var playState = {
      * Performs the necessary actions when a regular egg is caught
      */
     handleRegularEgg: function () {
+        mixpanel.track("Regular Egg Caught");
         gameController.totalRegEggsCaught++;
         if(gameController.totalRegEggsCaught/gameController.currentLevel === gameController.eggsNeededToLevelUp){
             gameController.currentLevel++;
