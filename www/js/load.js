@@ -3,6 +3,9 @@
  */
 var loadState = {
 
+    // "LS" = local storage
+    LS_KEY_HIGH_SCORE: "high_score",
+
     /**
      * Load all assets
      */
@@ -11,6 +14,12 @@ var loadState = {
                                         {font: '30px Courier', fill: '#ffffff'});
         this.loadImages();
         this.loadSounds();
+
+        // Load highscore
+        const storedHighScore = localStorage.getItem(this.LS_KEY_HIGH_SCORE);
+        if(storedHighScore !== null) {
+            gameController.highestScore = parseInt(storedHighScore);
+        }
     },
 
     create : function(){

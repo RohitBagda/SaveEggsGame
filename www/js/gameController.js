@@ -27,7 +27,14 @@ var gameController = {
     MAX_CAMERA_SHAKE_INTENSITY: 0.01,
 
     score : 0,
-    highestScore: 0,
+    _highestScoreInternal_DO_NOT_ACCESS: 0,
+    set highestScore(val) {
+        _highestScoreInternal_DO_NOT_ACCESS = val;
+        localStorage.setItem(loadState.LS_KEY_HIGH_SCORE, gameController.highestScore.toString());
+    },
+    get highestScore() {
+        return _highestScoreInternal_DO_NOT_ACCESS;
+    },
     lives: 3,
     maxLives: 3,
     livesList:[],
