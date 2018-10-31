@@ -1,7 +1,7 @@
 var game;
 
 var canvasWidth = 1000;//window.innerWidth;
-var canvasHeight = 1605;//window.innerHeight;
+var canvasHeight = 1750;//window.innerHeight;
 var scaleRatio = 2.2;//window.devicePixelRatio/1.2;
 
 var app = {
