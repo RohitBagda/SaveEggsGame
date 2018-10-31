@@ -23,7 +23,7 @@ var transitionFromComboState = {
             "Points earned: " + comboState.totalScore, format);
         scoreTextObject.anchor.setTo(0.5, 0.5);
 
-        game.time.events.add(2500, function(){
+        game.time.events.add(1400, function(){
             this.game.state.start('play');
         }, this);
     },

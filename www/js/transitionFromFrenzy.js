@@ -30,7 +30,7 @@ var transitionFromFrenzyState = {
             `${frenzyState.numberOfEggsCollected} eggs collected`, eggsCollectedFormat);
         eggsCollectedText.anchor.setTo(0.5, 0.5);
 
-        game.time.events.add(4500, function(){
+        game.time.events.add(1400, function(){
             this.game.state.start('play');
         }, this);
     },
