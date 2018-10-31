@@ -48,7 +48,7 @@ var playState = {
     },
 
     render: function(){
-        game.debug.text(game.time.fps || '--', 10, 200, "#00ff00", '100px Courier');
+        //game.debug.text(game.time.fps || '--', 10, 200, "#00ff00", '100px Courier');
 
         /* game.debug.body(gameController.player);
 
