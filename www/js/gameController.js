@@ -29,11 +29,11 @@ var gameController = {
     score : 0,
     _highestScoreInternal_DO_NOT_ACCESS: 0,
     set highestScore(val) {
-        _highestScoreInternal_DO_NOT_ACCESS = val;
+        this._highestScoreInternal_DO_NOT_ACCESS = val;
         localStorage.setItem(loadState.LS_KEY_HIGH_SCORE, gameController.highestScore.toString());
     },
     get highestScore() {
-        return _highestScoreInternal_DO_NOT_ACCESS;
+        return this._highestScoreInternal_DO_NOT_ACCESS;
     },
     lives: 3,
     maxLives: 3,
