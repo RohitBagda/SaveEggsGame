@@ -48,7 +48,10 @@ var playState = {
     },
 
     render: function(){
-        game.debug.text(game.time.fps || '--', 10, 200, "#00ff00", '100px Courier');
+        let fps = game.time.fps;
+        game.debug.text(fps || '--', 10, 200, "#00ff00", '100px Courier');
+        gameController.fpsCounter += fps;
+        gameController.framesCounter++;
 
         /* game.debug.body(gameController.player);
 
@@ -154,6 +157,7 @@ var playState = {
                 gameController.resetStreakScore();
                 gameController.tweenEgg(gameController.CRACKED_REGULAR_EGG, egg);
                 gameController.playEggCrackingSound();
+                this.trackStreakEnds("Miss");
                 break;
             case gameController.BOMB:
                 gameController.tweenEgg(gameController.BOMB_EXPLOSION_CLOUD, egg);
@@ -162,6 +166,7 @@ var playState = {
             case gameController.FRENZY_EGG:
                 gameController.tweenEgg(gameController.CRACKED_FRENZY_EGG, egg);
                 gameController.playEggCrackingSound();
+                this.trackFrenzyMiss();
                 break;
             case gameController.SCORE_BOOST:
                 gameController.tweenEgg(gameController.CRACKED_SCORE_BOOST, egg);
@@ -282,7 +287,6 @@ var playState = {
      * Performs the necessary actions when a regular egg is caught
      */
     handleRegularEgg: function () {
-        mixpanel.track("Regular Egg Caught");
         gameController.totalRegEggsCaught++;
         if(gameController.totalRegEggsCaught/gameController.currentLevel === gameController.eggsNeededToLevelUp){
             gameController.currentLevel++;
@@ -304,6 +308,7 @@ var playState = {
         let runOutOfLives = gameController.loseLife(false);
 
         gameController.explosion.play();
+        this.trackStreakEnds("Bomb");
         gameController.resetRegularEggStreak();
         gameController.resetStreakScore();
 
@@ -351,6 +356,8 @@ var playState = {
             } else {
                 gameController.checkHighScore();
                 backgroundMusic.stop();
+                this.sendAnalyticsData();
+                gameController.resetAnalyticsData();
                 game.state.start("gameOver");
             }
         }, this);
@@ -368,6 +375,7 @@ var playState = {
         gameController.regularEggChain += gameController.scoreBoostPoints;
         this.updateScoreAndPlayAnimation(gameController.streakScore);
         gameController.eggCollect.play();
+        gameController.scoreBoostCounter++;
     },
 
     /**
@@ -377,7 +385,9 @@ var playState = {
         gameController.eggCollect.play();
         gameController.basketX = gameController.player.x;
         gameController.basketY = gameController.player.y;
+        gameController.comboCounter++;
         this.game.state.start("transitionToCombo");
+
     },
 
     /**
@@ -388,12 +398,12 @@ var playState = {
         gameController.frenzyMusic.play();
         backgroundMusic.stop();
 
-        // When Hosea is done with frenzy improvements make sure to add code that will reset the frenzy points before it
-        // returns back to the play state.
         if(gameController.regularEggChain > 0){
             gameController.frenzyPoints = gameController.streakScore;
         }
+        this.trackStreakEnds(gameController.FRENZY_EGG);
         gameController.resetRegularEggStreak();
+        gameController.frenzyCounter++;
         this.game.state.start("transitionToFrenzy");
     },
 
@@ -426,6 +436,7 @@ var playState = {
             rotateTween.start();
 
         }
+        gameController.oneUpCounter++;
     },
 
     /**
@@ -439,4 +450,35 @@ var playState = {
         gameController.updateScore(points);
     },
 
+    sendAnalyticsData: function () {
+        mixpanel.track('Score: ' + gameController.score);
+        mixpanel.track('Longest Streak: ' + gameController.longestStreak);
+        mixpanel.track('Total Regular Eggs Caught: ' + gameController.totalRegEggsCaught);
+        mixpanel.track('Total ScoreBoost Eggs Caught: ' + gameController.scoreBoostCounter);
+        mixpanel.track('Total Frenzy Eggs Caught: ' + gameController.frenzyCounter);
+        mixpanel.track('Total Combo Eggs Caught: ' + gameController.comboCounter);
+        mixpanel.track('Total One Ups Caught: ' + gameController.oneUpCounter);
+        mixpanel.track('Average FPS over Play State: ' + (gameController.fpsCounter/gameController.framesCounter).toFixed(2));
+    },
+
+    trackStreakEnds: function (cause) {
+        gameController.streakNumber++;
+        mixpanel.track(
+            "Streak " + gameController.streakNumber, {
+                "Regular Eggs Caught": gameController.regularEggChain,
+                "Streak Score": gameController.streakScore,
+                "Streak Ended By": cause
+            }
+        );
+    },
+
+    trackFrenzyMiss: function () {
+        gameController.frenzyMissCount++;
+        mixpanel.track(
+            "Frenzy Miss " + gameController.frenzyMissCount, {
+                "Regular Eggs Caught": gameController.regularEggChain,
+                "Streak Score": gameController.streakScore
+            }
+        );
+    }
 };
