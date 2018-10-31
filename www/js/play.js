@@ -451,14 +451,19 @@ var playState = {
     },
 
     sendAnalyticsData: function () {
-        mixpanel.track('Score: ' + gameController.score);
-        mixpanel.track('Longest Streak: ' + gameController.longestStreak);
-        mixpanel.track('Total Regular Eggs Caught: ' + gameController.totalRegEggsCaught);
-        mixpanel.track('Total ScoreBoost Eggs Caught: ' + gameController.scoreBoostCounter);
-        mixpanel.track('Total Frenzy Eggs Caught: ' + gameController.frenzyCounter);
-        mixpanel.track('Total Combo Eggs Caught: ' + gameController.comboCounter);
-        mixpanel.track('Total One Ups Caught: ' + gameController.oneUpCounter);
-        mixpanel.track('Average FPS over Play State: ' + (gameController.fpsCounter/gameController.framesCounter).toFixed(2));
+        mixpanel.track(
+            "Game Data", {
+                'Score: ': + gameController.score,
+                'Longest Streak: ': gameController.longestStreak,
+                'Total Regular Eggs Caught: ': gameController.totalRegEggsCaught,
+                'Total ScoreBoost Eggs Caught: ': gameController.scoreBoostCounter,
+                'Total Frenzy Eggs Caught: ': gameController.frenzyCounter,
+                'Total Combo Eggs Caught: ': gameController.comboCounter,
+                'Total One Ups Caught: ': gameController.oneUpCounter,
+                'Average FPS over Play State: ': (gameController.fpsCounter/gameController.framesCounter).toFixed(2)
+            }
+        )
+
     },
 
     trackStreakEnds: function (cause) {
