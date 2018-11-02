@@ -76,7 +76,6 @@ var gameController = {
     frenzyStateCounter: 0,
     frenzyStateScoreCounter: 0,
     oneUpCounter:0,
-    playingTime: 0,
     frenzyMissCount: 0,
     fpsCounter: 0,
     framesCounter: 0,
@@ -89,17 +88,6 @@ var gameController = {
         this.elapsedEggFallingTimeSecs += game.time.physicsElapsed;
     },
 
-    addBackground: function(){
-        var maxShakeX = canvasWidth * this.MAX_CAMERA_SHAKE_INTENSITY;
-        var maxShakeY = canvasHeight * this.MAX_CAMERA_SHAKE_INTENSITY;
-
-        // var backgroundSprite = game.add.sprite(game.world.centerX, game.world.height + maxShakeY, this.BACKGROUND);
-        // backgroundSprite.anchor.setTo(0.5, 1.0);
-        //
-        // var scalingReqdToFillWidth = (canvasWidth + maxShakeX*2) / backgroundSprite.texture.width;
-        // var scalingReqdToFillHeight = (canvasHeight + maxShakeY*2) / backgroundSprite.texture.height;
-        // backgroundSprite.scale.setTo(Math.max(scalingReqdToFillHeight, scalingReqdToFillWidth));
-    },
 
     /**
      * This creates the intial baskets at the top right of the screen to represent lives
@@ -265,8 +253,10 @@ var gameController = {
         this.frenzyStateCounter = 0;
         this.frenzyStateScoreCounter = 0;
         this.oneUpCounter = 0;
-        this.playingTime = 0;
         this.frenzyMissCount = 0;
+        this.fpsCounter = 0;
+        this.framesCounter = 0;
+
     },
 
     createBasket: function(){
@@ -466,11 +456,11 @@ var gameController = {
 
         // Create tweens
         var bustInLength = 800;
-        bustInTween = game.add.tween(textObject.scale).to( { x: textScale, y: textScale }, bustInLength, Phaser.Easing.Elastic.Out);
-        fadeOutTween = game.add.tween(textObject).to({alpha: 0}, 200, Phaser.Easing.Default)
+        var bustInTween = game.add.tween(textObject.scale).to( { x: textScale, y: textScale }, bustInLength, Phaser.Easing.Elastic.Out);
+        var fadeOutTween = game.add.tween(textObject).to({alpha: 0}, 200, Phaser.Easing.Default);
         bustInTween.chain(fadeOutTween);
 
-        bustInRotationTween =  game.add.tween(textObject).to( { rotation: 0}, bustInLength, Phaser.Easing.Elastic.Out).start();
+        var bustInRotationTween =  game.add.tween(textObject).to( { rotation: 0}, bustInLength, Phaser.Easing.Elastic.Out).start();
 
         // Starting both tweens at the same time makes them run in sync.
         bustInTween.start();

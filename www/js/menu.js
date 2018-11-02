@@ -10,10 +10,6 @@ var menuState = {
         this.addPlayButton();
     },
 
-    addBackground: function(){
-        gameController.addBackground();
-    },
-
     addPlayButton: function(){
         var playButtonFormat = gameController.createFormatting("bold 70pt Corbel", "#003366");
         var playButton = this.game.add.text(canvasWidth/2, canvasHeight/2 + this.verticalSpaceBetweenButtons,

@@ -30,8 +30,6 @@ function PoissonDiskSampler() {
     this.distanceMap = null;
     this.excludeMap = null;
     this.excludeThreshold = 1;
-    // this.yScreenOffSet = 0.015 * canvasHeight;
-    // this.xScreenOffSet = 0.015 * canvasWidth;
 }
 
 

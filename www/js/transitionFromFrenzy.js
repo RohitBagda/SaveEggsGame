@@ -5,7 +5,6 @@
 var transitionFromFrenzyState = {
 
     create: function(){
-        // gameController.addBackground();
         gameController.createScoreText();
         gameController.createLifeBuckets();
 

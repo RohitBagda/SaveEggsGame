@@ -23,7 +23,6 @@ var comboState = {
      */
     create: function(){
         //Setup background, score, lives and pause.
-        // gameController.addBackground();
         gameController.createScoreText();
         gameController.createLifeBuckets();
         gameController.createPause();

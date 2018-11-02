@@ -4,7 +4,6 @@
 
 var gameOverState = {
     create: function () {
-        // gameController.addBackground();
         var xPos = canvasWidth/2;
         var yPos = 0.3*canvasHeight;
 
