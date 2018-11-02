@@ -71,7 +71,7 @@ var loadState = {
      * Start the background music to the game and play it throughout the game
      */
     startMusic : function(){
-        var backgroundMusic = game.add.audio('background_music');
+        backgroundMusic = game.add.audio('background_music');
         backgroundMusic.volume = 0.4;
         backgroundMusic.loop = true;
         backgroundMusic.play();
