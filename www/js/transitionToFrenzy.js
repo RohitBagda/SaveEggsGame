@@ -22,8 +22,6 @@ var transitionToFrenzyState = {
     },
 
     create: function(){
-        //gameController.addBackground();
-
         this.textRows = [];
 
         let widthTester = this.makeText(0, 0);

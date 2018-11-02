@@ -27,12 +27,10 @@ var frenzyState = {
     hasAchievedBonus: false,
 
     create: function(){
-        // gameController.addBackground();
         this.frenzyEggPoints = gameController.frenzyPoints;
         this.numberOfEggsAddedToScreen = 0; // initially 0 eggs are added to the screen
         this.hasAchievedBonus = false; // flag to check if the user has achieved the bonus
         this.frenzyTime = 0; // current time within the frenzy state
-        this.totalEggsCollected = 0;
         this.showTimeLeft(this.frenzyTime);
 
         gameController.createScoreText();
@@ -130,7 +128,7 @@ var frenzyState = {
         }
 
         // determines what happens if user has collected all frenzy eggs and hasn't achieved the bonus
-        if (this.numberOfEggsCollected == this.numberOfEggsAddedToScreen && !this.hasAchievedBonus){
+        if (this.numberOfEggsCollected === this.numberOfEggsAddedToScreen && !this.hasAchievedBonus){
             this.hasAchievedBonus = true; //readjusts the flag, in order to prevent the bonus score to keep adding over and over again
             gameController.score += this.bonusPointsFrenzy;
             gameController.scoreText.text = "Score: " + gameController.score;
@@ -268,7 +266,7 @@ var frenzyState = {
         frenzyEgg.inputEnabled = true;
         this.frenzyStateGroup.add(frenzyEgg);
 
-        if (eggName == gameController.FRENZY_EGG){
+        if (eggName === gameController.FRENZY_EGG){
             frenzyEgg.events.onInputOver.add(this.collectEgg, this);
         } else {
             this.bombGroup.add(frenzyEgg);

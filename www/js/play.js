@@ -244,7 +244,6 @@ var playState = {
      */
     setupGame: function(){
         game.world.setBounds(0,0, canvasWidth, canvasHeight);
-        // gameController.addBackground();
         game.physics.startSystem(Phaser.Physics.ARCADE);
         // we make sure camera is at position (0,0)
     },

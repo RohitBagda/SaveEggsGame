@@ -5,7 +5,6 @@
 var transitionFromComboState = {
 
     create: function(){
-        // gameController.addBackground();
         gameController.createScoreText();
         gameController.createLifeBuckets();
         gameController.createPause();
