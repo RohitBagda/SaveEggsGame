@@ -13,6 +13,10 @@ var comboState = {
 
     totalScore: 0,
 
+    comboStateHitCounter: 0,
+    comboStateEggCounter: 0,
+    comboScoreCounter: 0,
+
     /**
      * The create method in this object, sets up the combo state and is responsible for dropping egg waves, keeping
      * track of the combo duration and going back to the play state.
@@ -40,6 +44,8 @@ var comboState = {
                 this.waveScore = 0;
                 gameController.basketX = gameController.player.x;
                 gameController.basketY = gameController.player.y;
+                this.sendComboStateAnalyticsData();
+                this.resetComboStateAnalyticsData();
                 this.game.state.start('transitionFromCombo');
             } else {
                 this.comboTime++;
@@ -93,6 +99,7 @@ var comboState = {
         if (this.comboTime<=this.comboEggsDropDuration) {
             var numEggs = Math.floor(Math.random() * 3) + 2;
             this.createComboWave(numEggs);
+            this.comboStateEggCounter += numEggs;
         }
         this.tweenPreviousWaveScore();
     },
@@ -165,8 +172,11 @@ var comboState = {
      * @param egg
      */
     collectComboEgg: function(egg) {
+
         gameController.eggCollect.play();
         egg.destroy();
+        this.comboScoreCounter += this.comboEggPoints;
+        this.comboStateHitCounter ++;
         this.comboEggCaughtPerWaveCount++;
         this.waveScore += this.comboEggPoints;
         this.updateScore(this.comboEggPoints);
@@ -187,5 +197,21 @@ var comboState = {
     updateScore: function(points){
         this.totalScore += points;
         gameController.updateScore(points);
+    },
+
+    sendComboStateAnalyticsData: function () {
+        mixpanel.track(
+            "Combo " + gameController.comboCounter, {
+                "Combo Score": this.comboScoreCounter,
+                "Combo Eggs Caught": this.comboStateHitCounter,
+                "Proportion of Combo Eggs Caught": (this.comboStateHitCounter/this.comboStateEggCounter).toFixed(2)
+            }
+        );
+    },
+
+    resetComboStateAnalyticsData: function () {
+        this.comboScoreCounter = 0;
+        this.comboStateHitCounter = 0;
+        this.comboStateEggCounter = 0;
     }
 };
