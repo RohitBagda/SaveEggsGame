@@ -29,11 +29,11 @@ var gameController = {
     score : 0,
     _highestScoreInternal_DO_NOT_ACCESS: 0,
     set highestScore(val) {
-        _highestScoreInternal_DO_NOT_ACCESS = val;
+        this._highestScoreInternal_DO_NOT_ACCESS = val;
         localStorage.setItem(loadState.LS_KEY_HIGH_SCORE, gameController.highestScore.toString());
     },
     get highestScore() {
-        return _highestScoreInternal_DO_NOT_ACCESS;
+        return this._highestScoreInternal_DO_NOT_ACCESS;
     },
     lives: 3,
     maxLives: 3,
@@ -65,6 +65,21 @@ var gameController = {
 
     rainbowTextEnabled: false,
     didRainbowUpdateLastFrame: false,
+
+    // Other Analytics Data (note this is not the only ones reported, there other variables declared above which are
+    // being as well. These are not being used for any in-game calculations.
+    longestStreak: 0,
+    streakNumber: 0,
+    scoreBoostCounter: 0,
+    comboCounter: 0,
+    frenzyCounter: 0,
+    frenzyStateCounter: 0,
+    frenzyStateScoreCounter: 0,
+    oneUpCounter:0,
+    playingTime: 0,
+    frenzyMissCount: 0,
+    fpsCounter: 0,
+    framesCounter: 0,
 
     /**
      * Updates the timer that keeps track of how long eggs have been falling for.
@@ -222,6 +237,9 @@ var gameController = {
     },
 
     resetRegularEggStreak: function(){
+        if(this.regularEggChain > this.longestStreak){
+            this.longestStreak = this.regularEggChain;
+        }
         this.regularEggChain = 0;
     },
 
@@ -235,7 +253,20 @@ var gameController = {
     },
 
     resetStreakScore: function(){
-      this.streakScore = 0;
+        this.streakScore = 0;
+    },
+
+    resetAnalyticsData: function(){
+        this.longestStreak = 0;
+        this.streakNumber = 0;
+        this.scoreBoostCounter = 0;
+        this.comboCounter = 0;
+        this.frenzyCounter = 0;
+        this.frenzyStateCounter = 0;
+        this.frenzyStateScoreCounter = 0;
+        this.oneUpCounter = 0;
+        this.playingTime = 0;
+        this.frenzyMissCount = 0;
     },
 
     createBasket: function(){

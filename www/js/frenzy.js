@@ -20,6 +20,12 @@ var frenzyState = {
     //currently goes from yellow to orange to red to dark red to black
     frenzyTimerColours: ["#FFFF00", "#FFA500", "#FF0000", "#8B0000", "#000000"],
 
+    frenzyStateHitCounter: 0,
+    frenzyStateScoreCounter: 0,
+    numberOfEggsAddedToScreen: 0,
+    numberOfEggsCollected: 0,
+    hasAchievedBonus: false,
+
     create: function(){
         // gameController.addBackground();
         this.frenzyEggPoints = gameController.frenzyPoints;
@@ -52,6 +58,8 @@ var frenzyState = {
                 backgroundMusic.play();
                 gameController.resetStreakScore();
                 gameController.resetFrenzyEggPoints();
+                this.sendFrenzyStateAnalyticsData();
+                this.resetFrenzyStateAnalyticsData();
                 this.game.state.start('transitionFromFrenzy');
                 this.hasCaughtBomb = false;
             } else if (!this.hasCaughtBomb){
@@ -121,7 +129,7 @@ var frenzyState = {
             this.elapsedTime = 0;
         }
 
-        // determines what happens if user has collected all frenzy eggs and hasnt achieved the bonus
+        // determines what happens if user has collected all frenzy eggs and hasn't achieved the bonus
         if (this.numberOfEggsCollected == this.numberOfEggsAddedToScreen && !this.hasAchievedBonus){
             this.hasAchievedBonus = true; //readjusts the flag, in order to prevent the bonus score to keep adding over and over again
             gameController.score += this.bonusPointsFrenzy;
@@ -129,7 +137,7 @@ var frenzyState = {
             this.playBonusReceivedAnimation();
         }
 
-        // adjusts highscores
+        // adjusts high scores
         if (gameController.score > gameController.highestScore){
             gameController.highestScore = gameController.score;
         }
@@ -287,6 +295,7 @@ var frenzyState = {
         this.numberOfEggsCollected++;
         this.showScoreAnimation(eggX, eggY, this.frenzyEggPoints);
         gameController.score += this.frenzyEggPoints;
+        this.frenzyStateScoreCounter += this.frenzyEggPoints;
         gameController.scoreText.text = "Score: " + gameController.score;
     },
 
@@ -302,4 +311,18 @@ var frenzyState = {
         gameController.displayFadingText(xCoordinate, yCoordinate, "+" + numberOfPoints, scoreTextFormat, 700, tweenSpeed);
     },
 
+    sendFrenzyStateAnalyticsData: function () {
+        mixpanel.track(
+            "Frenzy " + gameController.frenzyCounter, {
+                "Frenzy Score": this.frenzyStateScoreCounter,
+                "Frenzy Eggs Caught": this.numberOfEggsCollected,
+                "Proportion of Frenzy Eggs Caught": (this.numberOfEggsCollected/this.numberOfEggsAddedToScreen).toFixed(2),
+                "Achieved Bonus": this.hasAchievedBonus
+            }
+        );
+    },
+
+    resetFrenzyStateAnalyticsData: function () {
+        this.frenzyStateScoreCounter = 0;
+    }
 };
