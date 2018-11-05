@@ -3,6 +3,7 @@ var game;
 var canvasWidth = 1000;
 var canvasHeight = 1750;
 var scaleRatio = 2.2;
+var deviceName = '';
 
 var app = {
     initialize: function() {
@@ -24,6 +25,9 @@ var app = {
         game.state.add('transitionToFrenzy', transitionToFrenzyState);
         game.state.add('transitionFromFrenzy', transitionFromFrenzyState);
         game.state.add('gameOver', gameOverState);
+
+        // This records the device name for analytics. It is reported at the end of play state.
+        deviceName = device.model;
 
         // Start the game
         game.state.start('boot');
