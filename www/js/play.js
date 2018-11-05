@@ -49,7 +49,7 @@ var playState = {
 
     render: function(){
         let fps = game.time.fps;
-        game.debug.text(fps || '--', 10, 200, "#00ff00", '100px Courier');
+        //game.debug.text(fps || '--', 10, 200, "#00ff00", '100px Courier');
         gameController.fpsCounter += fps;
         gameController.framesCounter++;
 
