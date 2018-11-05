@@ -119,13 +119,10 @@ var playState = {
         this.eggFallingPaused = true;
 
         for(var egg of this.eggs.children){
-            // We don't need to store old velocity because it gets reset every frame anyway
-
-            egg.oldGravity = egg.body.gravity.y;
+            egg.oldVelocity = egg.body.velocity.y;
             egg.oldAngularVelocity = egg.body.angularVelocity;
 
             egg.body.velocity.y = 0;
-            egg.body.gravity.y = 0;
             egg.body.angularVelocity = 0;
         }
     },
@@ -134,10 +131,10 @@ var playState = {
         this.eggFallingPaused = false;
 
         for(var egg of this.eggs.children){
-            egg.body.gravity.y = egg.oldGravity;
+            egg.body.velocity.y = egg.oldVelocity;
             egg.body.angularVelocity = egg.oldAngularVelocity;
 
-            egg.oldGravity = undefined;
+            egg.oldVelocity = undefined;
             egg.oldAngularVelocity = undefined;
         }
     },
