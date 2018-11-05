@@ -460,7 +460,7 @@ var playState = {
                 'Total Combo Eggs Caught ': gameController.comboCounter,
                 'Total One Ups Caught ': gameController.oneUpCounter,
                 'Average FPS over Play State ': (gameController.fpsCounter/gameController.framesCounter).toFixed(2),
-                'Device Name ': deviceName
+                'Device Name ': device.model
             }
         )
 
