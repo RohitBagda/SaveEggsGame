@@ -55,7 +55,6 @@ var gameController = {
     baseFrenzyPoints: 5,
     frenzyPoints: 5,
     comboPoints: 100,
-    eggVelocity: 20,
     bucketMovementEnabled: true,
 
     // If an object is placed at a point (x,y), the anchor will set the center of the object to be (x,y)
@@ -333,13 +332,8 @@ var gameController = {
         }
     },
 
-    /**
-     * Calculates the gravity of the egg based on the time passed in the game
-     * @param time
-     * @returns {number}
-     */
-    calculateEggGravity: function(time){
-        return  67200*(1/(1+Math.exp(-0.1*(time-30)))+1);
+    calculateEggVelocity: function(time){
+        return 20 + (67200*(1/(1+Math.exp(-0.1*(time-30)))+1))/60;
     },
 
     /**

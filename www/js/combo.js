@@ -130,8 +130,7 @@ var comboState = {
             var egg = game.add.sprite(eggX, eggY, eggType);
             egg.scale.setTo(scaleRatio, scaleRatio);
             game.physics.arcade.enable(egg);
-            const eggGravity = gameController.calculateEggGravity(gameController.elapsedEggFallingTimeSecs);
-            egg.body.velocity.y = gameController.eggVelocity + (eggGravity * game.time.physicsElapsed);
+            egg.body.velocity.y = gameController.calculateEggVelocity(gameController.elapsedEggFallingTimeSecs);
             this.comboEggs.add(egg);
         }
     },

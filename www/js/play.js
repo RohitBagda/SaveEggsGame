@@ -190,8 +190,7 @@ var playState = {
         egg.scale.setTo(scaleRatio);
         egg.anchor.setTo(0.5);
         game.physics.enable(egg, Phaser.Physics.ARCADE);
-        const eggGravity = gameController.calculateEggGravity(gameController.elapsedEggFallingTimeSecs);
-        egg.body.velocity.y = gameController.eggVelocity + (eggGravity * game.time.physicsElapsed);
+        egg.body.velocity.y = gameController.calculateEggVelocity(gameController.elapsedEggFallingTimeSecs);
 
         egg.rotation = Math.random() * 360;
         egg.body.angularVelocity = ((Math.random() - 0.5) * 2) * 720;
