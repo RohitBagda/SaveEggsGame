@@ -333,7 +333,7 @@ var gameController = {
     },
 
     calculateEggVelocity: function(time){
-        return 20 + (67200*(1/(1+Math.exp(-0.1*(time-30)))+1))/60;
+        return 20 + (1120*(1/(1+Math.exp(-0.1*(time-30)))+1));
     },
 
     /**
