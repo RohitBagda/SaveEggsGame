@@ -219,7 +219,7 @@ var gameController = {
      */
     tweenEgg: function(crackedEggImage, egg){
         egg.loadTexture(crackedEggImage,0);
-        egg.body.gravity.y = 0;
+        egg.body.velocity.y = 20;
         game.add.tween(egg)
             .to({alpha: 0}, 1000, Phaser.Easing.Default, true, 300);
     },
