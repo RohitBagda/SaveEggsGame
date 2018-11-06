@@ -18,21 +18,22 @@
         <icon src="www/assets/images/app_icon.png" />
     </platform>
     <platform name="ios">
-        <icon src="res/icon/ios/icon-1024-noalpha.png" width="1024" height="1024" />
-        <icon src="res/icon/ios/icon-29.png" width="29" height="29" />
-        <icon src="res/icon/ios/icon-57.png" width="57" height="57" />
-        <icon src="res/icon/ios/icon-58.png" width="58" height="58" />
-        <icon src="res/icon/ios/icon-80.png" width="80" height="80" />
-        <icon src="res/icon/ios/icon-87.png" width="87" height="87" />
-        <icon src="res/icon/ios/icon-114.png" width="114" height="114" />
-        <icon src="res/icon/ios/icon-120.png" width="120" height="120" />
-        <icon src="res/icon/ios/icon-180.png" width="180" height="180" />
+        <icon height="1024" src="res/icon/ios/icon-1024-noalpha.png" width="1024" />
+        <icon height="29" src="res/icon/ios/icon-29.png" width="29" />
+        <icon height="57" src="res/icon/ios/icon-57.png" width="57" />
+        <icon height="58" src="res/icon/ios/icon-58.png" width="58" />
+        <icon height="80" src="res/icon/ios/icon-80.png" width="80" />
+        <icon height="87" src="res/icon/ios/icon-87.png" width="87" />
+        <icon height="114" src="res/icon/ios/icon-114.png" width="114" />
+        <icon height="120" src="res/icon/ios/icon-120.png" width="120" />
+        <icon height="180" src="res/icon/ios/icon-180.png" width="180" />
         <allow-intent href="itms:*" />
         <allow-intent href="itms-apps:*" />
     </platform>
     <preference name="Orientation" value="portrait" />
     <preference name="Fullscreen" value="true" />
     <plugin name="cordova-plugin-browsersync" spec="~0.1.7" />
+    <plugin name="cordova-plugin-device" spec="^2.0.2" />
     <engine name="browser" spec="^5.0.4" />
     <engine name="android" spec="^7.1.1" />
 </widget>
