@@ -469,7 +469,8 @@ var playState = {
     trackStreakEnds: function (cause) {
         gameController.streakNumber++;
         mixpanel.track(
-            "Streak " + gameController.streakNumber, {
+            "Streak ", {
+                "Streak Number": + gameController.streakNumber,
                 "Regular Eggs Caught": gameController.regularEggChain,
                 "Streak Score": gameController.streakScore,
                 "Streak Ended By": cause
@@ -480,7 +481,8 @@ var playState = {
     trackFrenzyMiss: function () {
         gameController.frenzyMissCount++;
         mixpanel.track(
-            "Frenzy Miss " + gameController.frenzyMissCount, {
+            "Frenzy Miss", {
+                "Miss Number": gameController.frenzyMissCount,
                 "Regular Eggs Caught": gameController.regularEggChain,
                 "Streak Score": gameController.streakScore
             }
