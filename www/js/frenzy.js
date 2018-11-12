@@ -144,10 +144,6 @@ var frenzyState = {
     },
 
     /**
-     * This plays the animation when the user has achieved the bonus (catching all the frenzy eggs in the state)
-     */
-
-    /**
      * This uses the poisson disk sampler to generate an array of coordinates to put the frenzy eggs
      * @returns {Array} - contains the coordinates at which we will add frenzy eggs or bombs
      */
