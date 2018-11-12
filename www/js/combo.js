@@ -197,7 +197,8 @@ var comboState = {
 
     sendComboStateAnalyticsData: function () {
         mixpanel.track(
-            "Combo " + gameController.comboCounter, {
+            "Combo ", {
+                "Combo Number": gameController.comboCounter,
                 "Combo Score": this.comboScoreCounter,
                 "Combo Eggs Caught": this.comboStateHitCounter,
                 "Proportion of Combo Eggs Caught": (this.comboStateHitCounter/this.comboStateEggCounter).toFixed(2)

@@ -453,6 +453,7 @@ var playState = {
                 'Total Frenzy Eggs Caught ': gameController.frenzyCounter,
                 'Total Combo Eggs Caught ': gameController.comboCounter,
                 'Total One Ups Caught ': gameController.oneUpCounter,
+                'Level Reached': gameController.currentLevel,
                 'Average FPS over Play State ': (gameController.fpsCounter/gameController.framesCounter).toFixed(2),
                 'Device Name ': device.model
             }
@@ -463,7 +464,8 @@ var playState = {
     trackStreakEnds: function (cause) {
         gameController.streakNumber++;
         mixpanel.track(
-            "Streak " + gameController.streakNumber, {
+            "Streak ", {
+                "Streak Number": + gameController.streakNumber,
                 "Regular Eggs Caught": gameController.regularEggChain,
                 "Streak Score": gameController.streakScore,
                 "Streak Ended By": cause
@@ -474,7 +476,8 @@ var playState = {
     trackFrenzyMiss: function () {
         gameController.frenzyMissCount++;
         mixpanel.track(
-            "Frenzy Miss " + gameController.frenzyMissCount, {
+            "Frenzy Miss", {
+                "Miss Number": gameController.frenzyMissCount,
                 "Regular Eggs Caught": gameController.regularEggChain,
                 "Streak Score": gameController.streakScore
             }

@@ -311,7 +311,8 @@ var frenzyState = {
 
     sendFrenzyStateAnalyticsData: function () {
         mixpanel.track(
-            "Frenzy " + gameController.frenzyCounter, {
+            "Frenzy ", {
+                "Frenzy Number": gameController.frenzyCounter,
                 "Frenzy Score": this.frenzyStateScoreCounter,
                 "Frenzy Eggs Caught": this.numberOfEggsCollected,
                 "Proportion of Frenzy Eggs Caught": (this.numberOfEggsCollected/this.numberOfEggsAddedToScreen).toFixed(2),
