@@ -349,7 +349,7 @@ var playState = {
             } else {
                 gameController.checkHighScore();
                 backgroundMusic.stop();
-                gameController.sendAnalyticsData();
+                gameController.sendAnalyticsData("All Lives Lost");
                 gameController.resetAnalyticsData();
                 game.state.start("gameOver");
             }

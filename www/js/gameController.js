@@ -513,12 +513,12 @@ var gameController = {
     },
 
     exitToMainMenu: function() {
-        this.sendAnalyticsData();
+        this.sendAnalyticsData("Exit through main menu");
         this.resetGameComponents();
         game.state.start("menu");
     },
 
-    sendAnalyticsData: function () {
+    sendAnalyticsData: function (causeForGameEnd) {
         mixpanel.track(
             "Game Data", {
                 'Score ': + this.score,
@@ -530,6 +530,7 @@ var gameController = {
                 'Total One Ups Caught ': this.oneUpCounter,
                 'Level Reached': this.currentLevel,
                 'Average FPS over Play State ': (this.fpsCounter/this.framesCounter).toFixed(2),
+                'Reason why game ended': causeForGameEnd,
                 'Device Name ': device.model
             }
         )
