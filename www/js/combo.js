@@ -79,6 +79,11 @@ var comboState = {
     crackComboEgg: function(egg){
         gameController.tweenEgg(gameController.CRACKED_COMBO, egg);
         gameController.playEggCrackingSound();
+        this.comboEggs.remove(egg);
+
+        if(egg.isLastEggInCurrentWave) {
+            this.tweenPreviousWaveScore();
+        }
     },
 
     /**
@@ -98,7 +103,6 @@ var comboState = {
             this.createComboWave(numEggs);
             this.comboStateEggCounter += numEggs;
         }
-        this.tweenPreviousWaveScore();
     },
 
     /**
@@ -132,6 +136,8 @@ var comboState = {
             game.physics.arcade.enable(egg);
             egg.body.velocity.y = gameController.calculateEggVelocity(gameController.elapsedEggFallingTimeSecs);
             this.comboEggs.add(egg);
+
+            egg.isLastEggInCurrentWave = i === numEggs-1;
         }
     },
 
@@ -176,6 +182,11 @@ var comboState = {
         this.comboEggCaughtPerWaveCount++;
         this.waveScore += this.comboEggPoints;
         this.updateScore(this.comboEggPoints);
+        this.comboEggs.remove(egg);
+
+        if(egg.isLastEggInCurrentWave) {
+            this.tweenPreviousWaveScore();
+        }
     },
 
     /**
