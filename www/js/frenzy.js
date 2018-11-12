@@ -5,7 +5,7 @@ var frenzyState = {
 
     FRENZY_OBJECTS_SCALE: 1.5,
 
-    bonusPointsFrenzy: 50,
+    // bonusPointsFrenzy: 50,
     xVelocityFrenzyEgg: 100, // This is used to regulate the horizontal vibration of the eggs
     durationOfFrenzyState: 5, //5 seconds feels better than 4
     probabilityOfAddingFrenzyEgg: 0.75, // When drawing eggs, there is 75 percent chance it draws a frenzy egg instead of a bomb
@@ -24,12 +24,12 @@ var frenzyState = {
     frenzyStateScoreCounter: 0,
     numberOfEggsAddedToScreen: 0,
     numberOfEggsCollected: 0,
-    hasAchievedBonus: false,
+    // hasAchievedBonus: false,
 
     create: function(){
         this.frenzyEggPoints = gameController.frenzyPoints;
         this.numberOfEggsAddedToScreen = 0; // initially 0 eggs are added to the screen
-        this.hasAchievedBonus = false; // flag to check if the user has achieved the bonus
+        // this.hasAchievedBonus = false; // flag to check if the user has achieved the bonus
         this.frenzyTime = 0; // current time within the frenzy state
         this.showTimeLeft(this.frenzyTime);
 
@@ -128,12 +128,12 @@ var frenzyState = {
         }
 
         // determines what happens if user has collected all frenzy eggs and hasn't achieved the bonus
-        if (this.numberOfEggsCollected === this.numberOfEggsAddedToScreen && !this.hasAchievedBonus){
-            this.hasAchievedBonus = true; //readjusts the flag, in order to prevent the bonus score to keep adding over and over again
-            gameController.score += this.bonusPointsFrenzy;
-            gameController.scoreText.text = "Score: " + gameController.score;
-            this.playBonusReceivedAnimation();
-        }
+        // if (this.numberOfEggsCollected === this.numberOfEggsAddedToScreen && !this.hasAchievedBonus){
+        //     this.hasAchievedBonus = true; //readjusts the flag, in order to prevent the bonus score to keep adding over and over again
+        //     gameController.score += this.bonusPointsFrenzy;
+        //     gameController.scoreText.text = "Score: " + gameController.score;
+        //     this.playBonusReceivedAnimation();
+        // }
 
         // adjusts high scores
         if (gameController.score > gameController.highestScore){
@@ -156,11 +156,11 @@ var frenzyState = {
     /**
      * This plays the animation when the user has achieved the bonus (catching all the frenzy eggs in the state)
      */
-    playBonusReceivedAnimation: function(){
-        var bonusPointsFormat = gameController.createFormatting("bold 100pt Corbel", "#FF00FF");
-        var bonusText = "BONUS: +" + this.bonusPointsFrenzy;
-        gameController.displayFadingText(game.world.centerX, game.world.centerY, bonusText , bonusPointsFormat);
-    },
+    // playBonusReceivedAnimation: function(){
+    //     var bonusPointsFormat = gameController.createFormatting("bold 100pt Corbel", "#FF00FF");
+    //     var bonusText = "BONUS: +" + this.bonusPointsFrenzy;
+    //     gameController.displayFadingText(game.world.centerX, game.world.centerY, bonusText , bonusPointsFormat);
+    // },
 
     /**
      * This uses the poisson disk sampler to generate an array of coordinates to put the frenzy eggs
