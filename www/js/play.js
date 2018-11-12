@@ -459,6 +459,7 @@ var playState = {
                 'Total Frenzy Eggs Caught ': gameController.frenzyCounter,
                 'Total Combo Eggs Caught ': gameController.comboCounter,
                 'Total One Ups Caught ': gameController.oneUpCounter,
+                'Level Reached': gameController.currentLevel,
                 'Average FPS over Play State ': (gameController.fpsCounter/gameController.framesCounter).toFixed(2),
                 'Device Name ': device.model
             }
