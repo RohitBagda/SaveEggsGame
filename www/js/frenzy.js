@@ -296,8 +296,7 @@ var frenzyState = {
                 "Frenzy Number": gameController.frenzyCounter,
                 "Frenzy Score": this.frenzyStateScoreCounter,
                 "Frenzy Eggs Caught": this.numberOfEggsCollected,
-                "Proportion of Frenzy Eggs Caught": (this.numberOfEggsCollected/this.numberOfEggsAddedToScreen).toFixed(2),
-                "Achieved Bonus": this.hasAchievedBonus
+                "Proportion of Frenzy Eggs Caught": (this.numberOfEggsCollected/this.numberOfEggsAddedToScreen).toFixed(2)                
             }
         );
     },
