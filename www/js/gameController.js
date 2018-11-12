@@ -513,7 +513,27 @@ var gameController = {
     },
 
     exitToMainMenu: function() {
+        this.sendAnalyticsData();
         this.resetGameComponents();
         game.state.start("menu");
-    }
+    },
+
+    sendAnalyticsData: function () {
+        mixpanel.track(
+            "Game Data", {
+                'Score ': + this.score,
+                'Longest Streak ': this.longestStreak,
+                'Total Regular Eggs Caught ': this.totalRegEggsCaught,
+                'Total ScoreBoost Eggs Caught ': this.scoreBoostCounter,
+                'Total Frenzy Eggs Caught ': this.frenzyCounter,
+                'Total Combo Eggs Caught ': this.comboCounter,
+                'Total One Ups Caught ': this.oneUpCounter,
+                'Level Reached': this.currentLevel,
+                'Average FPS over Play State ': (this.fpsCounter/this.framesCounter).toFixed(2),
+                'Device Name ': device.model
+            }
+        )
+
+    },
+
 };
