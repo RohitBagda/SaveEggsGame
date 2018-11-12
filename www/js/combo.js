@@ -59,8 +59,6 @@ var comboState = {
         gameController.updateRainbowScoreColor();
         gameController.updateBasketPosition();
         for(var comboEgg of this.comboEggs.children){
-            // For each egg in the combo state. Set the initial velocity of the eggs
-            comboEgg.body.velocity.y=gameController.eggVelocity;
 
             // Check for collision between combo egg and basket.
             if(game.physics.arcade.overlap(gameController.player, comboEgg)) {
@@ -132,8 +130,7 @@ var comboState = {
             var egg = game.add.sprite(eggX, eggY, eggType);
             egg.scale.setTo(scaleRatio, scaleRatio);
             game.physics.arcade.enable(egg);
-            this.eggGravity = gameController.calculateEggGravity(gameController.elapsedEggFallingTimeSecs);
-            egg.body.gravity.y = this.eggGravity;
+            egg.body.velocity.y = gameController.calculateEggVelocity(gameController.elapsedEggFallingTimeSecs);
             this.comboEggs.add(egg);
         }
     },

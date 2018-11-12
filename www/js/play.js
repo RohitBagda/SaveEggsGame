@@ -104,8 +104,6 @@ var playState = {
 
         gameController.updateBasketPosition();
         for(var egg of this.eggs.children){
-            egg.body.velocity.y= gameController.eggVelocity;    // set initial vertical (y) velocity
-
             // This checks for collisions between the egg and basket, and otherwise cracks the egg if it has fallen past the basket
             if(game.physics.arcade.overlap(gameController.player, egg)) {
                 this.collectEgg(egg);
@@ -121,13 +119,10 @@ var playState = {
         this.eggFallingPaused = true;
 
         for(var egg of this.eggs.children){
-            // We don't need to store old velocity because it gets reset every frame anyway
-
-            egg.oldGravity = egg.body.gravity.y;
+            egg.oldVelocity = egg.body.velocity.y;
             egg.oldAngularVelocity = egg.body.angularVelocity;
 
             egg.body.velocity.y = 0;
-            egg.body.gravity.y = 0;
             egg.body.angularVelocity = 0;
         }
     },
@@ -136,10 +131,10 @@ var playState = {
         this.eggFallingPaused = false;
 
         for(var egg of this.eggs.children){
-            egg.body.gravity.y = egg.oldGravity;
+            egg.body.velocity.y = egg.oldVelocity;
             egg.body.angularVelocity = egg.oldAngularVelocity;
 
-            egg.oldGravity = undefined;
+            egg.oldVelocity = undefined;
             egg.oldAngularVelocity = undefined;
         }
     },
@@ -195,8 +190,7 @@ var playState = {
         egg.scale.setTo(scaleRatio);
         egg.anchor.setTo(0.5);
         game.physics.enable(egg, Phaser.Physics.ARCADE);
-        this.eggGravity = gameController.calculateEggGravity(gameController.elapsedEggFallingTimeSecs);
-        egg.body.gravity.y = this.eggGravity;
+        egg.body.velocity.y = gameController.calculateEggVelocity(gameController.elapsedEggFallingTimeSecs);
 
         egg.rotation = Math.random() * 360;
         egg.body.angularVelocity = ((Math.random() - 0.5) * 2) * 720;
