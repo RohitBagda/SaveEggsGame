@@ -349,7 +349,7 @@ var playState = {
             } else {
                 gameController.checkHighScore();
                 backgroundMusic.stop();
-                this.sendAnalyticsData();
+                gameController.sendAnalyticsData("All Lives Lost");
                 gameController.resetAnalyticsData();
                 game.state.start("gameOver");
             }
@@ -441,24 +441,6 @@ var playState = {
 
         gameController.displayEpicScoreText(points);
         gameController.updateScore(points);
-    },
-
-    sendAnalyticsData: function () {
-        mixpanel.track(
-            "Game Data", {
-                'Score ': + gameController.score,
-                'Longest Streak ': gameController.longestStreak,
-                'Total Regular Eggs Caught ': gameController.totalRegEggsCaught,
-                'Total ScoreBoost Eggs Caught ': gameController.scoreBoostCounter,
-                'Total Frenzy Eggs Caught ': gameController.frenzyCounter,
-                'Total Combo Eggs Caught ': gameController.comboCounter,
-                'Total One Ups Caught ': gameController.oneUpCounter,
-                'Level Reached': gameController.currentLevel,
-                'Average FPS over Play State ': (gameController.fpsCounter/gameController.framesCounter).toFixed(2),
-                'Device Name ': device.model
-            }
-        )
-
     },
 
     trackStreakEnds: function (cause) {
