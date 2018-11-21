@@ -29,7 +29,7 @@ var comboState = {
 
         this.totalScore = 0;
 
-        this.comboEggPoints=gameController.comboPoints*gameController.currentLevel;
+        this.comboEggPoints=gameController.comboPoints*gameController.regularEggPoints;
         this.comboTime=0;
         this.setupPlayer();
         this.comboEggs = game.add.group();

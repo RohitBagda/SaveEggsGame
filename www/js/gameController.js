@@ -54,7 +54,7 @@ var gameController = {
     scoreBoostPoints: 5,
     baseFrenzyPoints: 5,
     frenzyPoints: 5,
-    comboPoints: 100,
+    comboPoints: 40,
     bucketMovementEnabled: true,
 
     // If an object is placed at a point (x,y), the anchor will set the center of the object to be (x,y)
